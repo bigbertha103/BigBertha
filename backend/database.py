@@ -262,7 +262,7 @@ def seed_agents() -> None:
         )
 
         config_defaults = [
-            ("model_id", os.getenv("MODEL_ID", "anthropic/claude-sonnet-4-5")),
+            ("model_id", os.getenv("MODEL_ID", "mistralai/mistral-nemo")),
             ("host", os.getenv("HOST", "0.0.0.0")),
             ("port", os.getenv("PORT", "8000")),
             ("openrouter_api_key", os.getenv("OPENROUTER_API_KEY", "")),
