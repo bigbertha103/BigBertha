@@ -145,7 +145,10 @@ def build_routing_payload(
            LIMIT 5""",
         (conversation_id,),
     ).fetchall()
-    messages = [{"role": r["role"], "content": r["content"]} for r in reversed(rows)]
+    messages = [
+        {"role": "assistant" if r["role"] == "boss" else r["role"], "content": r["content"]}
+        for r in reversed(rows)
+    ]
 
     return {"system": system, "messages": messages}
 
