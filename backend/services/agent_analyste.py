@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 AGENT_CODE = "ANALYSTE"
 
 
-async def run(job_id: int, task: str, db: sqlite3.Connection) -> str:
+async def run(job_id: int, task: str, db: sqlite3.Connection, kb_context: str = "") -> str:
     job = db.execute("SELECT * FROM jobs WHERE id = ?", (job_id,)).fetchone()
     conversation_id = job["conversation_id"]
 
@@ -17,7 +17,7 @@ async def run(job_id: int, task: str, db: sqlite3.Connection) -> str:
     model_id = config.get("model_id", "anthropic/claude-sonnet-4-5")
     api_key = config.get("openrouter_api_key", "")
 
-    payload = context_builder.build_agent_payload(AGENT_CODE, task, db)
+    payload = context_builder.build_agent_payload(AGENT_CODE, task, db, kb_context=kb_context)
 
     result = await model_router.call_llm(
         system_prompt=payload["system"],

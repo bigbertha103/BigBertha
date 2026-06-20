@@ -1,0 +1,23 @@
+{
+  "days": {
+    "1": {
+      "documents": [],
+      "messages": [
+        "Bonjour, pouvez-vous me présenter Neuraltech Consulting ?",
+        "Quelles sont vos spécialités en matière d'agents IA ?"
+      ]
+    },
+    "2": {
+      "documents": [],
+      "messages": [
+        "Analysez les principales différences entre RAG et fine-tuning pour nos clients PME."
+      ]
+    },
+    "3": {
+      "documents": [],
+      "messages": [
+        "Rédigez une note d'introduction à notre approche conseil en IA pour un nouveau client."
+      ]
+    }
+  }
+}

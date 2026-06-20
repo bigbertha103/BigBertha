@@ -1,4 +1,8 @@
 import logging
+import os
+import sqlite3
+
+import anyio
 
 from backend.database import get_connection
 from backend.services import agent_analyste, agent_redacteur, boss_service
@@ -17,6 +21,49 @@ def _compute_title(content: str) -> str:
     if last_space > 0:
         truncated = truncated[:last_space]
     return truncated + "…"
+
+
+async def _fetch_kb_context(query: str) -> str:
+    from backend.services.rag_engine import get_rag
+    rag = get_rag()
+    if rag is None:
+        return ""
+    try:
+        return await anyio.to_thread.run_sync(
+            lambda: rag.get_context_for_query(
+                query,
+                top_k=int(os.getenv("RAG_TOP_K", "3"))
+            )
+        )
+    except Exception as exc:
+        logger.warning("KB context fetch échoué (non bloquant) : %s", exc)
+        return ""
+
+
+def _update_sentinel_signal(db: sqlite3.Connection, conversation_id: int) -> None:
+    try:
+        pinned_count = db.execute(
+            "SELECT COUNT(*) FROM pinned_context WHERE conversation_id = ? AND is_active = 1",
+            (conversation_id,),
+        ).fetchone()[0]
+
+        rows = db.execute(
+            "SELECT routing_output FROM jobs WHERE status='DONE' ORDER BY id DESC LIMIT 20"
+        ).fetchall()
+        boss_count = sum(
+            1 for r in rows
+            if r["routing_output"] and '"agent_code": "BOSS"' in r["routing_output"]
+        )
+        boss_rate = boss_count / max(len(rows), 1)
+
+        if pinned_count >= 8 or boss_rate > 0.40:
+            db.execute(
+                "UPDATE app_config SET value='1', updated_at=datetime('now') "
+                "WHERE key='sentinel_suggestion_pending'"
+            )
+            db.commit()
+    except Exception as exc:
+        logger.warning("Erreur calcul signal SENTINEL : %s", exc)
 
 
 async def process_job(job_id: int) -> None:
@@ -42,7 +89,11 @@ async def process_job(job_id: int) -> None:
         db.commit()
         logger.info("Job %d status=ROUTING", job_id)
 
-        routing = await boss_service.run_routing(job_id, db)
+        kb_context = await _fetch_kb_context(user_message)
+        if kb_context:
+            logger.info("Job %d — kb_context injecté (%d chars)", job_id, len(kb_context))
+
+        routing = await boss_service.run_routing(job_id, db, kb_context=kb_context)
         agent_code = routing["agent_code"]
         task = routing["task"]
 
@@ -55,7 +106,7 @@ async def process_job(job_id: int) -> None:
             )
             db.commit()
             logger.info("Job %d status=AGENT_RUNNING agent=ANALYSTE", job_id)
-            agent_output = await agent_analyste.run(job_id, task, db)
+            agent_output = await agent_analyste.run(job_id, task, db, kb_context=kb_context)
 
         elif agent_code == "REDACTEUR":
             db.execute(
@@ -64,7 +115,7 @@ async def process_job(job_id: int) -> None:
             )
             db.commit()
             logger.info("Job %d status=AGENT_RUNNING agent=REDACTEUR", job_id)
-            agent_output = await agent_redacteur.run(job_id, task, db)
+            agent_output = await agent_redacteur.run(job_id, task, db, kb_context=kb_context)
 
         else:
             logger.info("Job %d — BOSS direct, pas d'agent appelé", job_id)
@@ -101,6 +152,8 @@ async def process_job(job_id: int) -> None:
         )
         db.commit()
         logger.info("Job %d status=DONE", job_id)
+
+        _update_sentinel_signal(db, conversation_id)
 
         msg_count = db.execute(
             "SELECT COUNT(*) as cnt FROM messages WHERE conversation_id = ? AND role = 'user'",

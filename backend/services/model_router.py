@@ -15,12 +15,17 @@ async def call_llm(
     model_id: str,
     api_key: str,
 ) -> dict:
+    if not api_key or not api_key.strip():
+        raise RuntimeError(
+            "Clé API OpenRouter manquante. Configurez-la dans Paramètres → Clé API."
+        )
+
     payload = {
         "model": model_id,
         "messages": [{"role": "system", "content": system_prompt}] + messages,
     }
     headers = {
-        "Authorization": f"Bearer {api_key}",
+        "Authorization": f"Bearer {api_key.strip()}",
         "Content-Type": "application/json",
         "HTTP-Referer": "https://bigbertha.local",
         "X-Title": "Big Bertha",

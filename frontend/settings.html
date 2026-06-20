@@ -65,13 +65,124 @@
       <span class="save-success" id="config-success"></span>
     </section>
 
-    <!-- Section 3 : Agents actifs -->
+    <!-- Section 3 : Base de connaissance -->
+    <section class="settings-section" id="section-kb">
+      <div class="logs-header">
+        <h2>Base de connaissance <span class="kb-badge" id="kb-badge"></span></h2>
+      </div>
+
+      <div class="form-group">
+        <label for="kb-file-input">Importer des documents (.txt, .md, .pdf, .docx, .py)</label>
+        <input type="file" id="kb-file-input" accept=".txt,.md,.pdf,.docx,.py" multiple>
+      </div>
+      <button class="btn-save" id="btn-kb-import">Importer</button>
+      <span class="kb-import-status" id="kb-import-status"></span>
+
+      <div id="kb-import-results"></div>
+
+      <div id="kb-docs-wrap" style="margin-top:16px;">
+        <table class="kb-table" id="kb-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Type</th>
+              <th>Chunks</th>
+              <th>Date</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="kb-table-body">
+            <tr><td colspan="6" class="kb-empty">Chargement…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 4 : Analyse de l'équipe (SENTINEL) -->
+    <section class="settings-section" id="section-sentinel">
+      <div class="logs-header">
+        <h2>Analyse de l'équipe</h2>
+        <button class="btn-save" id="btn-sentinel">Analyser l'équipe</button>
+      </div>
+      <div id="sentinel-spinner" class="sentinel-spinner" style="display:none;">Analyse en cours… (5-10s)</div>
+      <div id="sentinel-error" class="sentinel-error" style="display:none;"></div>
+
+      <div id="sentinel-report" style="display:none;">
+        <div class="sentinel-score-wrap">
+          <span class="sentinel-score-label">Score global</span>
+          <span class="sentinel-score" id="sentinel-score">—</span>
+          <span class="kb-badge" id="sentinel-baseline-badge" style="display:none;">BASELINE</span>
+        </div>
+
+        <div class="sentinel-block" id="sentinel-observations-wrap">
+          <div class="sentinel-block-title">Observations</div>
+          <ul id="sentinel-observations"></ul>
+        </div>
+
+        <div class="sentinel-block" id="sentinel-metrics-wrap">
+          <div class="sentinel-block-title">Métriques</div>
+          <table class="kb-table sentinel-metrics-table" id="sentinel-metrics-table">
+            <thead><tr><th>Métrique</th><th>Valeur</th></tr></thead>
+            <tbody id="sentinel-metrics-body"></tbody>
+          </table>
+        </div>
+
+        <div class="sentinel-block" id="sentinel-delta-wrap" style="display:none;">
+          <div class="sentinel-block-title">Évolution vs baseline</div>
+          <div id="sentinel-delta-content"></div>
+        </div>
+
+        <div class="sentinel-block">
+          <div class="sentinel-block-title">Proposals générées</div>
+          <span id="sentinel-proposals-count" class="kb-badge">0</span>
+        </div>
+      </div>
+
+      <div class="sentinel-block" style="margin-top:18px;">
+        <div class="sentinel-block-title">Historique des rapports</div>
+        <div id="sentinel-history">
+          <div class="profile-notice">Chargement…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5 : Propositions d'amélioration -->
+    <section class="settings-section" id="section-proposals">
+      <div class="logs-header">
+        <h2>Propositions d'amélioration <span class="kb-badge" id="proposals-badge"></span></h2>
+      </div>
+
+      <div id="proposals-pending-list"></div>
+
+      <div class="sentinel-block" style="margin-top:18px;">
+        <div class="sentinel-block-title">Historique (10 dernières)</div>
+        <div id="proposals-history-list">
+          <div class="profile-notice">Chargement…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6 : Agents actifs -->
     <section class="settings-section" id="section-agents">
       <h2>Agents actifs</h2>
       <div class="agents-grid" id="agents-grid"></div>
     </section>
 
-    <!-- Section 4 : Logs -->
+    <!-- Section 7 : Sessions de test -->
+    <section class="settings-section" id="section-test-sessions">
+      <h2>Sessions de test</h2>
+      <div class="test-session-form">
+        <input type="text" id="ts-name-input" placeholder="Nom de la session (ex: Test V2 J1)" maxlength="80">
+        <button class="btn-save" id="btn-create-session">Créer une session</button>
+      </div>
+      <div id="ts-create-error" style="display:none;" class="sentinel-error"></div>
+      <div id="test-sessions-list">
+        <div class="profile-notice">Chargement…</div>
+      </div>
+    </section>
+
+    <!-- Section 8 : Logs -->
     <section class="settings-section" id="section-logs">
       <div class="logs-header">
         <h2>Logs récents</h2>

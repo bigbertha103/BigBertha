@@ -125,6 +125,71 @@ CREATE INDEX IF NOT EXISTS idx_model_decision_log_job
 
 CREATE INDEX IF NOT EXISTS idx_model_decision_log_agent
     ON model_decision_log(agent_id);
+
+CREATE TABLE IF NOT EXISTS test_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    is_active INTEGER NOT NULL DEFAULT 0 CHECK (is_active IN (0,1)),
+    chroma_collection TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    ended_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS knowledge_documents (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    file_type TEXT NOT NULL CHECK (file_type IN ('txt','md','pdf','docx','py')),
+    content_hash TEXT NOT NULL UNIQUE,
+    chroma_doc_ids TEXT NOT NULL DEFAULT '[]',
+    chunk_count INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'PROCESSING'
+        CHECK (status IN ('PROCESSING','INDEXED','ERROR')),
+    error_message TEXT,
+    test_session_id INTEGER,
+    simulated_date TEXT,
+    is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0,1)),
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (test_session_id) REFERENCES test_sessions(id)
+);
+
+CREATE TABLE IF NOT EXISTS sentinel_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    is_baseline INTEGER NOT NULL DEFAULT 0 CHECK (is_baseline IN (0,1)),
+    score INTEGER NOT NULL CHECK (score BETWEEN 0 AND 100),
+    metrics TEXT NOT NULL DEFAULT '{}',
+    observations TEXT NOT NULL DEFAULT '[]',
+    delta_vs_baseline TEXT,
+    jobs_analyzed INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS learning_proposals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sentinel_report_id INTEGER NOT NULL,
+    proposal_type TEXT NOT NULL
+        CHECK (proposal_type IN ('UPDATE_AGENT_PROMPT','UPDATE_COMPANY_RULE','ARCHIVE_DOCUMENT')),
+    target TEXT NOT NULL,
+    content TEXT NOT NULL,
+    previous_value TEXT,
+    rationale TEXT,
+    status TEXT NOT NULL DEFAULT 'PENDING'
+        CHECK (status IN ('PENDING','APPROVED','REJECTED')),
+    reviewed_at TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (sentinel_report_id) REFERENCES sentinel_reports(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_knowledge_documents_status
+    ON knowledge_documents(status, is_active);
+
+CREATE INDEX IF NOT EXISTS idx_knowledge_documents_session
+    ON knowledge_documents(test_session_id);
+
+CREATE INDEX IF NOT EXISTS idx_learning_proposals_status
+    ON learning_proposals(status);
+
+CREATE INDEX IF NOT EXISTS idx_sentinel_reports_baseline
+    ON sentinel_reports(is_baseline);
 """
 
 
@@ -157,6 +222,17 @@ def load_config() -> dict:
         conn.close()
 
 
+def get_config_value(key: str, default: str = "") -> str:
+    conn = get_connection()
+    try:
+        row = conn.execute(
+            "SELECT value FROM app_config WHERE key = ?", (key,)
+        ).fetchone()
+        return row["value"] if row and row["value"] is not None else default
+    finally:
+        conn.close()
+
+
 def seed_agents() -> None:
     if not AGENTS_JSON.exists():
         logger.warning("agents_templates.json introuvable — seed ignoré.")
@@ -174,6 +250,17 @@ def seed_agents() -> None:
                 agent,
             )
 
+        conn.execute(
+            """INSERT OR IGNORE INTO company_profile (id, name, sector, tone, business_rules)
+               VALUES (1, ?, ?, ?, ?)""",
+            (
+                "Neuraltech Consulting",
+                "Conseil en intelligence artificielle et agents IA",
+                "Professionnel, précis, orienté résultats. Pédagogue sans être condescendant. Langue : Français exclusivement, termes techniques anglais acceptés quand standard (RAG, LLM, fine-tuning...).",
+                "- Toujours contextualiser les recommandations IA par rapport au besoin métier client\n- Citer les limites et risques des solutions proposées\n- Distinguer ce qui est production-ready de ce qui est expérimental\n- Structurer les livrables : contexte → analyse → recommandations → prochaines étapes\n- Ne jamais promettre de performances LLM sans benchmark sur les données réelles du client",
+            ),
+        )
+
         config_defaults = [
             ("model_id", os.getenv("MODEL_ID", "anthropic/claude-sonnet-4-5")),
             ("host", os.getenv("HOST", "0.0.0.0")),
@@ -181,6 +268,8 @@ def seed_agents() -> None:
             ("openrouter_api_key", os.getenv("OPENROUTER_API_KEY", "")),
             ("boss_routing_prompt", ""),
             ("boss_synthesis_prompt", ""),
+            ("sentinel_suggestion_pending", "0"),
+            ("active_test_session_id", ""),
         ]
         for key, value in config_defaults:
             conn.execute(
