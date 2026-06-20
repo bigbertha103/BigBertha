@@ -106,7 +106,11 @@ def _build_elements_figes(conversation_id: int, db: sqlite3.Connection) -> str:
     return "\n".join(f"- {r['content']}" for r in rows)
 
 
-def build_routing_payload(conversation_id: int, db: sqlite3.Connection) -> dict:
+def build_routing_payload(
+    conversation_id: int,
+    db: sqlite3.Connection,
+    kb_context: str = "",
+) -> dict:
     profil = _build_profil_entreprise(db)
     agents_dispo = _build_agents_disponibles(db)
     elements_figes = _build_elements_figes(conversation_id, db)
@@ -117,6 +121,22 @@ def build_routing_payload(conversation_id: int, db: sqlite3.Connection) -> dict:
         .replace("{AGENTS_DISPONIBLES}", agents_dispo)
         .replace("{ELEMENTS_FIGES}", elements_figes)
     )
+
+    if kb_context:
+        system += (
+            "\n\n## Base documentaire\n\n"
+            + kb_context
+            + "\n\n(extraits des documents les plus pertinents — ne pas halluciner de sources)"
+        )
+
+    row = db.execute(
+        "SELECT value FROM app_config WHERE key = 'sentinel_suggestion_pending'"
+    ).fetchone()
+    if row and row["value"] == "1":
+        system += (
+            "\n\n(Note interne : un bilan SENTINEL peut être proposé à l'utilisateur "
+            "s'il exprime une insatisfaction ou demande une amélioration.)"
+        )
 
     rows = db.execute(
         """SELECT role, content FROM messages
@@ -131,7 +151,10 @@ def build_routing_payload(conversation_id: int, db: sqlite3.Connection) -> dict:
 
 
 def build_agent_payload(
-    agent_code: str, task: str, db: sqlite3.Connection
+    agent_code: str,
+    task: str,
+    db: sqlite3.Connection,
+    kb_context: str = "",
 ) -> dict:
     row = db.execute(
         "SELECT system_prompt FROM agents WHERE code = ?", (agent_code,)
@@ -139,7 +162,10 @@ def build_agent_payload(
     system = row["system_prompt"] if row else ""
 
     profil = _build_profil_entreprise(db)
-    user_content = f"PROFIL ENTREPRISE :\n{profil}\n\nTÂCHE :\n{task}"
+    if kb_context:
+        user_content = f"PROFIL ENTREPRISE :\n{profil}\n\nBASE DOCUMENTAIRE :\n{kb_context}\n\nTÂCHE :\n{task}"
+    else:
+        user_content = f"PROFIL ENTREPRISE :\n{profil}\n\nTÂCHE :\n{task}"
 
     return {"system": system, "messages": [{"role": "user", "content": user_content}]}
 

@@ -8,7 +8,7 @@ from backend.services import context_builder, model_router
 logger = logging.getLogger(__name__)
 
 
-async def run_routing(job_id: int, db: sqlite3.Connection) -> dict:
+async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "") -> dict:
     job = db.execute("SELECT * FROM jobs WHERE id = ?", (job_id,)).fetchone()
     conversation_id = job["conversation_id"]
 
@@ -16,7 +16,7 @@ async def run_routing(job_id: int, db: sqlite3.Connection) -> dict:
     model_id = config.get("model_id", "anthropic/claude-sonnet-4-5")
     api_key = config.get("openrouter_api_key", "")
 
-    payload = context_builder.build_routing_payload(conversation_id, db)
+    payload = context_builder.build_routing_payload(conversation_id, db, kb_context=kb_context)
 
     result = await model_router.call_llm(
         system_prompt=payload["system"],

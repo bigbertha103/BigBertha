@@ -79,3 +79,61 @@ function getAgents() {
 function getLogs() {
   return apiFetch('/api/logs');
 }
+
+function getKnowledgeStats() {
+  return apiFetch('/api/knowledge/stats');
+}
+
+function getKnowledgeDocuments(sessionId) {
+  const q = sessionId != null ? `?session_id=${sessionId}` : '';
+  return apiFetch(`/api/knowledge/documents${q}`);
+}
+
+async function importKnowledgeDocuments(files) {
+  const fd = new FormData();
+  for (const f of files) fd.append('files', f);
+  const res = await fetch('/api/knowledge/import', { method: 'POST', body: fd });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
+  return data;
+}
+
+function deleteKnowledgeDocument(id) {
+  return apiFetch(`/api/knowledge/documents/${id}`, { method: 'DELETE' });
+}
+
+function runSentinelAnalysis() {
+  return apiFetch('/api/sentinel/analyze', { method: 'POST' });
+}
+
+function getSentinelReports() {
+  return apiFetch('/api/sentinel/reports');
+}
+
+function getProposals(status = 'PENDING') {
+  return apiFetch(`/api/learning-proposals?status=${encodeURIComponent(status)}`);
+}
+
+function patchProposal(id, action) {
+  return apiFetch(`/api/learning-proposals/${id}`, json('PATCH', { action }));
+}
+
+function getActiveTestSession() {
+  return apiFetch('/api/test-sessions/active');
+}
+
+function getTestSessions() {
+  return apiFetch('/api/test-sessions');
+}
+
+function createTestSession(name) {
+  return apiFetch('/api/test-sessions', json('POST', { name }));
+}
+
+function activateTestSession(id) {
+  return apiFetch(`/api/test-sessions/${id}/activate`, { method: 'POST' });
+}
+
+function resetTestSession(id) {
+  return apiFetch(`/api/test-sessions/${id}/reset`, { method: 'POST' });
+}

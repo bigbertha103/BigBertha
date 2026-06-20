@@ -16,18 +16,28 @@ const pinForm       = document.getElementById('pin-form');
 const pinTextarea   = document.getElementById('pin-textarea');
 const btnPinSubmit  = document.getElementById('btn-pin-submit');
 const btnPinCancel  = document.getElementById('btn-pin-cancel');
-const btnNewConv    = document.getElementById('btn-new-conv');
+const btnNewConv       = document.getElementById('btn-new-conv');
+const testModeBanner   = document.getElementById('test-mode-banner');
 
 // ── Initialisation ────────────────────────────────────────────────
 async function init() {
   convList.innerHTML = '<div class="sidebar-state">Chargement...</div>';
   try {
-    conversations = await getConversations();
+    const [convsResult, sessionResult] = await Promise.allSettled([
+      getConversations(),
+      getActiveTestSession(),
+    ]);
+
+    conversations = convsResult.status === 'fulfilled' ? convsResult.value : [];
     renderConvList();
     if (conversations.length > 0) {
       await loadConversation(conversations[0].id);
     } else {
       showEmptyState();
+    }
+
+    if (sessionResult.status === 'fulfilled' && sessionResult.value) {
+      showTestModeBanner(sessionResult.value.name);
     }
   } catch (e) {
     convList.innerHTML = `
@@ -37,6 +47,12 @@ async function init() {
       </div>`;
     document.getElementById('btn-retry-load').addEventListener('click', init);
   }
+}
+
+function showTestModeBanner(name) {
+  testModeBanner.style.display = 'flex';
+  testModeBanner.innerHTML =
+    `⚠️ Mode test actif — <strong>${escapeHtml(name)}</strong>&nbsp;&nbsp;<a href="settings.html" class="test-banner-link">Gérer</a>`;
 }
 
 // ── Sidebar : liste des conversations ────────────────────────────
@@ -336,7 +352,7 @@ function startJobPoller(convId, jobId) {
     } catch (e) {
       // Erreur réseau transitoire — on continue à poller
     }
-  }, 2000);
+  }, 1000);
 
   activeJobPollers.set(convId, { intervalId, jobId });
 }

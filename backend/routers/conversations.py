@@ -106,6 +106,19 @@ async def post_message(
         if conv is None:
             raise HTTPException(status_code=404, detail="Conversation introuvable")
 
+        active_job = db.execute(
+            """SELECT id FROM jobs
+               WHERE conversation_id = ?
+                 AND status IN ('PENDING', 'ROUTING', 'AGENT_RUNNING', 'SYNTHESIZING')
+               LIMIT 1""",
+            (conversation_id,),
+        ).fetchone()
+        if active_job:
+            raise HTTPException(
+                status_code=409,
+                detail="Un traitement est déjà en cours pour cette conversation."
+            )
+
         msg_cur = db.execute(
             "INSERT INTO messages (conversation_id, role, content) VALUES (?, 'user', ?)",
             (conversation_id, content),

@@ -29,12 +29,3 @@ class MessageOut(BaseModel):
     created_at: str
 
 
-class PinnedCreate(BaseModel):
-    content: str
-
-
-class PinnedOut(BaseModel):
-    id: int
-    content: str
-    source: str
-    created_at: str
