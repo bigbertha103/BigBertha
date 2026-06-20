@@ -57,7 +57,7 @@ class CustomTextSplitter:
 # ── DocumentLoader ────────────────────────────────────────────────
 
 class DocumentLoader:
-    SUPPORTED = {".txt", ".md", ".py", ".pdf", ".docx"}
+    SUPPORTED = {".txt", ".md", ".py", ".pdf", ".docx", ".doc"}
 
     @staticmethod
     def _load_text(file_path: Path) -> str:
@@ -92,6 +92,28 @@ class DocumentLoader:
             logger.error("Erreur lecture DOCX %s : %s", file_path.name, exc)
             raise
 
+    @staticmethod
+    def load_doc(path: Path) -> str:
+        # Stratégie 1 : essayer python-docx (fonctionne sur .doc récents)
+        try:
+            import docx
+            doc = docx.Document(str(path))
+            return "\n".join(p.text for p in doc.paragraphs if p.text.strip())
+        except Exception:
+            pass
+        # Stratégie 2 : lire comme texte brut (fonctionne pour .doc = HTML/RTF web)
+        import re
+        for enc in ("utf-8", "latin-1", "cp1252"):
+            try:
+                raw = path.read_text(encoding=enc)
+                clean = re.sub(r"<[^>]+>", " ", raw)
+                clean = re.sub(r"\s+", " ", clean).strip()
+                if len(clean) > 100:
+                    return clean
+            except Exception:
+                continue
+        return ""
+
     @classmethod
     def load(cls, file_path: Path) -> str:
         suffix = file_path.suffix.lower()
@@ -101,6 +123,8 @@ class DocumentLoader:
             return cls._load_pdf(file_path)
         if suffix == ".docx":
             return cls._load_docx(file_path)
+        if suffix == ".doc":
+            return cls.load_doc(file_path)
         return cls._load_text(file_path)
 
 

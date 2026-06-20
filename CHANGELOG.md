@@ -1,5 +1,12 @@
 # CHANGELOG — Big Bertha
 
+## 2026-06-20 — Support .doc + simulation multi-jours + bilan SENTINEL
+- `backend/database.py` : `knowledge_documents.file_type` accepte désormais `'doc'` dans la contrainte CHECK
+- `backend/services/rag_engine.py` : `DocumentLoader` supporte `.doc` via `load_doc()` (python-docx puis fallback texte brut + nettoyage HTML)
+- `backend/routers/knowledge.py` : `.doc` ajouté dans `ALLOWED_EXTENSIONS` pour l'import multipart
+- `tests/simulate_all.py` : simulation complète N jours (import docs, messages, poll jobs, SENTINEL, auto-approbation proposals, attente configurable) — stdlib uniquement
+- `tests/simulate_all.py` : génération du bilan final `bilan_simulation.md` dans le corpus avec tableau d'évolution SENTINEL, deltas, observations et proposals approuvées
+
 ## 2026-06-20 — Sessions de test + simulation (BLOC 7 RAG)
 - `backend/routers/test_sessions.py` : 5 routes (créer, lister, active, activer, reset) — reset supprime ChromaDB + hard-delete docs + désactive session
 - `backend/main.py` : router test_sessions enregistré

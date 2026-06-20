@@ -56,6 +56,7 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
         }
         agent_code = routing["agent_code"]
         task = routing["task"]
+        rationale = routing["rationale"]
 
     agent_row = db.execute("SELECT id FROM agents WHERE code = ?", (agent_code,)).fetchone()
     selected_agent_id = agent_row["id"] if agent_row else None

@@ -478,6 +478,11 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-06-20
+- Support `.doc` ajouté au RAG (CHECK DB, `DocumentLoader.load_doc()`, route `knowledge/import`)
+- Nouveau script `tests/simulate_all.py` : simulation multi-jours automatique avec SENTINEL + auto-approbation proposals + génération de `bilan_simulation.md`
+- Validation : `py_compile` OK, `pytest tests/test_rag_engine.py` 5 passed, `python tests/simulate_all.py --help` OK
+
 ---
 ## 9. ÉTAT D'AVANCEMENT
 

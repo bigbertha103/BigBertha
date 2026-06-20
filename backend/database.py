@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS test_sessions (
 CREATE TABLE IF NOT EXISTS knowledge_documents (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     filename TEXT NOT NULL,
-    file_type TEXT NOT NULL CHECK (file_type IN ('txt','md','pdf','docx','py')),
+    file_type TEXT NOT NULL CHECK (file_type IN ('txt','md','pdf','docx','doc','py')),
     content_hash TEXT NOT NULL UNIQUE,
     chroma_doc_ids TEXT NOT NULL DEFAULT '[]',
     chunk_count INTEGER NOT NULL DEFAULT 0,

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-ALLOWED_EXTENSIONS = {".txt", ".md", ".pdf", ".docx", ".py"}
+ALLOWED_EXTENSIONS = {".txt", ".md", ".pdf", ".docx", ".doc", ".py"}
 
 
 def _get_rag_for_session() -> RAGManager:

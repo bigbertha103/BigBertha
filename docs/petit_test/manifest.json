@@ -1,0 +1,37 @@
+{
+  "days": {
+    "1": {
+      "documents": [
+        "j1_vision_orchestration_ia.md",
+        "j1_orchestration_gouvernance.md"
+      ],
+      "messages": [
+        "Quels sont les avantages d'une architecture IA souveraine on-premise pour une entreprise qui veut garder ses données en interne ?",
+        "Rédigez un résumé de 3 paragraphes sur notre positionnement produit en matière de souveraineté et de gouvernance IA."
+      ]
+    },
+    "2": {
+      "documents": [
+        "j2_moteurs_locaux.md",
+        "j2_modeles_et_evaluation.md",
+        "j2_recherche_optimisation.md"
+      ],
+      "messages": [
+        "Comparez Ollama, vLLM et llama.cpp pour un premier déploiement local. Quel outil recommandez-vous et pourquoi ?",
+        "Analysez les familles de modèles open-weight disponibles en 2026 et proposez une stratégie de routing selon la sensibilité des données."
+      ]
+    },
+    "3": {
+      "documents": [
+        "j3_gpu_hardware_concurrence.md",
+        "j3_penurie_memoire_energie.md",
+        "j3_opportunites_et_roadmap.md"
+      ],
+      "messages": [
+        "Analysez l'impact de la pénurie de mémoire HBM sur les stratégies de déploiement IA local en entreprise.",
+        "Rédigez une note stratégique sur nos opportunités de différenciation face aux acteurs cloud majeurs du marché IA 2026.",
+        "Quel plan de veille technologique recommandez-vous pour rester à jour sur l'évolution des modèles et du hardware IA ?"
+      ]
+    }
+  }
+}
