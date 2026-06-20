@@ -1,0 +1,242 @@
+﻿SKIP NAVIGATION
+
+
+Memory chip shortage to last through 2027, semiconductor boss says
+ShareShare Article via FacebookShare Article via TwitterShare Article via LinkedInShare Article via Email
+MARKETS
+* PRE-MARKETS
+* U.S. MARKETS
+* EUROPE MARKETS
+* CHINA MARKETS
+* ASIA MARKETS
+* WORLD MARKETS
+* CURRENCIES
+* PREDICTION MARKETS
+* CRYPTOCURRENCY
+* FUTURES & COMMODITIES
+* BONDS
+* FUNDS & ETFS
+BUSINESS
+* ECONOMY
+* FINANCE
+* HEALTH & SCIENCE
+* MEDIA
+* REAL ESTATE
+* ENERGY
+* CLIMATE
+* TRANSPORTATION
+* INVESTIGATIONS
+* INDUSTRIALS
+* RETAIL
+* WEALTH
+* SPORTS
+* LIFE
+* SMALL BUSINESS
+INVESTING
+* PERSONAL FINANCE
+* FINTECH
+* FINANCIAL ADVISORS
+* OPTIONS ACTION
+* ETF STREET
+* BUFFETT ARCHIVE
+* EARNINGS
+* TRADER TALK
+TECH
+* CYBERSECURITY
+* AI
+* ENTERPRISE
+* INTERNET
+* MEDIA
+* MOBILE
+* SOCIAL MEDIA
+* CNBC DISRUPTOR 50
+* TECH GUIDE
+POLITICS
+* WHITE HOUSE
+* POLICY
+* DEFENSE
+* CONGRESS
+* EXPANDING OPPORTUNITY
+* EUROPE POLITICS
+* CHINA POLITICS
+* ASIA POLITICS
+* WORLD POLITICS
+VIDEO
+* LATEST VIDEO
+* FULL EPISODES
+* LIVESTREAM
+* TOP VIDEO
+* LIVE AUDIO
+* EUROPE TV
+* ASIA TV
+* CNBC PODCASTS
+* CEO INTERVIEWS
+* DIGITAL ORIGINALS
+WATCHLIST
+INVESTING CLUB
+* TRUST PORTFOLIO
+* ANALYSIS
+* TRADE ALERTS
+* MEETING VIDEOS
+* HOMESTRETCH
+* JIM'S COLUMNS
+* EDUCATION
+* SUBSCRIBE
+
+PRO
+* PRO NEWS
+* JOSH BROWN
+* MIKE SANTOLI
+* CALLS OF THE DAY
+* MY PORTFOLIO
+* LIVESTREAM
+* FULL EPISODES
+* STOCK SCREENER
+* MARKET FORECAST
+* OPTIONS INVESTING
+* CHART INVESTING
+* SUBSCRIBE
+
+LIVESTREAM
+MENU
+* Make It
+* SELECT
+* USA
+* INTL
+* LIVESTREAM
+* LIVESTREAM
+Watchlist
+SIGN IN
+
+Memory chip shortage to last through 2027, semiconductor boss says
+ShareShare Article via FacebookShare Article via TwitterShare Article via LinkedInShare Article via Email
+MARKETS
+BUSINESS
+INVESTING
+TECH
+POLITICS
+VIDEO
+WATCHLIST
+INVESTING CLUB
+
+PRO
+
+LIVESTREAM
+MENU
+
+
+DAVOS 2026
+Memory chip shortage to last through 2027, semiconductor boss says
+PUBLISHED MON, JAN 26 20267:56 AM EST
+
+Arjun Kharpal@/IN/ARJUNKHARPAL/@ARJUNKHARPAL
+WATCH LIVE
+ShareShare Article via FacebookShare Article via TwitterShare Article via LinkedInShare Article via Email
+KEY POINTS
+* Memory chips are a key component of artificial intelligence data centers. 
+* The boom in AI data center construction has caused a shortage of semiconductors, which are also crucial for electronics like smartphones.
+* Sassine Ghazi, CEO of Synopsys, told CNBC that the chip "crunch" will continue through 2026 and 2027.
+In this article
+* MSFT-0.30 (-0.08%)
+* MU+17.81 (+1.57%)
+* XIACF-0.05 (-1.59%)
+* SNPS-0.41 (-0.09%)
+Follow your favorite stocksCREATE FREE ACCOUNT
+
+LEDs light up in a server rack in a data center. 
+Picture Alliance | Picture Alliance | Getty Images
+Price rises and memory shortages are likely to continue through 2027, a top semiconductor industry CEO told CNBC, adding to the view that the crunch that's been caused by the AI infrastructure boom may last longer than expected.
+Memory chips are a key component of consumer electronics devices like smartphones and laptops. They have also become a critical part of artificial intelligence data centers and the servers that are installed in these facilities. In particular, there is significant demand for high-bandwidth memory. 
+As tens of billions of dollars continue to be spent on data center infrastructure, the demand for memory chips has gone through the roof, sparking an unprecedented price rise for the semiconductors, which is set to continue this year.
+Sassine Ghazi, CEO of Synopsys, a key semiconductor design tool company, told CNBC in an interview last week that the chip "crunch" will continue through 2026 and 2027.
+Ghazi said most of the memory from the top players "is going directly to AI infrastructure, but many other products need memory, so those other markets are starved today because there is no capacity left for them."
+Samsung, SK Hynix, and Micron are the biggest memory companies in the world. 
+While these companies are aiming to expand manufacturing, it takes a "minimum" of two years before that comes online, which is one reason why the crunch is set to last, Ghazi said.
+
+Sassine Ghazi, CEO of semiconductor design software firm Synopsys, explains the company's plans to have artificial intelligence take over parts of designing computer chips at the company's annual user conference in Santa Clara, California, on March 19, 2025.
+Stephen Nellis | Reuters
+Memory prices have historically traded in cycles of short supply or oversupply, which have dictated the price of the components. However, some analysts have dubbed the current trend a "super cycle." 
+"Now it's a golden time for the memory companies," Ghazi said.
+Winston Cheng, chief financial officer of the world's biggest PC maker Lenovo, also said in an interview last week that "we will see memory prices going up," noting there is high demand and not enough supply.
+Price rises ahead
+Memory price jumps mean that consumer electronics companies may have to consider price rises. 
+Chinese electronics giant Xiaomi, one of the world's biggest smartphone firms, said last year that it expects price rises to happen in 2026 for mobile phones. However, Synopsys' Ghazi said price hikes are "happening already." 
+Lenovo's Cheng said as there is high demand for memory chips, he is "very confident that the cycle would be such that we could pass on the cost."
+Lenovo has a global "diversified" supply chain with 30 manufacturing plants across the world, which may help it mitigate some of the risks around the memory shortage, Cheng said. 
+
+watch now
+VIDEO4:1304:13
+Lenovo CFO: Major demand to push memory chip prices higher short-term
+Davos 2026: World Economic Forum
+He noted however, that the consumer device segment is "also hurting a little bit ... in terms of price demand." He added that PC and laptop users are still upgrading to Windows 11, Microsoft's operating system that was released in 2021. 
+"I think that replacement cycle is very real," Cheng said. Nevertheless, Price increases would "start hitting the lower end" of the electronics market first. 
+Choose CNBC as your preferred source on Google and never miss a moment from the most trusted name in business news.
+Related
+1. 
+Musk says Tesla's robotaxis will be widespread in the U.S. by the end of this year
+2. 
+AI impacting labor market 'like a tsunami' as layoff fears mount
+3. 
+Denmark open to 'Golden Dome' talks after Trump touts framework Greenland deal
+4. 
+Palantir CEO Alex Karp defends his company's relationship with government agencies
+MORE IN DAVOS 2026
+
+
+
+China didn't grab many headlines at Davos, but it's the elephant in the room
+Evelyn Cheng
+
+
+
+How the world's most powerful people communicate to get what they want
+Sawdah Bhaimiya
+
+
+
+Investors went to Davos for AI. They left talking about Greenland
+Spriha Srivastava
+READ MORE
+
+* 
+* 
+* 
+* 
+* 
+* 
+* 
+* Subscribe to CNBC PRO
+* Subscribe to Investing Club
+* Licensing & Reprints
+* CNBC Councils
+* Join the CNBC Panel
+* Digital Products
+* News Releases
+* Closed Captioning
+* Corrections
+* About CNBC
+* Internships
+* Site Map
+* Careers
+* Help
+* Contact
+* News Tips
+Got a confidential news tip? We want to hear from you.
+GET IN TOUCH
+* CNBC Newsletters
+Sign up for free newsletters and get more CNBC delivered to your inbox
+SIGN UP NOW
+Get this delivered to your inbox, and more info about our products and services.
+* Advertise With Us
+PLEASE CONTACT US
+* Ad Choices
+* Privacy Policy
+* Your Privacy Choices
+* CA Notice
+* Terms of Service
+(c) 2026 Versant Media, LLC. All Rights Reserved. A Versant Media Company.
+Data is a real-time snapshot *Data is delayed at least 15 minutes. Global Business and Financial News, Stock Quotes, and Market Data and Analysis. 
+Market Data Terms of Use and Disclaimers
+Data also provided by
+
+
