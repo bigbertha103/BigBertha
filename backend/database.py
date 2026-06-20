@@ -215,7 +215,8 @@ def load_config() -> dict:
     conn = get_connection()
     try:
         rows = conn.execute(
-            "SELECT key, value FROM app_config WHERE key IN ('model_id', 'host', 'port', 'openrouter_api_key')"
+            "SELECT key, value FROM app_config WHERE key IN "
+            "('model_id', 'host', 'port', 'openrouter_api_key', 'inference_mode', 'ollama_base_url')"
         ).fetchall()
         return {row["key"]: row["value"] for row in rows}
     finally:
@@ -262,10 +263,12 @@ def seed_agents() -> None:
         )
 
         config_defaults = [
-            ("model_id", os.getenv("MODEL_ID", "anthropic/claude-sonnet-4-5")),
+            ("model_id", os.getenv("MODEL_ID", "mistral-nemo")),
             ("host", os.getenv("HOST", "0.0.0.0")),
             ("port", os.getenv("PORT", "8000")),
             ("openrouter_api_key", os.getenv("OPENROUTER_API_KEY", "")),
+            ("inference_mode", os.getenv("INFERENCE_MODE", "ollama")),
+            ("ollama_base_url", os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")),
             ("boss_routing_prompt", ""),
             ("boss_synthesis_prompt", ""),
             ("sentinel_suggestion_pending", "0"),

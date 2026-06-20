@@ -13,8 +13,10 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
     conversation_id = job["conversation_id"]
 
     config = load_config()
-    model_id = config.get("model_id", "anthropic/claude-sonnet-4-5")
+    model_id = config.get("model_id", "mistral-nemo")
     api_key = config.get("openrouter_api_key", "")
+    inference_mode = config.get("inference_mode", "ollama")
+    ollama_base_url = config.get("ollama_base_url", "http://localhost:11434")
 
     payload = context_builder.build_routing_payload(conversation_id, db, kb_context=kb_context)
 
@@ -23,6 +25,9 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
         messages=payload["messages"],
         model_id=model_id,
         api_key=api_key,
+        json_mode=True,
+        inference_mode=inference_mode,
+        ollama_base_url=ollama_base_url,
     )
 
     model_router.log_decision(
@@ -82,8 +87,10 @@ async def run_synthesis(
     conversation_id = job["conversation_id"]
 
     config = load_config()
-    model_id = config.get("model_id", "anthropic/claude-sonnet-4-5")
+    model_id = config.get("model_id", "mistral-nemo")
     api_key = config.get("openrouter_api_key", "")
+    inference_mode = config.get("inference_mode", "ollama")
+    ollama_base_url = config.get("ollama_base_url", "http://localhost:11434")
 
     payload = context_builder.build_synthesis_payload(
         user_message=user_message,
@@ -97,6 +104,9 @@ async def run_synthesis(
         messages=payload["messages"],
         model_id=model_id,
         api_key=api_key,
+        json_mode=True,
+        inference_mode=inference_mode,
+        ollama_base_url=ollama_base_url,
     )
 
     model_router.log_decision(

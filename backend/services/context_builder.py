@@ -142,7 +142,7 @@ def build_routing_payload(
         """SELECT role, content FROM messages
            WHERE conversation_id = ?
            ORDER BY created_at DESC
-           LIMIT 15""",
+           LIMIT 5""",
         (conversation_id,),
     ).fetchall()
     messages = [{"role": r["role"], "content": r["content"]} for r in reversed(rows)]
