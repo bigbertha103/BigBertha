@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres — Big Bertha</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="settings-page">
+  <div class="settings-container">
+    <a href="chat.html" class="settings-back">← Retour au chat</a>
+    <h1 class="settings-title">Paramètres</h1>
+
+    <!-- Section 1 : Profil entreprise -->
+    <section class="settings-section" id="section-profile">
+      <h2>Profil entreprise</h2>
+      <p class="profile-notice" id="profile-notice"></p>
+      <div class="form-group">
+        <label for="profile-name">Nom *</label>
+        <input type="text" id="profile-name" placeholder="Cabinet Moreau Conseil">
+        <div class="field-error" id="profile-name-error"></div>
+      </div>
+      <div class="form-group">
+        <label for="profile-sector">Secteur</label>
+        <input type="text" id="profile-sector" placeholder="Conseil en stratégie et management">
+      </div>
+      <div class="form-group">
+        <label for="profile-tone">Ton de communication</label>
+        <textarea id="profile-tone" placeholder="Professionnel, structuré, direct…"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="profile-rules">Règles métier</label>
+        <textarea id="profile-rules" class="tall" placeholder="Toujours structurer les livrables avec des titres clairs…"></textarea>
+      </div>
+      <button class="btn-save" id="btn-save-profile">Enregistrer</button>
+      <span class="save-success" id="profile-success"></span>
+    </section>
+
+    <!-- Section 2 : Configuration modèle -->
+    <section class="settings-section" id="section-config">
+      <h2>Configuration modèle</h2>
+      <div class="form-group">
+        <label for="config-model">Modèle (model_id)</label>
+        <input type="text" id="config-model" placeholder="anthropic/claude-sonnet-4-5">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="config-host">Hôte</label>
+          <input type="text" id="config-host" placeholder="0.0.0.0">
+        </div>
+        <div class="form-group">
+          <label for="config-port">Port</label>
+          <input type="text" id="config-port" placeholder="8000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="config-key">Clé OpenRouter</label>
+        <div class="password-wrap">
+          <input type="password" id="config-key" placeholder="sk-or-…" autocomplete="off">
+          <button class="btn-eye" id="btn-toggle-key" title="Afficher/masquer">👁</button>
+        </div>
+        <div class="form-hint">Laissez vide pour conserver la clé actuelle.</div>
+      </div>
+      <button class="btn-save" id="btn-save-config">Enregistrer</button>
+      <span class="save-success" id="config-success"></span>
+    </section>
+
+    <!-- Section 3 : Agents actifs -->
+    <section class="settings-section" id="section-agents">
+      <h2>Agents actifs</h2>
+      <div class="agents-grid" id="agents-grid"></div>
+    </section>
+
+    <!-- Section 4 : Logs -->
+    <section class="settings-section" id="section-logs">
+      <div class="logs-header">
+        <h2>Logs récents</h2>
+        <button class="btn-refresh" id="btn-refresh-logs">Rafraîchir</button>
+      </div>
+      <div id="logs-content"></div>
+    </section>
+  </div>
+
+  <script src="api.js"></script>
+  <script src="shared.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

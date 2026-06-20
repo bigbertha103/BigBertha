@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Bertha</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+      <h1>Big Bertha</h1>
+      <button id="btn-new-conv">+ Nouvelle conversation</button>
+      <div id="conv-list"></div>
+      <a href="settings.html" id="link-settings">⚙ Paramètres</a>
+    </aside>
+
+    <!-- ZONE CENTRALE -->
+    <main id="main">
+      <div id="conv-title-bar">
+        <span id="conv-title"></span>
+      </div>
+      <div id="messages"></div>
+      <div id="input-zone">
+        <textarea id="msg-input" rows="1" placeholder="Posez votre question…"></textarea>
+        <button id="btn-send" disabled>Envoyer</button>
+      </div>
+    </main>
+
+    <!-- PANNEAU DROIT -->
+    <aside id="right-panel">
+      <h2>Contexte de la conversation</h2>
+      <div id="pinned-list"></div>
+      <div id="right-panel-actions">
+        <button id="btn-add-pin">+ Épingler un élément</button>
+        <div id="pin-form">
+          <textarea id="pin-textarea" rows="3" placeholder="Élément à épingler…"></textarea>
+          <div class="pin-form-actions">
+            <button id="btn-pin-submit" disabled>Épingler</button>
+            <button id="btn-pin-cancel">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="api.js"></script>
+  <script src="shared.js"></script>
+  <script src="chat.js"></script>
+</body>
+</html>
