@@ -23,6 +23,7 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
         messages=payload["messages"],
         model_id=model_id,
         api_key=api_key,
+        json_mode=True,
     )
 
     model_router.log_decision(

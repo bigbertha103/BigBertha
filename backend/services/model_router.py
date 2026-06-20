@@ -17,6 +17,7 @@ async def call_llm(
     messages: list[dict],
     model_id: str,
     api_key: str,
+    json_mode: bool = False,
 ) -> dict:
     if not api_key or not api_key.strip():
         raise RuntimeError(
@@ -27,6 +28,8 @@ async def call_llm(
         "model": model_id,
         "messages": [{"role": "system", "content": system_prompt}] + messages,
     }
+    if json_mode:
+        payload["response_format"] = {"type": "json_object"}
     headers = {
         "Authorization": f"Bearer {api_key.strip()}",
         "Content-Type": "application/json",
