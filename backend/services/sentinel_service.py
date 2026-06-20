@@ -200,6 +200,7 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
         messages=[{"role": "user", "content": "Produis le rapport SENTINEL."}],
         model_id=model_id,
         api_key=api_key,
+        json_mode=True,
     )
 
     content = result["content"].strip()
