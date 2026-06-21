@@ -1,5 +1,13 @@
 # CHANGELOG — Big Bertha
 
+## 2026-06-21 — Alimentation docs/BASE — vision produit + glossaire
+- [DOC] docs/BASE/langage.md — squelette → 18 termes définis avec contre-définitions (fondamentaux + V2-Mémoire)
+- [DOC] docs/BASE/elements_figes.md — +7 décisions : 4 API, cible PME, triangle, décision OpenRouter dev/test
+- [DOC] docs/BASE/Tech/architecture.md — correction session_memory, +tables session_summaries/test_sessions/pinned_context, section V2-Mémoire + ChromaDB
+- [DOC] docs/BASE/Produit/vision.md — brouillon → complet (valeur, cible PME, triangle, différenciation, versioning)
+- [DOC] docs/BASE/Commercial/tarification.md — vide → grille 3 paliers + questions ouvertes
+- [DOC] docs/BASE/INDEX.md — dates et propriétaires des 5 fichiers mis à jour
+
 ## 2026-06-21 — Corrections post-audit V2-Mémoire
 - `backend/services/context_builder.py` : `_build_session_memory()` cherche via JOIN `previous_conversation_id` — robuste même si ARCHIVISTE n'a pas encore renseigné `next_conversation_id`
 - `backend/services/job_runner.py` : `asyncio.ensure_future()` → `asyncio.create_task()` (Python 3.10+)

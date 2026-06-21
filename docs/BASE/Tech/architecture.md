@@ -58,13 +58,33 @@ Deux modes configurables : **COST** et **PERFORMANCE**
 | Sentinel | sentinel_model_cost | sentinel_model_perf |
 | Archiviste | archiviste_model_cost | archiviste_model_perf |
 
-## Tables principales DB
+## V2-Mémoire
 
-- `conversations` — statut active/archived
+Deux blocs ajoutés en V2 :
+
+**Bloc A — Routing de modèles par tâche** : 11 clés `app_config`, toggle `perf_mode` dans settings (COST / PERFORMANCE).
+
+**Bloc B — Archivage conversations** :
+- `conversations.status` = active/archived
+- Archivage manuel (bouton UI) ou handoff automatique (seuils `handoff_token_threshold` / `handoff_message_fallback`)
+- L'archivage déclenche l'ARCHIVISTE → résumé JSON stocké dans `session_summaries` et vectorisé dans `session_memory` (ChromaDB)
+- Le bilan est réinjecté en contexte dans la conversation suivante via RAG bicéphale
+
+## Tables principales DB (SQLite)
+
+- `conversations` — statut active/archived, lien `previous_conversation_id`
 - `messages` — rôles user/boss
 - `jobs` — pipeline de traitement
 - `agents` — prompts système des agents
+- `pinned_context` — éléments épinglés (soft-delete)
 - `app_config` — configuration clé/valeur
-- `sentinel_reports` + `learning_proposals` — apprentissage
-- `knowledge_documents` — RAG
-- `session_memory` (ChromaDB) — mémoire de session (V2-Mémoire)
+- `sentinel_reports` + `learning_proposals` — apprentissage SENTINEL
+- `knowledge_documents` — documents RAG indexés
+- `test_sessions` — sessions de test isolées
+- `session_summaries` — résumés ARCHIVISTE (SQLite, pas ChromaDB)
+
+## Collections ChromaDB
+
+- `kb_documents` — documents clients (top_k=3 à chaque appel)
+- `session_memory` — bilans ARCHIVISTE vectorisés (top_k=1)
+- `bigbertha_test_{session_id}` — collection isolée par test session

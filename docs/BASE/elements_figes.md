@@ -18,6 +18,10 @@ review_every: 60j
 - `agent_code` absent de la table `messages` — parsé depuis `jobs.routing_output` à la demande
 - Boss prompts V1 hardcodés dans `context_builder.py` (pas en DB)
 - JSON mode obligatoire sur tous les appels LLM (routing, synthesis, SENTINEL, agents)
+- DELETE /api/conversations/{id} = **hard delete en cascade** — pas de soft-delete sur les conversations
+- `agent_code` toujours extrait de `routing_output`, jamais depuis `selected_agent_id` (NULL quand Boss répond directement)
+- `openrouter_api_key` jamais retourné en clair dans les réponses API
+- `model_name` dans `model_decision_log` : TEXT libre sans CHECK — le catalogue OpenRouter évolue fréquemment
 
 ## Architecture V2-Mémoire (figée 2026-06-21)
 
@@ -34,10 +38,15 @@ review_every: 60j
 - `v2-pc` : OpenRouter (cloud test, développement)
 - `v2-machine` : Ollama local (cible production client)
 
+## Déploiement — décision actée
+
+- **Rester sur OpenRouter pendant la phase de test/dev** — le sujet "serveur français" sera traité une fois l'outil performant
+
 ## Produit
 
 - Mono-tenant : une instance = une entreprise cliente
 - Approche B2B uniquement — pas de SaaS grand public
+- Cible : PME françaises au centre du triangle Sécurité / Performance / Personnalisation — pas les extrêmes
 
 ## Agents
 
