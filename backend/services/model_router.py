@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 _MAX_RETRIES = 3
-_RETRY_BASE_WAIT = 30  # secondes — doublé à chaque tentative
+_RETRY_BASE_WAIT = 30  # secondes
 
 
 async def call_llm(
@@ -18,6 +18,79 @@ async def call_llm(
     model_id: str,
     api_key: str,
     json_mode: bool = False,
+    inference_mode: str = "openrouter",
+    ollama_base_url: str = "http://localhost:11434",
+) -> dict:
+    if inference_mode == "ollama":
+        return await _call_ollama(
+            system_prompt=system_prompt,
+            messages=messages,
+            model_id=model_id,
+            json_mode=json_mode,
+            base_url=ollama_base_url,
+        )
+    return await _call_openrouter(
+        system_prompt=system_prompt,
+        messages=messages,
+        model_id=model_id,
+        api_key=api_key,
+        json_mode=json_mode,
+    )
+
+
+async def _call_ollama(
+    system_prompt: str,
+    messages: list[dict],
+    model_id: str,
+    json_mode: bool,
+    base_url: str,
+) -> dict:
+    url = f"{base_url.rstrip('/')}/api/chat"
+    payload = {
+        "model": model_id,
+        "messages": [{"role": "system", "content": system_prompt}] + messages,
+        "stream": False,
+    }
+    if json_mode:
+        payload["format"] = "json"
+
+    headers = {"Content-Type": "application/json"}
+
+    start = time.monotonic()
+    async with httpx.AsyncClient(timeout=180.0) as client:
+        resp = await client.post(url, json=payload, headers=headers)
+    duration_ms = int((time.monotonic() - start) * 1000)
+
+    if resp.status_code != 200:
+        raise RuntimeError(f"Ollama erreur {resp.status_code} : {resp.text[:500]}")
+
+    data = resp.json()
+    choice = data["message"]["content"]
+    input_tokens = data.get("prompt_eval_count", 0)
+    output_tokens = data.get("eval_count", 0)
+    model_name = data.get("model", model_id)
+
+    logger.info(
+        "LLM call [ollama] model=%s in=%d out=%d dur=%dms",
+        model_name, input_tokens, output_tokens, duration_ms,
+    )
+
+    return {
+        "content": choice,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "duration_ms": duration_ms,
+        "cost_usd": None,
+        "model_name": model_name,
+    }
+
+
+async def _call_openrouter(
+    system_prompt: str,
+    messages: list[dict],
+    model_id: str,
+    api_key: str,
+    json_mode: bool,
 ) -> dict:
     if not api_key or not api_key.strip():
         raise RuntimeError(
@@ -30,6 +103,7 @@ async def call_llm(
     }
     if json_mode:
         payload["response_format"] = {"type": "json_object"}
+
     headers = {
         "Authorization": f"Bearer {api_key.strip()}",
         "Content-Type": "application/json",
@@ -45,7 +119,7 @@ async def call_llm(
 
         if resp.status_code == 429:
             if attempt < _MAX_RETRIES - 1:
-                wait = _RETRY_BASE_WAIT * (attempt + 1)  # 30s puis 60s
+                wait = _RETRY_BASE_WAIT * (attempt + 1)
                 logger.warning(
                     "Rate limit 429 — attente %ds avant retry %d/%d",
                     wait, attempt + 2, _MAX_RETRIES,
@@ -62,7 +136,6 @@ async def call_llm(
             )
 
         data = resp.json()
-
         if "error" in data:
             raise RuntimeError(f"OpenRouter erreur API : {data['error']}")
 
@@ -70,15 +143,12 @@ async def call_llm(
         usage = data.get("usage", {})
         input_tokens = usage.get("prompt_tokens", 0)
         output_tokens = usage.get("completion_tokens", 0)
-        cost_usd = data.get("usage", {}).get("cost", None)
+        cost_usd = usage.get("cost", None)
         model_name = data.get("model", model_id)
 
         logger.info(
-            "LLM call model=%s in=%d out=%d dur=%dms",
-            model_name,
-            input_tokens,
-            output_tokens,
-            duration_ms,
+            "LLM call [openrouter] model=%s in=%d out=%d dur=%dms",
+            model_name, input_tokens, output_tokens, duration_ms,
         )
 
         return {

@@ -15,6 +15,8 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
     config = load_config()
     model_id = model_router.get_model_for_task("routing", config)
     api_key = config.get("openrouter_api_key", "")
+    inference_mode = config.get("inference_mode", "openrouter")
+    ollama_base_url = config.get("ollama_base_url", "http://localhost:11434")
 
     payload = context_builder.build_routing_payload(conversation_id, db, kb_context=kb_context)
 
@@ -24,6 +26,8 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
         model_id=model_id,
         api_key=api_key,
         json_mode=True,
+        inference_mode=inference_mode,
+        ollama_base_url=ollama_base_url,
     )
 
     model_router.log_decision(
@@ -92,6 +96,8 @@ async def run_synthesis(
     config = load_config()
     model_id = model_router.get_model_for_task("synthesis", config)
     api_key = config.get("openrouter_api_key", "")
+    inference_mode = config.get("inference_mode", "openrouter")
+    ollama_base_url = config.get("ollama_base_url", "http://localhost:11434")
 
     payload = context_builder.build_synthesis_payload(
         user_message=user_message,
@@ -106,6 +112,8 @@ async def run_synthesis(
         model_id=model_id,
         api_key=api_key,
         json_mode=True,
+        inference_mode=inference_mode,
+        ollama_base_url=ollama_base_url,
     )
 
     model_router.log_decision(

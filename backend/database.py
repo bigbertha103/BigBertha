@@ -223,6 +223,7 @@ def load_config() -> dict:
 SELECT key, value FROM app_config
        WHERE key IN (
            'model_id', 'host', 'port', 'openrouter_api_key',
+           'inference_mode', 'ollama_base_url',
            'routing_model_cost', 'routing_model_perf',
            'agent_model_cost',   'agent_model_perf',
            'synthesis_model_cost','synthesis_model_perf',
@@ -281,6 +282,8 @@ def seed_agents() -> None:
             ("host", os.getenv("HOST", "0.0.0.0")),
             ("port", os.getenv("PORT", "8000")),
             ("openrouter_api_key", os.getenv("OPENROUTER_API_KEY", "")),
+            ("inference_mode", os.getenv("INFERENCE_MODE", "ollama")),
+            ("ollama_base_url", os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")),
             ("boss_routing_prompt", ""),
             ("boss_synthesis_prompt", ""),
             ("sentinel_suggestion_pending", "0"),
