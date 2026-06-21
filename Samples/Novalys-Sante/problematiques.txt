@@ -1,0 +1,5 @@
+Problématiques prioritaires:
+- Trop de tickets non qualifiés en heures de pointe.
+- Difficulté à distinguer incident mineur vs alerte clinique sérieuse.
+- Besoin d'un ton rassurant mais précis dans les réponses patients.
+- Nécessité de journaliser toutes les recommandations automatisées.

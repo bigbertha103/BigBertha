@@ -1,0 +1,5 @@
+Problématiques prioritaires:
+- Les demandes de devis manquent souvent de plans techniques exploitables.
+- Les ruptures matière dégradent la promesse de délai.
+- Les clients veulent des réponses techniques plus pédagogiques.
+- Les incidents machine doivent être résumés rapidement pour le chef d'atelier.

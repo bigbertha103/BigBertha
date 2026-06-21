@@ -1,0 +1,5 @@
+Problématiques prioritaires:
+- Questions récurrentes sur traitements et fenêtres météo.
+- Difficulté à synthétiser les bulletins techniques en messages actionnables.
+- Hétérogénéité de niveau technique entre adhérents.
+- Besoin d'un historique clair des conseils donnés.

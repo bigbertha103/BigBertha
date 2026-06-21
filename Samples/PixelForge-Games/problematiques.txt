@@ -1,0 +1,5 @@
+Problématiques prioritaires:
+- Volume de tickets très élevé après les mises à jour.
+- Mélange entre bug, suggestion et demande de remboursement.
+- Réponses incohérentes selon l'agent support.
+- Besoin d'un ton empathique mais ferme en modération.

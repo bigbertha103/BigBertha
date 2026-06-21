@@ -1,0 +1,5 @@
+Problématiques prioritaires:
+- Trop de dossiers incomplets à l'ouverture.
+- Difficulté à détecter les cas à risque fraude tôt.
+- Réponses client parfois trop juridiques et peu claires.
+- Besoin d'un tri prioritaire pour sinistres sensibles.

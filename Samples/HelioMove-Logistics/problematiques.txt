@@ -1,0 +1,5 @@
+Problématiques prioritaires:
+- Les clients veulent des ETA fiables, même en trafic dense.
+- Les incidents SLA ne sont pas toujours contextualisés.
+- Besoin d'un langage factuel pour les équipes exploitation.
+- Le support reçoit des demandes dispersées entre mail, téléphone et portail.

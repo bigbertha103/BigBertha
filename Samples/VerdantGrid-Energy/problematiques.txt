@@ -1,0 +1,5 @@
+Problématiques prioritaires:
+- Trop d'alertes faibles masquent les incidents critiques.
+- Les clients demandent plus de transparence sur l'ETA de résolution.
+- Les rapports techniques sont jugés trop difficiles à lire.
+- Besoin d'une synthèse claire pour les équipes terrain.
