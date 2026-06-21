@@ -101,17 +101,28 @@ async def post_message(
     db = get_connection()
     try:
         conv = db.execute(
-            "SELECT id FROM conversations WHERE id = ?", (conversation_id,)
+            "SELECT id, status FROM conversations WHERE id = ?", (conversation_id,)
         ).fetchone()
         if conv is None:
             raise HTTPException(status_code=404, detail="Conversation introuvable")
+
+        # Conversation archivée → créer une nouvelle et y router le message
+        new_conversation_id = None
+        target_conversation_id = conversation_id
+        if conv["status"] == "archived":
+            cur = db.execute(
+                "INSERT INTO conversations (title) VALUES (?)", (None,)
+            )
+            db.commit()
+            new_conversation_id = cur.lastrowid
+            target_conversation_id = new_conversation_id
 
         active_job = db.execute(
             """SELECT id FROM jobs
                WHERE conversation_id = ?
                  AND status IN ('PENDING', 'ROUTING', 'AGENT_RUNNING', 'SYNTHESIZING')
                LIMIT 1""",
-            (conversation_id,),
+            (target_conversation_id,),
         ).fetchone()
         if active_job:
             raise HTTPException(
@@ -121,26 +132,51 @@ async def post_message(
 
         msg_cur = db.execute(
             "INSERT INTO messages (conversation_id, role, content) VALUES (?, 'user', ?)",
-            (conversation_id, content),
+            (target_conversation_id, content),
         )
         user_message_id = msg_cur.lastrowid
 
         job_cur = db.execute(
             "INSERT INTO jobs (conversation_id, user_message_id, status) VALUES (?, ?, 'PENDING')",
-            (conversation_id, user_message_id),
+            (target_conversation_id, user_message_id),
         )
         job_id = job_cur.lastrowid
 
         db.execute(
             "UPDATE conversations SET updated_at = datetime('now') WHERE id = ?",
-            (conversation_id,),
+            (target_conversation_id,),
         )
         db.commit()
     finally:
         db.close()
 
     background_tasks.add_task(process_job, job_id)
-    return {"job_id": job_id}
+
+    result: dict = {"job_id": job_id}
+    if new_conversation_id is not None:
+        result["new_conversation_id"] = new_conversation_id
+    return result
+
+
+@router.post("/conversations/{conversation_id}/archive", status_code=200)
+def archive_conversation(conversation_id: int):
+    db = get_connection()
+    try:
+        conv = db.execute(
+            "SELECT id, status FROM conversations WHERE id = ?", (conversation_id,)
+        ).fetchone()
+        if conv is None:
+            raise HTTPException(status_code=404, detail="Conversation introuvable")
+        if conv["status"] == "archived":
+            raise HTTPException(status_code=409, detail="Conversation déjà archivée")
+        db.execute(
+            "UPDATE conversations SET status = 'archived', updated_at = datetime('now') WHERE id = ?",
+            (conversation_id,),
+        )
+        db.commit()
+        return {"archived": True, "conversation_id": conversation_id}
+    finally:
+        db.close()
 
 
 @router.patch("/conversations/{conversation_id}", response_model=ConversationOut)

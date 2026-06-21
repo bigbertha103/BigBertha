@@ -8,13 +8,20 @@ const profileNameErr  = document.getElementById('profile-name-error');
 const btnSaveProfile  = document.getElementById('btn-save-profile');
 const profileSuccess  = document.getElementById('profile-success');
 
-const configModel     = document.getElementById('config-model');
 const configHost      = document.getElementById('config-host');
 const configPort      = document.getElementById('config-port');
 const configKey       = document.getElementById('config-key');
 const btnToggleKey    = document.getElementById('btn-toggle-key');
 const btnSaveConfig   = document.getElementById('btn-save-config');
 const configSuccess   = document.getElementById('config-success');
+
+const configPerfMode       = document.getElementById('config-perf-mode');
+const configPerfLabel      = document.getElementById('config-perf-label');
+const configRoutingModel   = document.getElementById('config-routing-model');
+const configAgentModel     = document.getElementById('config-agent-model');
+const configSynthesisModel = document.getElementById('config-synthesis-model');
+const configSentinelModel  = document.getElementById('config-sentinel-model');
+const configArchivisteModel= document.getElementById('config-archiviste-model');
 
 const agentsGrid      = document.getElementById('agents-grid');
 const logsContent     = document.getElementById('logs-content');
@@ -117,17 +124,50 @@ btnSaveProfile.addEventListener('click', async () => {
 async function loadConfig() {
   try {
     const config = await getConfig();
-    configModel.value = config.model_id || '';
-    configHost.value  = config.host || '';
-    configPort.value  = config.port || '';
-    // La clé reste toujours vide
+    const perf = config.perf_mode === '1';
+    configPerfMode.checked = perf;
+    configPerfLabel.textContent = perf
+      ? 'PERFORMANCE — Claude (Haiku / Sonnet)'
+      : 'COST — modèles open source';
+    const suffix = perf ? 'perf' : 'cost';
+    configRoutingModel.value    = config[`routing_model_${suffix}`]    || '';
+    configAgentModel.value      = config[`agent_model_${suffix}`]      || '';
+    configSynthesisModel.value  = config[`synthesis_model_${suffix}`]  || '';
+    configSentinelModel.value   = config[`sentinel_model_${suffix}`]   || '';
+    configArchivisteModel.value = config[`archiviste_model_${suffix}`] || '';
+    configHost.value = config.host || '';
+    configPort.value = config.port || '';
     configInitial = {
-      model_id: config.model_id || '',
-      host:     config.host || '',
-      port:     config.port || '',
+      perf_mode:              config.perf_mode || '0',
+      routing_model_cost:     config.routing_model_cost    || '',
+      routing_model_perf:     config.routing_model_perf    || '',
+      agent_model_cost:       config.agent_model_cost      || '',
+      agent_model_perf:       config.agent_model_perf      || '',
+      synthesis_model_cost:   config.synthesis_model_cost  || '',
+      synthesis_model_perf:   config.synthesis_model_perf  || '',
+      sentinel_model_cost:    config.sentinel_model_cost   || '',
+      sentinel_model_perf:    config.sentinel_model_perf   || '',
+      archiviste_model_cost:  config.archiviste_model_cost || '',
+      archiviste_model_perf:  config.archiviste_model_perf || '',
+      host: config.host || '',
+      port: config.port || '',
     };
   } catch (e) { /* silencieux */ }
 }
+
+configPerfMode.addEventListener('change', () => {
+  const perf = configPerfMode.checked;
+  configPerfLabel.textContent = perf
+    ? 'PERFORMANCE — Claude (Haiku / Sonnet)'
+    : 'COST — modèles open source';
+  const suffix = perf ? 'perf' : 'cost';
+  const cfg = configInitial;
+  configRoutingModel.value    = cfg[`routing_model_${suffix}`]    || '';
+  configAgentModel.value      = cfg[`agent_model_${suffix}`]      || '';
+  configSynthesisModel.value  = cfg[`synthesis_model_${suffix}`]  || '';
+  configSentinelModel.value   = cfg[`sentinel_model_${suffix}`]   || '';
+  configArchivisteModel.value = cfg[`archiviste_model_${suffix}`] || '';
+});
 
 btnToggleKey.addEventListener('click', () => {
   if (configKey.type === 'password') {
@@ -142,16 +182,36 @@ btnToggleKey.addEventListener('click', () => {
 btnSaveConfig.addEventListener('click', async () => {
   btnSaveConfig.disabled = true;
   const updates = {};
+  const perf = configPerfMode.checked;
+  const suffix = perf ? 'perf' : 'cost';
 
-  const model = configModel.value.trim();
-  const host  = configHost.value.trim();
-  const port  = configPort.value.trim();
-  const key   = configKey.value.trim();
+  const newPerfMode = perf ? '1' : '0';
+  if (newPerfMode !== configInitial.perf_mode)
+    updates.perf_mode = newPerfMode;
 
-  if (model !== configInitial.model_id) updates.model_id = model;
-  if (host  !== configInitial.host)     updates.host = host;
-  if (port  !== configInitial.port)     updates.port = port;
-  if (key)                              updates.openrouter_api_key = key;
+  const routingVal = configRoutingModel.value.trim();
+  const agentVal   = configAgentModel.value.trim();
+  const synthVal   = configSynthesisModel.value.trim();
+  const sentVal    = configSentinelModel.value.trim();
+  const archVal    = configArchivisteModel.value.trim();
+  const hostVal    = configHost.value.trim();
+  const portVal    = configPort.value.trim();
+  const keyVal     = configKey.value.trim();
+
+  const rKey = `routing_model_${suffix}`;
+  const aKey = `agent_model_${suffix}`;
+  const sKey = `synthesis_model_${suffix}`;
+  const seKey= `sentinel_model_${suffix}`;
+  const arKey= `archiviste_model_${suffix}`;
+
+  if (routingVal !== configInitial[rKey])  updates[rKey]  = routingVal;
+  if (agentVal   !== configInitial[aKey])  updates[aKey]  = agentVal;
+  if (synthVal   !== configInitial[sKey])  updates[sKey]  = synthVal;
+  if (sentVal    !== configInitial[seKey]) updates[seKey] = sentVal;
+  if (archVal    !== configInitial[arKey]) updates[arKey] = archVal;
+  if (hostVal    !== configInitial.host)   updates.host   = hostVal;
+  if (portVal    !== configInitial.port)   updates.port   = portVal;
+  if (keyVal)                              updates.openrouter_api_key = keyVal;
 
   if (Object.keys(updates).length === 0) {
     showSuccess(configSuccess, 'Aucune modification.');
@@ -161,10 +221,14 @@ btnSaveConfig.addEventListener('click', async () => {
 
   try {
     await putConfig(updates);
-    // Mettre à jour les valeurs initiales
-    if (updates.model_id !== undefined) configInitial.model_id = updates.model_id;
-    if (updates.host     !== undefined) configInitial.host     = updates.host;
-    if (updates.port     !== undefined) configInitial.port     = updates.port;
+    if (updates.perf_mode !== undefined)   configInitial.perf_mode  = updates.perf_mode;
+    if (updates[rKey]  !== undefined) configInitial[rKey]  = updates[rKey];
+    if (updates[aKey]  !== undefined) configInitial[aKey]  = updates[aKey];
+    if (updates[sKey]  !== undefined) configInitial[sKey]  = updates[sKey];
+    if (updates[seKey] !== undefined) configInitial[seKey] = updates[seKey];
+    if (updates[arKey] !== undefined) configInitial[arKey] = updates[arKey];
+    if (updates.host   !== undefined) configInitial.host   = updates.host;
+    if (updates.port   !== undefined) configInitial.port   = updates.port;
     configKey.value = '';
     showSuccess(configSuccess, 'Configuration enregistrée.');
   } catch (e) {

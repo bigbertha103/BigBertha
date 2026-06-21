@@ -196,7 +196,7 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
     )
 
     config = load_config()
-    model_id = config.get("model_id", "anthropic/claude-sonnet-4-5")
+    model_id = model_router.get_model_for_task("sentinel", config)
     api_key = config.get("openrouter_api_key", "")
 
     result = await model_router.call_llm(

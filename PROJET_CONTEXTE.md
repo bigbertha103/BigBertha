@@ -478,6 +478,58 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-06-21 (session 11)
+- `chat.html` : bouton `#btn-archive-conv` ajouté dans la sidebar après `#btn-new-conv` (masqué par défaut)
+- `chat.js` : référence DOM `btnArchiveConv`, affichage au chargement d'une conversation, masquage dans `showEmptyState()`, fonction `archiveCurrentConversation()` + écouteur de clic
+- Validation : aucune erreur de syntaxe JS
+
+### Résultat de la session — 2026-06-21 (session 10)
+- `conversations.py` : endpoint `POST /api/conversations/{id}/archive` ajouté — 404 si introuvable, 409 si déjà archivée, UPDATE status → archived + updated_at
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 9)
+- `context_builder.py` : pinned context limité à 5 éléments les plus récents dans `_build_elements_figes()` — corrige la dégradation du routing sur les longues conversations
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 8)
+- `database.py` : fondation DB BLOC B — colonne `status` (active/archived) dans `conversations`, index `idx_conversations_status`, clés `handoff_token_threshold` et `handoff_message_fallback` seedées et chargées
+- Migration live exécutée et confirmée (`Migration OK — colonne status ajoutée`)
+- Aucune fonctionnalité changée — fondation prête pour le handoff
+
+### Résultat de la session — 2026-06-21 (session 7)
+- `config.py` : `CONFIG_WHITELIST` et `GET /api/config` étendus aux 11 clés de routing
+- `settings.html` : section Configuration remplacée — toggle perf_mode + 5 champs modèles par tâche
+- `settings.js` : `loadConfig()`, toggle listener, `btnSaveConfig` réécrits pour les 11 clés
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 6)
+- `database.py` : `agent_model_cost` corrigé → `mistralai/mistral-nemo` (mistral-small retournait ~2 chars)
+- DB mise à jour directement via UPDATE app_config
+- En mode COST, tous les modèles actifs sont désormais `mistralai/mistral-nemo`
+
+### Résultat de la session — 2026-06-21 (session 5)
+- `sentinel_service.py`, `agent_analyste.py`, `agent_redacteur.py` branchés sur `model_router.get_model_for_task()` — routing de modèles complet sur tous les services
+- Validation : `py_compile` OK sur les 3 fichiers
+
+### Résultat de la session — 2026-06-21 (session 4)
+- `database.py` : `synthesis_model_cost` corrigé → `mistralai/mistral-nemo` (mistral-small générait du JSON tronqué en synthesis)
+- DB mise à jour directement via UPDATE app_config
+- Validation : valeur confirmée en DB
+
+### Résultat de la session — 2026-06-21 (session 3)
+- `context_builder.py` : suppression du prefill `{"role":"assistant","content":"{"}` dans `build_synthesis_payload()` — corrige l'erreur 400 des providers Mistral sur OpenRouter
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 2)
+- `boss_service.py` : `run_routing()` et `run_synthesis()` branchés sur `model_router.get_model_for_task()` — routing effectif par tâche selon `perf_mode`
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 1)
+- Fondation routing de modèles par tâche : 11 nouvelles clés seedées dans `app_config` (routing/agent/synthesis/sentinel/archiviste en modes cost/perf + `perf_mode`) via INSERT OR IGNORE
+- `load_config()` étendu pour retourner les 15 clés de configuration (4 existantes + 11 nouvelles)
+- `get_model_for_task(task, config)` ajouté dans `model_router.py` — sélection du modèle selon la tâche et le flag `perf_mode`
+- Validation : `py_compile` OK sur les deux fichiers, imports Python OK
+
 ### Résultat de la session — 2026-06-20
 - Support `.doc` ajouté au RAG (CHECK DB, `DocumentLoader.load_doc()`, route `knowledge/import`)
 - Nouveau script `tests/simulate_all.py` : simulation multi-jours automatique avec SENTINEL + auto-approbation proposals + génération de `bilan_simulation.md`

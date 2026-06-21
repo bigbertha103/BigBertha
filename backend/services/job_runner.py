@@ -66,6 +66,41 @@ def _update_sentinel_signal(db: sqlite3.Connection, conversation_id: int) -> Non
         logger.warning("Erreur calcul signal SENTINEL : %s", exc)
 
 
+def _check_handoff(db: sqlite3.Connection, conversation_id: int, config: dict) -> str | None:
+    threshold_tokens = int(config.get("handoff_token_threshold", "6000"))
+    threshold_msgs = int(config.get("handoff_message_fallback", "15"))
+
+    rows = db.execute(
+        "SELECT content FROM messages WHERE conversation_id = ?",
+        (conversation_id,),
+    ).fetchall()
+    estimated_tokens = sum(len(r["content"]) for r in rows) // 4
+
+    msg_count_user = db.execute(
+        "SELECT COUNT(*) FROM messages WHERE conversation_id = ? AND role = 'user'",
+        (conversation_id,),
+    ).fetchone()[0]
+
+    trigger = None
+    if estimated_tokens >= threshold_tokens:
+        trigger = "token_threshold"
+    elif msg_count_user >= threshold_msgs:
+        trigger = "message_threshold"
+
+    if trigger:
+        db.execute(
+            "UPDATE conversations SET status = 'archived', updated_at = datetime('now') WHERE id = ?",
+            (conversation_id,),
+        )
+        db.commit()
+        logger.info(
+            "Conversation %d archivée (trigger=%s, ~%d tokens, %d msgs user)",
+            conversation_id, trigger, estimated_tokens, msg_count_user,
+        )
+
+    return trigger
+
+
 async def process_job(job_id: int) -> None:
     db = get_connection()
     try:
@@ -154,6 +189,9 @@ async def process_job(job_id: int) -> None:
         logger.info("Job %d status=DONE", job_id)
 
         _update_sentinel_signal(db, conversation_id)
+
+        from backend.database import load_config as _load_config
+        _check_handoff(db, conversation_id, _load_config())
 
         msg_count = db.execute(
             "SELECT COUNT(*) as cnt FROM messages WHERE conversation_id = ? AND role = 'user'",

@@ -14,7 +14,7 @@ async def run(job_id: int, task: str, db: sqlite3.Connection, kb_context: str = 
     conversation_id = job["conversation_id"]
 
     config = load_config()
-    model_id = config.get("model_id", "anthropic/claude-sonnet-4-5")
+    model_id = model_router.get_model_for_task("agent", config)
     api_key = config.get("openrouter_api_key", "")
 
     payload = context_builder.build_agent_payload(AGENT_CODE, task, db, kb_context=kb_context)

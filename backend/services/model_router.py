@@ -121,3 +121,12 @@ def log_decision(
         ),
     )
     db.commit()
+
+
+def get_model_for_task(task: str, config: dict) -> str:
+    """Retourne le model_id approprié selon la tâche et le mode COST/PERFORMANCE."""
+    perf = config.get("perf_mode", "0") == "1"
+    suffix = "perf" if perf else "cost"
+    key = f"{task}_model_{suffix}"
+    fallback = config.get("model_id", "mistralai/mistral-nemo")
+    return config.get(key, fallback)

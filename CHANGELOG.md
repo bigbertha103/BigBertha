@@ -1,5 +1,50 @@
 # CHANGELOG — Big Bertha
 
+## 2026-06-21 — Bouton Archiver dans l'interface chat (handoff manuel)
+- `frontend/chat.html` : bouton `#btn-archive-conv` ajouté dans la sidebar (masqué par défaut)
+- `frontend/chat.js` : référence DOM `btnArchiveConv`, affichage dans `loadConversation()`, masquage dans `showEmptyState()`, fonction `archiveCurrentConversation()` + écouteur
+
+## 2026-06-21 — Route handoff manuel POST /api/conversations/{id}/archive
+- `backend/routers/conversations.py` : endpoint `archive_conversation` ajouté (404 si introuvable, 409 si déjà archivée, UPDATE status → archived)
+
+## 2026-06-21 — Pinned context limité à 5 éléments dans le routing
+- `backend/services/context_builder.py` : `_build_elements_figes()` — ORDER BY DESC LIMIT 5 + reversed() pour conserver l'ordre chronologique
+
+## 2026-06-21 — Fondation DB BLOC B (handoff de conversation)
+- `backend/database.py` : table `conversations` — colonne `status` ajoutée (active/archived) + index `idx_conversations_status`
+- `backend/database.py` : 2 nouvelles clés seedées : `handoff_token_threshold` (6000) et `handoff_message_fallback` (15)
+- `backend/database.py` : `load_config()` WHERE clause étendue aux 2 nouvelles clés
+- Migration DB exécutée : colonne `status` ajoutée en live + clés INSERT OR IGNORE
+
+## 2026-06-21 — Settings : toggle COST/PERFORMANCE + 5 champs modèles
+- `backend/routers/config.py` : `CONFIG_WHITELIST` et `GET /api/config` étendus aux 11 nouvelles clés de routing
+- `frontend/settings.html` : section Configuration remplaceée — toggle perf_mode + 5 champs modèles par tâche (champ model_id supprimé de l'UI)
+- `frontend/settings.js` : références DOM, `loadConfig()`, toggle listener et `btnSaveConfig` remià jour pour gérer les 11 clés
+
+## 2026-06-21 — Correction agent_model_cost (réponse vide mistral-small)
+- `backend/database.py` : `agent_model_cost` revenu à `mistralai/mistral-nemo` (mistral-small-3.1-24b-instruct retournait ~2 chars)
+- DB mise à jour directement (UPDATE app_config)
+
+## 2026-06-21 — Routing de modèles actif sur les 3 services restants
+- `backend/services/sentinel_service.py` : `run_analysis()` utilise `model_router.get_model_for_task("sentinel", config)`
+- `backend/services/agent_analyste.py` : `run()` utilise `model_router.get_model_for_task("agent", config)`
+- `backend/services/agent_redacteur.py` : `run()` utilise `model_router.get_model_for_task("agent", config)`
+
+## 2026-06-21 — Correction synthesis_model_cost (JSON tronqué mistral-small)
+- `backend/database.py` : `synthesis_model_cost` revenu à `mistralai/mistral-nemo` (mistral-small-3.1-24b-instruct générait du JSON tronqué en synthesis)
+- DB mise à jour directement (UPDATE app_config)
+
+## 2026-06-21 — Correction prefill synthesis (erreur 400 Mistral)
+- `backend/services/context_builder.py` : suppression du message `{"role": "assistant", "content": "{"}` en fin de `build_synthesis_payload()` — incompatible avec les providers Mistral sur OpenRouter (erreur 400 add_generation_prompt)
+- Le prefill reste intact dans `build_routing_payload()` — non touché
+
+## 2026-06-21 — Routing de modèles actif dans boss_service
+- `backend/services/boss_service.py` : `run_routing()` et `run_synthesis()` utilisent désormais `model_router.get_model_for_task()` au lieu de lire `model_id` directement — routing effectif par tâche selon `perf_mode`
+
+## 2026-06-21 — Fondation routing de modèles par tâche
+- `backend/database.py` : 11 nouvelles clés seedées dans `app_config` (routing/agent/synthesis/sentinel/archiviste _model_cost/_perf + perf_mode) via INSERT OR IGNORE ; `load_config()` étendu pour les retourner toutes
+- `backend/services/model_router.py` : ajout de `get_model_for_task(task, config)` — sélection du modèle selon la tâche et le mode COST/PERFORMANCE
+
 ## 2026-06-20 — Support .doc + simulation multi-jours + bilan SENTINEL
 - `backend/database.py` : `knowledge_documents.file_type` accepte désormais `'doc'` dans la contrainte CHECK
 - `backend/services/rag_engine.py` : `DocumentLoader` supporte `.doc` via `load_doc()` (python-docx puis fallback texte brut + nettoyage HTML)

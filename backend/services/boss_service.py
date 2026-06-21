@@ -13,7 +13,7 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
     conversation_id = job["conversation_id"]
 
     config = load_config()
-    model_id = config.get("model_id", "anthropic/claude-sonnet-4-5")
+    model_id = model_router.get_model_for_task("routing", config)
     api_key = config.get("openrouter_api_key", "")
 
     payload = context_builder.build_routing_payload(conversation_id, db, kb_context=kb_context)
@@ -90,7 +90,7 @@ async def run_synthesis(
     conversation_id = job["conversation_id"]
 
     config = load_config()
-    model_id = config.get("model_id", "anthropic/claude-sonnet-4-5")
+    model_id = model_router.get_model_for_task("synthesis", config)
     api_key = config.get("openrouter_api_key", "")
 
     payload = context_builder.build_synthesis_payload(

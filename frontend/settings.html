@@ -38,12 +38,45 @@
 
     <!-- Section 2 : Configuration modèle -->
     <section class="settings-section" id="section-config">
-      <h2>Configuration modèle</h2>
+      <h2>Configuration</h2>
+
       <div class="form-group">
-        <label for="config-model">Modèle (model_id)</label>
-        <input type="text" id="config-model" placeholder="anthropic/claude-sonnet-4-5">
+        <label>Mode de performance</label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:6px">
+          <input type="checkbox" id="config-perf-mode" style="width:18px;height:18px;cursor:pointer">
+          <span id="config-perf-label" style="font-weight:600">COST — modèles open source</span>
+        </label>
+        <div class="form-hint">COST : mistral-nemo (économique). PERFORMANCE : Claude Haiku / Sonnet (meilleure qualité).</div>
       </div>
-      <div class="form-row">
+
+      <div class="form-group" style="margin-top:16px">
+        <label>Modèles par tâche</label>
+        <div class="form-hint" style="margin-bottom:10px">Les champs affichent le modèle actif selon le mode sélectionné. Modifiez-les puis enregistrez.</div>
+        <div style="display:grid;gap:8px">
+          <div class="form-row" style="align-items:center;gap:8px">
+            <label style="min-width:120px;font-size:12px;color:var(--color-text-muted)">Routing</label>
+            <input type="text" id="config-routing-model" style="flex:1" placeholder="mistralai/mistral-nemo">
+          </div>
+          <div class="form-row" style="align-items:center;gap:8px">
+            <label style="min-width:120px;font-size:12px;color:var(--color-text-muted)">Agents</label>
+            <input type="text" id="config-agent-model" style="flex:1" placeholder="mistralai/mistral-nemo">
+          </div>
+          <div class="form-row" style="align-items:center;gap:8px">
+            <label style="min-width:120px;font-size:12px;color:var(--color-text-muted)">Synthesis</label>
+            <input type="text" id="config-synthesis-model" style="flex:1" placeholder="mistralai/mistral-nemo">
+          </div>
+          <div class="form-row" style="align-items:center;gap:8px">
+            <label style="min-width:120px;font-size:12px;color:var(--color-text-muted)">SENTINEL</label>
+            <input type="text" id="config-sentinel-model" style="flex:1" placeholder="qwen/qwen-2.5-32b-instruct">
+          </div>
+          <div class="form-row" style="align-items:center;gap:8px">
+            <label style="min-width:120px;font-size:12px;color:var(--color-text-muted)">ARCHIVISTE</label>
+            <input type="text" id="config-archiviste-model" style="flex:1" placeholder="meta-llama/llama-3.1-8b-instruct">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:16px">
         <div class="form-group">
           <label for="config-host">Hôte</label>
           <input type="text" id="config-host" placeholder="0.0.0.0">

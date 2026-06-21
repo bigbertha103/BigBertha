@@ -17,6 +17,7 @@ const pinTextarea   = document.getElementById('pin-textarea');
 const btnPinSubmit  = document.getElementById('btn-pin-submit');
 const btnPinCancel  = document.getElementById('btn-pin-cancel');
 const btnNewConv       = document.getElementById('btn-new-conv');
+const btnArchiveConv   = document.getElementById('btn-archive-conv');
 const testModeBanner   = document.getElementById('test-mode-banner');
 
 // ── Initialisation ────────────────────────────────────────────────
@@ -115,6 +116,7 @@ function escapeHtmlSafe(str) {
 async function loadConversation(id) {
   currentConvId = id;
   setActiveConvInSidebar(id);
+  btnArchiveConv.style.display = '';
 
   // Titre
   const conv = conversations.find(c => c.id === id);
@@ -224,6 +226,7 @@ function showEmptyState() {
   convTitleEl.textContent = '';
   renderPinnedList([]);
   disableInput();
+  btnArchiveConv.style.display = 'none';
 }
 
 function scrollToBottom() {
@@ -287,6 +290,21 @@ async function sendMessage() {
   try {
     const result = await postMessage(currentConvId, content);
     const jobId = result.job_id;
+
+    // Handoff : conversation archivée → nouvelle créée automatiquement
+    if (result.new_conversation_id) {
+      const newId = result.new_conversation_id;
+      conversations.unshift({
+        id: newId,
+        title: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+      currentConvId = newId;
+      renderConvList();
+      setActiveConvInSidebar(newId);
+    }
+
     showProgressIndicator('Le Boss analyse votre demande...');
     startJobPoller(currentConvId, jobId);
   } catch (e) {
@@ -505,6 +523,31 @@ msgInput.addEventListener('input', () => {
 
 btnSend.addEventListener('click', sendMessage);
 btnNewConv.addEventListener('click', newConversation);
+
+// ── Archivage manuel ──────────────────────────────────────────────
+async function archiveCurrentConversation() {
+  if (!currentConvId) return;
+  if (!window.confirm('Archiver cette conversation ? Elle ne pourra plus recevoir de nouveaux messages directement.')) return;
+  try {
+    btnArchiveConv.disabled = true;
+    await fetch(`/api/conversations/${currentConvId}/archive`, { method: 'POST' });
+    // Mettre à jour l'état local
+    const conv = conversations.find(c => c.id === currentConvId);
+    if (conv) conv.status = 'archived';
+    btnArchiveConv.style.display = 'none';
+    disableInput();
+    // Raffraîchir la liste
+    conversations = await getConversations();
+    renderConvList();
+    setActiveConvInSidebar(currentConvId);
+  } catch (e) {
+    alert('Erreur lors de l\'archivage. Réessayez.');
+  } finally {
+    btnArchiveConv.disabled = false;
+  }
+}
+
+btnArchiveConv.addEventListener('click', archiveCurrentConversation);
 
 // ── Démarrage ─────────────────────────────────────────────────────
 init();

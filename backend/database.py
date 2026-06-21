@@ -13,9 +13,13 @@ SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS conversations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT,
+    status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'archived')),
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE INDEX IF NOT EXISTS idx_conversations_status
+    ON conversations(status);
 
 CREATE TABLE IF NOT EXISTS agents (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -215,7 +219,18 @@ def load_config() -> dict:
     conn = get_connection()
     try:
         rows = conn.execute(
-            "SELECT key, value FROM app_config WHERE key IN ('model_id', 'host', 'port', 'openrouter_api_key')"
+            """\
+SELECT key, value FROM app_config
+       WHERE key IN (
+           'model_id', 'host', 'port', 'openrouter_api_key',
+           'routing_model_cost', 'routing_model_perf',
+           'agent_model_cost',   'agent_model_perf',
+           'synthesis_model_cost','synthesis_model_perf',
+           'sentinel_model_cost', 'sentinel_model_perf',
+           'archiviste_model_cost','archiviste_model_perf',
+           'perf_mode',
+           'handoff_token_threshold', 'handoff_message_fallback'
+       )"""
         ).fetchall()
         return {row["key"]: row["value"] for row in rows}
     finally:
@@ -270,6 +285,19 @@ def seed_agents() -> None:
             ("boss_synthesis_prompt", ""),
             ("sentinel_suggestion_pending", "0"),
             ("active_test_session_id", ""),
+            ("routing_model_cost",   "mistralai/mistral-nemo"),
+            ("routing_model_perf",   "anthropic/claude-haiku-4-5"),
+            ("agent_model_cost",     "mistralai/mistral-nemo"),
+            ("agent_model_perf",     "anthropic/claude-sonnet-4-5"),
+            ("synthesis_model_cost", "mistralai/mistral-nemo"),
+            ("synthesis_model_perf", "anthropic/claude-sonnet-4-5"),
+            ("sentinel_model_cost",  "qwen/qwen-2.5-32b-instruct"),
+            ("sentinel_model_perf",  "anthropic/claude-sonnet-4-5"),
+            ("archiviste_model_cost","meta-llama/llama-3.1-8b-instruct"),
+            ("archiviste_model_perf","anthropic/claude-haiku-4-5"),
+            ("perf_mode",            "0"),
+            ("handoff_token_threshold", "6000"),
+            ("handoff_message_fallback", "15"),
         ]
         for key, value in config_defaults:
             conn.execute(

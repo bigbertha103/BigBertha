@@ -98,9 +98,13 @@ def _build_agents_disponibles(db: sqlite3.Connection) -> str:
 
 def _build_elements_figes(conversation_id: int, db: sqlite3.Connection) -> str:
     rows = db.execute(
-        "SELECT content FROM pinned_context WHERE conversation_id = ? AND is_active = 1 ORDER BY created_at ASC",
+        """SELECT content FROM pinned_context
+           WHERE conversation_id = ? AND is_active = 1
+           ORDER BY created_at DESC
+           LIMIT 5""",
         (conversation_id,),
     ).fetchall()
+    rows = list(reversed(rows))
     if not rows:
         return "Aucun élément figé pour cette conversation."
     return "\n".join(f"- {r['content']}" for r in rows)
@@ -193,8 +197,6 @@ def build_synthesis_payload(
             f"Réponse de l'agent {agent_code} :\n{agent_output}"
         )
 
-    # Prefill JSON : force le modèle à continuer depuis {
     return {"system": system, "messages": [
         {"role": "user", "content": user_content},
-        {"role": "assistant", "content": "{"},
     ]}

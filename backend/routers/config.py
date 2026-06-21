@@ -9,7 +9,15 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-CONFIG_WHITELIST = {"model_id", "host", "port", "openrouter_api_key"}
+CONFIG_WHITELIST = {
+    "model_id", "host", "port", "openrouter_api_key",
+    "routing_model_cost", "routing_model_perf",
+    "agent_model_cost",    "agent_model_perf",
+    "synthesis_model_cost","synthesis_model_perf",
+    "sentinel_model_cost", "sentinel_model_perf",
+    "archiviste_model_cost","archiviste_model_perf",
+    "perf_mode",
+}
 LOG_FILE = Path(__file__).parent.parent / "data" / "bigbertha.log"
 
 
@@ -18,7 +26,15 @@ def get_config():
     db = get_connection()
     try:
         rows = db.execute(
-            "SELECT key, value FROM app_config WHERE key IN ('model_id', 'host', 'port')"
+            """SELECT key, value FROM app_config WHERE key IN (
+            'model_id', 'host', 'port',
+            'routing_model_cost', 'routing_model_perf',
+            'agent_model_cost',   'agent_model_perf',
+            'synthesis_model_cost','synthesis_model_perf',
+            'sentinel_model_cost', 'sentinel_model_perf',
+            'archiviste_model_cost','archiviste_model_perf',
+            'perf_mode'
+        )"""
         ).fetchall()
         return {r["key"]: r["value"] for r in rows if r["value"] is not None}
     finally:
