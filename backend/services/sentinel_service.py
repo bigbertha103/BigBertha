@@ -38,36 +38,40 @@ concrètes et applicables.
 
 Règles pour les proposals :
 - Uniquement 3 types autorisés : UPDATE_AGENT_PROMPT, UPDATE_COMPANY_RULE, ARCHIVE_DOCUMENT
-- UPDATE_AGENT_PROMPT : fournir le system_prompt COMPLET dans content (pas un diff)
+- UPDATE_AGENT_PROMPT : target = code exact de l'agent (ANALYSTE ou REDACTEUR), fournir le system_prompt COMPLET dans content (pas un diff)
 - UPDATE_COMPANY_RULE : fournir les business_rules COMPLÈTES dans content
-- ARCHIVE_DOCUMENT : target = id du document en string, content = raison de l'archivage
+- ARCHIVE_DOCUMENT : target = id du document en string (entier), content = raison de l'archivage
 - Maximum 3 proposals par rapport. 0 si rien ne le justifie.
 - Ne proposer que ce que les données observées justifient clairement.
 
-Format de sortie UNIQUEMENT — sans texte avant ou après :
+IMPORTANT : Les valeurs numériques dans l'exemple ci-dessous sont fictives et illustrent uniquement la structure JSON attendue.
+Tu dois calculer tes propres valeurs en analysant les données réelles fournies dans ce prompt.
+Ne reproduis jamais les valeurs de l'exemple — produis des valeurs qui reflètent ce que tu observes réellement dans les jobs et la KB.
+
+Format de sortie (structure uniquement — calculer toutes les valeurs à partir des données réelles) :
 {
-  "score": 72,
+  "score": 45,
   "metrics": {
-    "routing_coherence": 0.85,
-    "pinned_rate": 0.3,
-    "boss_direct_rate": 0.15,
-    "kb_citation_rate": 0.6
+    "routing_coherence": 0.60,
+    "pinned_rate": 0.20,
+    "boss_direct_rate": 0.35,
+    "kb_citation_rate": 0.40
   },
   "observations": [
-    "Le RÉDACTEUR est sollicité majoritairement pour des briefs techniques.",
-    "Le taux d'épinglage est élevé — les utilisateurs retiennent des contraintes récurrentes."
+    "Premier constat concret basé sur les jobs analysés — décrire ce que les données révèlent réellement.",
+    "Deuxième constat concret basé sur les données — décrire un constat différent du premier."
   ],
   "delta_vs_baseline": {
-    "score_delta": 12,
-    "routing_coherence_delta": 0.1,
-    "summary": "Amélioration notable de la cohérence du routing depuis le baseline."
+    "score_delta": 5,
+    "routing_coherence_delta": 0.05,
+    "summary": "Synthèse de l'évolution observée depuis le baseline, basée sur les données réelles."
   },
   "proposals": [
     {
       "proposal_type": "UPDATE_AGENT_PROMPT",
-      "target": "REDACTEUR",
-      "content": "Nouveau system_prompt complet ici...",
-      "rationale": "Le RÉDACTEUR produit systématiquement des sections Limites — les intégrer dans le prompt par défaut.",
+      "target": "ANALYSTE",
+      "content": "System prompt complet et réel de l'agent ici — pas un placeholder.",
+      "rationale": "Justification basée sur les observations réelles des jobs analysés.",
       "previous_value": null
     }
   ]
@@ -228,6 +232,17 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
         if ptype not in VALID_PROPOSAL_TYPES:
             logger.warning("SENTINEL proposal rejetée — type invalide : %s", ptype)
             continue
+        target = p.get("target", "")
+        if ptype == "UPDATE_AGENT_PROMPT":
+            if not db.execute("SELECT id FROM agents WHERE code = ?", (target,)).fetchone():
+                logger.warning("SENTINEL proposal rejetée — agent cible invalide : %s", target)
+                continue
+        elif ptype == "ARCHIVE_DOCUMENT":
+            try:
+                int(target)
+            except (ValueError, TypeError):
+                logger.warning("SENTINEL proposal rejetée — target ARCHIVE_DOCUMENT non entier : %s", target)
+                continue
         valid_proposals.append(p)
 
     cur = db.execute(
