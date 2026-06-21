@@ -183,6 +183,22 @@ CREATE TABLE IF NOT EXISTS learning_proposals (
     FOREIGN KEY (sentinel_report_id) REFERENCES sentinel_reports(id)
 );
 
+CREATE TABLE IF NOT EXISTS session_summaries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    conversation_id INTEGER NOT NULL,
+    next_conversation_id INTEGER,
+    summary_json TEXT,
+    summary_text TEXT,
+    trigger_reason TEXT NOT NULL CHECK (trigger_reason IN ('token_threshold','message_threshold','manual')),
+    messages_count INTEGER NOT NULL,
+    estimated_tokens INTEGER NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_session_summaries_conversation
+    ON session_summaries(conversation_id);
+
 CREATE INDEX IF NOT EXISTS idx_knowledge_documents_status
     ON knowledge_documents(status, is_active);
 

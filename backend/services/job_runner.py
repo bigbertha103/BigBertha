@@ -191,7 +191,18 @@ async def process_job(job_id: int) -> None:
         _update_sentinel_signal(db, conversation_id)
 
         from backend.database import load_config as _load_config
-        _check_handoff(db, conversation_id, _load_config())
+        from backend.services import archiviste_service as _archiviste
+        import asyncio as _asyncio
+
+        _trigger = _check_handoff(db, conversation_id, _load_config())
+        if _trigger:
+            _asyncio.ensure_future(
+                _archiviste.run(
+                    conversation_id=conversation_id,
+                    next_conversation_id=None,
+                    trigger_reason=_trigger,
+                )
+            )
 
         msg_count = db.execute(
             "SELECT COUNT(*) as cnt FROM messages WHERE conversation_id = ? AND role = 'user'",

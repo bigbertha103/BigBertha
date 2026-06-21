@@ -159,7 +159,7 @@ async def post_message(
 
 
 @router.post("/conversations/{conversation_id}/archive", status_code=200)
-def archive_conversation(conversation_id: int):
+async def archive_conversation(conversation_id: int, background_tasks: BackgroundTasks):
     db = get_connection()
     try:
         conv = db.execute(
@@ -174,9 +174,17 @@ def archive_conversation(conversation_id: int):
             (conversation_id,),
         )
         db.commit()
-        return {"archived": True, "conversation_id": conversation_id}
     finally:
         db.close()
+
+    from backend.services import archiviste_service
+    background_tasks.add_task(
+        archiviste_service.run,
+        conversation_id=conversation_id,
+        next_conversation_id=None,
+        trigger_reason="manual",
+    )
+    return {"archived": True, "conversation_id": conversation_id}
 
 
 @router.patch("/conversations/{conversation_id}", response_model=ConversationOut)

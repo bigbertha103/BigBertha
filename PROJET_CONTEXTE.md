@@ -478,6 +478,22 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-06-21 (session 14)
+- `job_runner.py` : capture du retour de `_check_handoff()` → `asyncio.ensure_future(archiviste_service.run(...))` si trigger automatique détecté
+- `conversations.py` : `archive_conversation` → `async`, `BackgroundTasks` ajouté, `archiviste_service.run(trigger_reason='manual')` lancé après archivage manuel
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 13)
+- `database.py` : table `session_summaries` ajoutée dans `SCHEMA_SQL` (id, conversation_id, next_conversation_id, summary_json, summary_text, trigger_reason, messages_count, estimated_tokens) + index `idx_session_summaries_conversation`
+- `archiviste_service.py` : créé — `run(conversation_id, next_conversation_id, trigger_reason)` appelle le LLM ARCHIVISTE, parse le JSON retourné, stocke dans `session_summaries` ; fallback texte brut si JSON malformé
+- Validation : `py_compile` OK, table confirmée en DB via `init_db()`
+
+### Résultat de la session — 2026-06-21 (session 12)
+- `config.py` : `handoff_token_threshold` et `handoff_message_fallback` ajoutés dans `CONFIG_WHITELIST` et dans le SELECT du `GET /config`
+- `settings.html` : bloc "Seuils de handoff" ajouté dans la Section 2 Configuration (champs `#config-handoff-tokens` et `#config-handoff-messages`)
+- `settings.js` : chargement au démarrage, envoi au `PUT /config`
+- Validation : `py_compile` OK
+
 ### Résultat de la session — 2026-06-21 (session 11)
 - `chat.html` : bouton `#btn-archive-conv` ajouté dans la sidebar après `#btn-new-conv` (masqué par défaut)
 - `chat.js` : référence DOM `btnArchiveConv`, affichage au chargement d'une conversation, masquage dans `showEmptyState()`, fonction `archiveCurrentConversation()` + écouteur de clic

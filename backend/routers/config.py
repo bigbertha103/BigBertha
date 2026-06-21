@@ -17,6 +17,7 @@ CONFIG_WHITELIST = {
     "sentinel_model_cost", "sentinel_model_perf",
     "archiviste_model_cost","archiviste_model_perf",
     "perf_mode",
+    "handoff_token_threshold", "handoff_message_fallback",
 }
 LOG_FILE = Path(__file__).parent.parent / "data" / "bigbertha.log"
 
@@ -33,7 +34,8 @@ def get_config():
             'synthesis_model_cost','synthesis_model_perf',
             'sentinel_model_cost', 'sentinel_model_perf',
             'archiviste_model_cost','archiviste_model_perf',
-            'perf_mode'
+            'perf_mode',
+            'handoff_token_threshold', 'handoff_message_fallback'
         )"""
         ).fetchall()
         return {r["key"]: r["value"] for r in rows if r["value"] is not None}

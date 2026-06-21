@@ -1,5 +1,18 @@
 # CHANGELOG — Big Bertha
 
+## 2026-06-21 — Déclenchement ARCHIVISTE en BackgroundTask
+- `backend/services/job_runner.py` : `_check_handoff()` capturée dans `_trigger`, lancement `asyncio.ensure_future(archiviste_service.run(...))` si trigger détecté
+- `backend/routers/conversations.py` : `archive_conversation` passée en `async`, reçoit `BackgroundTasks`, lance `archiviste_service.run(trigger_reason='manual')` après l'archivage
+
+## 2026-06-21 — Table session_summaries et service archiviste_service
+- `backend/database.py` : table `session_summaries` ajoutée dans `SCHEMA_SQL` + index `idx_session_summaries_conversation`
+- `backend/services/archiviste_service.py` : créé — génère un bilan JSON structuré de la conversation archivée via LLM et le stocke dans `session_summaries`
+
+## 2026-06-21 — Seuils de handoff configurables depuis les Paramètres
+- `backend/routers/config.py` : `handoff_token_threshold` et `handoff_message_fallback` ajoutés dans `CONFIG_WHITELIST` et dans le SELECT du `GET /config`
+- `frontend/settings.html` : bloc "Seuils de handoff" ajouté dans la Section 2 (2 champs numériques)
+- `frontend/settings.js` : chargement dans `loadConfig()`, lecture et envoi dans `btnSaveConfig`
+
 ## 2026-06-21 — Bouton Archiver dans l'interface chat (handoff manuel)
 - `frontend/chat.html` : bouton `#btn-archive-conv` ajouté dans la sidebar (masqué par défaut)
 - `frontend/chat.js` : référence DOM `btnArchiveConv`, affichage dans `loadConversation()`, masquage dans `showEmptyState()`, fonction `archiveCurrentConversation()` + écouteur

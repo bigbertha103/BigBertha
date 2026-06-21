@@ -137,6 +137,8 @@ async function loadConfig() {
     configArchivisteModel.value = config[`archiviste_model_${suffix}`] || '';
     configHost.value = config.host || '';
     configPort.value = config.port || '';
+    if (config['handoff_token_threshold']) document.getElementById('config-handoff-tokens').value = config['handoff_token_threshold'];
+    if (config['handoff_message_fallback']) document.getElementById('config-handoff-messages').value = config['handoff_message_fallback'];
     configInitial = {
       perf_mode:              config.perf_mode || '0',
       routing_model_cost:     config.routing_model_cost    || '',
@@ -212,6 +214,11 @@ btnSaveConfig.addEventListener('click', async () => {
   if (hostVal    !== configInitial.host)   updates.host   = hostVal;
   if (portVal    !== configInitial.port)   updates.port   = portVal;
   if (keyVal)                              updates.openrouter_api_key = keyVal;
+
+  const tokensVal = document.getElementById('config-handoff-tokens').value.trim();
+  const msgsVal = document.getElementById('config-handoff-messages').value.trim();
+  if (tokensVal) updates['handoff_token_threshold'] = tokensVal;
+  if (msgsVal) updates['handoff_message_fallback'] = msgsVal;
 
   if (Object.keys(updates).length === 0) {
     showSuccess(configSuccess, 'Aucune modification.');

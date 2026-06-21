@@ -198,5 +198,5 @@ def get_model_for_task(task: str, config: dict) -> str:
     perf = config.get("perf_mode", "0") == "1"
     suffix = "perf" if perf else "cost"
     key = f"{task}_model_{suffix}"
-    fallback = config.get("model_id", "mistralai/mistral-nemo")
-    return config.get(key, fallback)
+    fallback = config.get("model_id") or "mistralai/mistral-nemo"
+    return config.get(key) or fallback
