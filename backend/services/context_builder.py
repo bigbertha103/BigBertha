@@ -150,6 +150,9 @@ def build_routing_payload(
         for r in reversed(rows)
     ]
 
+    # Prefill JSON : force le modèle à continuer depuis { (évite les réponses texte libre)
+    messages.append({"role": "assistant", "content": "{"})
+
     return {"system": system, "messages": messages}
 
 
@@ -190,4 +193,8 @@ def build_synthesis_payload(
             f"Réponse de l'agent {agent_code} :\n{agent_output}"
         )
 
-    return {"system": system, "messages": [{"role": "user", "content": user_content}]}
+    # Prefill JSON : force le modèle à continuer depuis {
+    return {"system": system, "messages": [
+        {"role": "user", "content": user_content},
+        {"role": "assistant", "content": "{"},
+    ]}

@@ -42,6 +42,9 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
     if content.startswith("```"):
         lines = content.splitlines()
         content = "\n".join(lines[1:-1]) if len(lines) > 2 else content
+    # Reconstruction JSON si prefill { utilisé (le modèle génère la suite sans l'accolade ouvrante)
+    if content and not content.startswith("{") and not content.startswith("["):
+        content = "{" + content
 
     try:
         routing = json.loads(content)
@@ -119,6 +122,9 @@ async def run_synthesis(
     if content.startswith("```"):
         lines = content.splitlines()
         content = "\n".join(lines[1:-1]) if len(lines) > 2 else content
+    # Reconstruction JSON si prefill { utilisé
+    if content and not content.startswith("{") and not content.startswith("["):
+        content = "{" + content
 
     try:
         synthesis = json.loads(content)

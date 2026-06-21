@@ -201,7 +201,10 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
 
     result = await model_router.call_llm(
         system_prompt=system_prompt,
-        messages=[{"role": "user", "content": "Produis le rapport SENTINEL."}],
+        messages=[
+            {"role": "user", "content": "Produis le rapport SENTINEL."},
+            {"role": "assistant", "content": "{"},
+        ],
         model_id=model_id,
         api_key=api_key,
         json_mode=True,
@@ -211,6 +214,9 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
     if content.startswith("```"):
         lines = content.splitlines()
         content = "\n".join(lines[1:-1]) if len(lines) > 2 else content
+    # Reconstruction JSON si prefill { utilisé
+    if content and not content.startswith("{") and not content.startswith("["):
+        content = "{" + content
 
     try:
         parsed = json.loads(content)
