@@ -218,6 +218,11 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
         logger.error("SENTINEL JSON invalide : %s | Contenu : %s", exc, content[:500])
         raise ValueError(f"Réponse SENTINEL non parseable : {exc}") from exc
 
+    if isinstance(parsed, list):
+        parsed = parsed[0] if parsed else {}
+    if not isinstance(parsed, dict):
+        raise ValueError(f"Réponse SENTINEL inattendue — type {type(parsed).__name__} au lieu de dict")
+
     score = int(parsed.get("score", 0))
     metrics = parsed.get("metrics", {})
     observations = parsed.get("observations", [])

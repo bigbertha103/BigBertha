@@ -45,10 +45,12 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
 
     try:
         routing = json.loads(content)
+        if isinstance(routing, list):
+            routing = routing[0] if routing else {}
         agent_code = routing["agent_code"]
         task = routing["task"]
         rationale = routing.get("rationale", "")
-    except (json.JSONDecodeError, KeyError) as exc:
+    except (json.JSONDecodeError, KeyError, TypeError, IndexError) as exc:
         logger.error("Routing JSON invalide — fallback BOSS. Erreur : %s | Contenu : %s", exc, content)
         routing = {
             "agent_code": "BOSS",
@@ -120,9 +122,11 @@ async def run_synthesis(
 
     try:
         synthesis = json.loads(content)
+        if isinstance(synthesis, list):
+            synthesis = synthesis[0] if synthesis else {}
         response = synthesis["response"]
         pinned = synthesis.get("pinned", [])
-    except (json.JSONDecodeError, KeyError) as exc:
+    except (json.JSONDecodeError, KeyError, TypeError, IndexError) as exc:
         logger.error("Synthesis JSON invalide — utilisation réponse brute. Erreur : %s", exc)
         response = content
         pinned = []
