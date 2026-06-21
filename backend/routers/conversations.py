@@ -187,6 +187,23 @@ async def archive_conversation(conversation_id: int, background_tasks: Backgroun
     return {"archived": True, "conversation_id": conversation_id}
 
 
+@router.get("/conversations/{conversation_id}/session-summary")
+def get_session_summary(conversation_id: int):
+    db = get_connection()
+    try:
+        row = db.execute(
+            """SELECT * FROM session_summaries
+               WHERE conversation_id = ? OR next_conversation_id = ?
+               ORDER BY created_at DESC LIMIT 1""",
+            (conversation_id, conversation_id),
+        ).fetchone()
+        if row is None:
+            raise HTTPException(status_code=404, detail="Pas de bilan pour cette conversation")
+        return dict(row)
+    finally:
+        db.close()
+
+
 @router.patch("/conversations/{conversation_id}", response_model=ConversationOut)
 def patch_conversation(conversation_id: int, body: ConversationPatch):
     if "title" not in body.model_fields_set:

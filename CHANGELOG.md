@@ -1,5 +1,9 @@
 # CHANGELOG — Big Bertha
 
+## 2026-06-21 — Injection mémoire session précédente dans le contexte Boss
+- `backend/services/context_builder.py` : fonction `_build_session_memory()` ajoutée — lit `session_summaries` via `next_conversation_id`, formate le bilan JSON en texte ; injectée dans `build_routing_payload()` avant `kb_context`
+- `backend/routers/conversations.py` : route `GET /conversations/{id}/session-summary` ajoutée
+
 ## 2026-06-21 — Déclenchement ARCHIVISTE en BackgroundTask
 - `backend/services/job_runner.py` : `_check_handoff()` capturée dans `_trigger`, lancement `asyncio.ensure_future(archiviste_service.run(...))` si trigger détecté
 - `backend/routers/conversations.py` : `archive_conversation` passée en `async`, reçoit `BackgroundTasks`, lance `archiviste_service.run(trigger_reason='manual')` après l'archivage

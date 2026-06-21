@@ -110,6 +110,40 @@ def _build_elements_figes(conversation_id: int, db: sqlite3.Connection) -> str:
     return "\n".join(f"- {r['content']}" for r in rows)
 
 
+def _build_session_memory(conversation_id: int, db: sqlite3.Connection) -> str:
+    row = db.execute(
+        """SELECT ss.summary_json, ss.summary_text
+           FROM session_summaries ss
+           WHERE ss.next_conversation_id = ?
+           ORDER BY ss.created_at DESC
+           LIMIT 1""",
+        (conversation_id,),
+    ).fetchone()
+    if row is None:
+        return ""
+    if row["summary_json"]:
+        import json
+        try:
+            data = json.loads(row["summary_json"])
+            parts = []
+            if data.get("sujet_principal"):
+                parts.append(f"Sujet de la session précédente : {data['sujet_principal']}")
+            if data.get("decisions_prises"):
+                parts.append("Décisions prises : " + " | ".join(data["decisions_prises"]))
+            if data.get("informations_cles"):
+                parts.append("Informations clés : " + " | ".join(data["informations_cles"]))
+            if data.get("questions_ouvertes"):
+                parts.append("Questions en suspens : " + " | ".join(data["questions_ouvertes"]))
+            if data.get("prochaine_etape"):
+                parts.append(f"Prochaine étape prévue : {data['prochaine_etape']}")
+            return "\n".join(parts)
+        except Exception:
+            pass
+    if row["summary_text"]:
+        return row["summary_text"][:800]
+    return ""
+
+
 def build_routing_payload(
     conversation_id: int,
     db: sqlite3.Connection,
@@ -119,12 +153,20 @@ def build_routing_payload(
     agents_dispo = _build_agents_disponibles(db)
     elements_figes = _build_elements_figes(conversation_id, db)
 
+    session_memory = _build_session_memory(conversation_id, db)
+
     system = (
         BOSS_ROUTING_PROMPT
         .replace("{PROFIL_ENTREPRISE}", profil)
         .replace("{AGENTS_DISPONIBLES}", agents_dispo)
         .replace("{ELEMENTS_FIGES}", elements_figes)
     )
+
+    if session_memory:
+        system = system.replace(
+            "## Éléments figés de cette conversation",
+            f"## Mémoire de la session précédente\n\n{session_memory}\n\n(bilan automatique de la conversation archivée — à utiliser comme contexte de fond)\n\n## Éléments figés de cette conversation",
+        )
 
     if kb_context:
         system += (

@@ -478,6 +478,11 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-06-21 (session 15)
+- `context_builder.py` : `_build_session_memory(conversation_id, db)` — requête sur `session_summaries WHERE next_conversation_id = ?`, formatage du JSON en lignes lisibles (sujet, décisions, infos clés, questions, prochaine étape) ; injection dans `build_routing_payload()` avant `## Éléments figés`, via `str.replace()`
+- `conversations.py` : route `GET /conversations/{id}/session-summary` ajoutée — retourne le bilan le plus récent lié à la conversation (en tant que source ou destination)
+- Validation : `py_compile` OK
+
 ### Résultat de la session — 2026-06-21 (session 14)
 - `job_runner.py` : capture du retour de `_check_handoff()` → `asyncio.ensure_future(archiviste_service.run(...))` si trigger automatique détecté
 - `conversations.py` : `archive_conversation` → `async`, `BackgroundTasks` ajouté, `archiviste_service.run(trigger_reason='manual')` lancé après archivage manuel
