@@ -11,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.database import init_db, seed_agents
 from backend.routers import agents, company, config, conversations, jobs, knowledge, pinned, proposals, sentinel, test_sessions as test_sessions_router
-from backend.services.rag_engine import init_rag
+from backend.services.rag_engine import init_rag, init_session_rag
 
 load_dotenv()
 
@@ -40,6 +40,11 @@ async def lifespan(app: FastAPI):
         logger.info("RAG initialisé — collection : %s", os.getenv("RAG_COLLECTION_NAME", "bigbertha_prod"))
     except Exception as exc:
         logger.error("RAG init échoué — démarrage en mode dégradé (sans KB) : %s", exc)
+    try:
+        init_session_rag()
+        logger.info("RAG session_memory initialisé")
+    except Exception as exc:
+        logger.error("RAG session_memory init échoué — démarrage en mode dégradé : %s", exc)
     yield
     logger.info("Arrêt Big Bertha")
 

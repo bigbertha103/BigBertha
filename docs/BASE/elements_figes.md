@@ -19,6 +19,14 @@ review_every: 60j
 - Boss prompts V1 hardcodés dans `context_builder.py` (pas en DB)
 - JSON mode obligatoire sur tous les appels LLM (routing, synthesis, SENTINEL, agents)
 
+## Architecture V2-Mémoire (figée 2026-06-21)
+
+- **Model routing par tâche** : 2 modes configurables (COST / PERFORMANCE), 5 modèles indépendants — routing, agents, synthesis, sentinel, archiviste. Toggle dans settings.html.
+- **Pinned context** limité aux 5 derniers éléments actifs (ORDER BY created_at DESC LIMIT 5)
+- **ChromaDB 2 collections séparées** : `kb_documents` (documents clients, top_k=3) + `session_memory` (bilans ARCHIVISTE, top_k=1)
+- **Handoff trigger** : seuil tokens estimés (1 tok ≈ 4 chars, clé `handoff_token_threshold`) + fallback messages (clé `handoff_message_fallback`, défaut 15). Archivage synchrone post-DONE, bilan ARCHIVISTE asynchrone.
+- **`previous_conversation_id`** sur table `conversations` — lie les conversations d'une même session. La sidebar groupe par session (accordéon).
+
 ## Déploiement
 
 - Vision finale : 100% on-premise chez le client (zéro cloud)

@@ -13,6 +13,8 @@ class ConversationPatch(BaseModel):
 class ConversationOut(BaseModel):
     id: int
     title: Optional[str]
+    status: str
+    previous_conversation_id: Optional[int] = None
     created_at: str
     updated_at: str
 

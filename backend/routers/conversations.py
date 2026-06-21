@@ -111,11 +111,20 @@ async def post_message(
         target_conversation_id = conversation_id
         if conv["status"] == "archived":
             cur = db.execute(
-                "INSERT INTO conversations (title) VALUES (?)", (None,)
+                "INSERT INTO conversations (title, previous_conversation_id) VALUES (?, ?)",
+                (None, conversation_id),
             )
             db.commit()
             new_conversation_id = cur.lastrowid
             target_conversation_id = new_conversation_id
+            # Lier le bilan ARCHIVISTE à la nouvelle conversation
+            db.execute(
+                """UPDATE session_summaries
+                   SET next_conversation_id = ?
+                   WHERE conversation_id = ? AND next_conversation_id IS NULL""",
+                (new_conversation_id, conversation_id),
+            )
+            db.commit()
 
         active_job = db.execute(
             """SELECT id FROM jobs

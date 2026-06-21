@@ -216,6 +216,15 @@ class RAGManager:
             parts.append(f"[Source : {source}]\n{r['document']}")
         return "\n\n---\n\n".join(parts)
 
+    def add_text(self, text: str, doc_id: str, metadata: dict | None = None) -> None:
+        """Indexe un texte brut directement (sans passer par un fichier)."""
+        meta = dict(metadata) if metadata else {}
+        try:
+            self._collection.upsert(documents=[text], ids=[doc_id], metadatas=[meta])
+            logger.info("session_memory — bilan indexé id=%s", doc_id)
+        except Exception as exc:
+            logger.error("session_memory — erreur indexation id=%s : %s", doc_id, exc)
+
     def get_collection_info(self) -> dict:
         return {"name": self._collection_name, "count": self._collection.count()}
 
@@ -244,3 +253,23 @@ def init_rag(collection_name: str | None = None) -> RAGManager:
 
 def get_rag() -> RAGManager | None:
     return _manager
+
+
+_session_manager: RAGManager | None = None
+
+
+def init_session_rag() -> RAGManager:
+    global _session_manager
+    collection = os.getenv("RAG_SESSION_COLLECTION_NAME", "session_memory")
+    persist_dir = os.getenv("RAG_PERSIST_DIR", "backend/data/chroma_db")
+    model = os.getenv("RAG_EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+    _session_manager = RAGManager(
+        collection_name=collection,
+        persist_dir=persist_dir,
+        embedding_model=model,
+    )
+    return _session_manager
+
+
+def get_session_rag() -> RAGManager | None:
+    return _session_manager

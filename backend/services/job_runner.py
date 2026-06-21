@@ -40,6 +40,20 @@ async def _fetch_kb_context(query: str) -> str:
         return ""
 
 
+async def _fetch_session_memory_context(query: str) -> str:
+    from backend.services.rag_engine import get_session_rag
+    session_rag = get_session_rag()
+    if session_rag is None:
+        return ""
+    try:
+        return await anyio.to_thread.run_sync(
+            lambda: session_rag.get_context_for_query(query, top_k=1)
+        )
+    except Exception as exc:
+        logger.warning("Session memory context fetch échoué (non bloquant) : %s", exc)
+        return ""
+
+
 def _update_sentinel_signal(db: sqlite3.Connection, conversation_id: int) -> None:
     try:
         pinned_count = db.execute(
@@ -128,7 +142,11 @@ async def process_job(job_id: int) -> None:
         if kb_context:
             logger.info("Job %d — kb_context injecté (%d chars)", job_id, len(kb_context))
 
-        routing = await boss_service.run_routing(job_id, db, kb_context=kb_context)
+        session_kb_context = await _fetch_session_memory_context(user_message)
+        if session_kb_context:
+            logger.info("Job %d — session_memory context injecté (%d chars)", job_id, len(session_kb_context))
+
+        routing = await boss_service.run_routing(job_id, db, kb_context=kb_context, session_kb_context=session_kb_context)
         agent_code = routing["agent_code"]
         task = routing["task"]
 
@@ -196,7 +214,7 @@ async def process_job(job_id: int) -> None:
 
         _trigger = _check_handoff(db, conversation_id, _load_config())
         if _trigger:
-            _asyncio.ensure_future(
+            _asyncio.create_task(
                 _archiviste.run(
                     conversation_id=conversation_id,
                     next_conversation_id=None,

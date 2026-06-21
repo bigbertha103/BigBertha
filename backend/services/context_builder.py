@@ -111,10 +111,12 @@ def _build_elements_figes(conversation_id: int, db: sqlite3.Connection) -> str:
 
 
 def _build_session_memory(conversation_id: int, db: sqlite3.Connection) -> str:
+    # Cherche via previous_conversation_id → indépendant du timing ARCHIVISTE
     row = db.execute(
         """SELECT ss.summary_json, ss.summary_text
            FROM session_summaries ss
-           WHERE ss.next_conversation_id = ?
+           JOIN conversations c ON c.previous_conversation_id = ss.conversation_id
+           WHERE c.id = ?
            ORDER BY ss.created_at DESC
            LIMIT 1""",
         (conversation_id,),
@@ -148,6 +150,7 @@ def build_routing_payload(
     conversation_id: int,
     db: sqlite3.Connection,
     kb_context: str = "",
+    session_kb_context: str = "",
 ) -> dict:
     profil = _build_profil_entreprise(db)
     agents_dispo = _build_agents_disponibles(db)
@@ -173,6 +176,13 @@ def build_routing_payload(
             "\n\n## Base documentaire\n\n"
             + kb_context
             + "\n\n(extraits des documents les plus pertinents — ne pas halluciner de sources)"
+        )
+
+    if session_kb_context:
+        system += (
+            "\n\n## Mémoire sessions précédentes\n\n"
+            + session_kb_context
+            + "\n\n(bilan d'une session passée retrouvée par similarité — utiliser comme contexte de fond)"
         )
 
     row = db.execute(

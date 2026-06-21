@@ -478,6 +478,40 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-06-21 (session 22)
+- `chat.js` : `renderConvList()` construit un index `byId` + set `successorOf`, identifie les têtes de session, remonte les chaînes d'ancêtres via `previous_conversation_id` ; `buildSessionItem(head, ancestors)` génère entrée principale + sous-entrées pliables ; `toggleSessionHistory(wrapper)` bascule affichage + icône ▶/▼ ; `updateSidebarItem()` simplifié — délègue à `renderConvList()`
+- `style.css` : `.session-wrapper`, `.btn-session-toggle`, `.session-history`, `.conv-item-ancestor` (indent 24px, bordure gauche bleue), `.archived-label` (opacité 0.7)
+
+### Résultat de la session — 2026-06-21 (session 21)
+- `chat.js` : `currentUserMsgCount` + `HANDOFF_WARNING_THRESHOLD=14` ; `checkHandoffWarning()` insère une bannière jaune au-dessus de `#input-zone` si seuil atteint ; `loadConversation()` : bouton Archiver masqué si `conv.status==='archived'`, comptage msgs au chargement ; `sendMessage()` : incrément + nettoyage bannière au handoff ; poller DONE : appel `checkHandoffWarning()` ; `showEmptyState()` : reset compteur + suppression bannière
+- `style.css` : `.handoff-warning-banner` ajoutée (fond `#2a2000`, bordure gauche `#ffb700`)
+
+### Résultat de la session — 2026-06-21 (session 20)
+- `chat.js` : `fetchSessionSummary(convId)` ajoutée (GET `/api/conversations/{id}/session-summary`) ; `loadConversation()` vérifie `conv.status === 'archived'` et affiche la card si bilan disponible ; `appendSessionSummaryCard(summary)` formate et injecte la card JSON dans le conteneur de messages
+- `style.css` : styles `.session-summary-card` + `.session-summary-header/subject/section` ajoutés (fond `#1e2a3a`, bordure gauche `#4a90d9`)
+- Fix : conflit `const conv` corrigé (suppression de la redéclaration dans le bloc ARCHIVISTE)
+
+### Résultat de la session — 2026-06-21 (session 19)
+- `database.py` : `previous_conversation_id INTEGER` ajouté dans `SCHEMA_SQL` table `conversations` ; migration `ALTER TABLE` dans `init_db()` (silencieuse si colonne déjà présente)
+- `schemas/conversation.py` : `ConversationOut` — `status: str` et `previous_conversation_id: Optional[int] = None` ajoutés
+- `routers/conversations.py` : INSERT conversation après archivage passe `previous_conversation_id = conversation_id`
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 18)
+- `job_runner.py` : `_fetch_session_memory_context(query)` ajoutée après `_fetch_kb_context()` ; `session_kb_context` calculé et logué dans `process_job()` ; passé à `run_routing()` via kwarg
+- `boss_service.py` : `run_routing()` — signature étendue avec `session_kb_context=""`, propagé à `build_routing_payload()`
+- `context_builder.py` : `build_routing_payload()` — signature étendue, bloc `if session_kb_context:` ajouté après `kb_context`, injecté sous le titre "## Mémoire sessions précédentes"
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 17)
+- `archiviste_service.py` : `_index_in_session_memory(session_rag, conversation_id, summary_json, summary_text, trigger_reason)` ajoutée — formate le bilan JSON en texte, appelle `session_rag.add_text()` avec `doc_id=session_{id}` ; appelée dans `run()` après `db.commit()` si `get_session_rag()` non None
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 16)
+- `rag_engine.py` : `RAGManager.add_text(text, doc_id, metadata)` ajoutée (upsert direct sans fichier) ; singleton `_session_manager` + `init_session_rag()` + `get_session_rag()` ajoutés — collection `session_memory` dans le même `persist_dir` que `kb_documents`
+- `main.py` : `init_session_rag` importée, appelée dans `lifespan` après `init_rag()`, log "RAG session_memory initialisé"
+- Validation : `py_compile` OK
+
 ### Résultat de la session — 2026-06-21 (session 15)
 - `context_builder.py` : `_build_session_memory(conversation_id, db)` — requête sur `session_summaries WHERE next_conversation_id = ?`, formatage du JSON en lignes lisibles (sujet, décisions, infos clés, questions, prochaine étape) ; injection dans `build_routing_payload()` avant `## Éléments figés`, via `str.replace()`
 - `conversations.py` : route `GET /conversations/{id}/session-summary` ajoutée — retourne le bilan le plus récent lié à la conversation (en tant que source ou destination)

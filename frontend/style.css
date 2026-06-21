@@ -1149,3 +1149,96 @@ body.settings-page {
   outline: none;
   border-color: var(--color-accent);
 }
+
+/* ── Session summary card ──────────────────────────────────────── */
+.session-summary-card {
+  margin: 16px auto 24px;
+  max-width: 640px;
+  background: #1e2a3a;
+  border: 1px solid #2e4a6a;
+  border-left: 4px solid #4a90d9;
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-size: 0.875rem;
+  color: #c8d8e8;
+}
+.session-summary-header {
+  font-weight: 600;
+  color: #7eb8f0;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.session-summary-subject {
+  font-style: italic;
+  margin-bottom: 10px;
+  color: #e0ecf8;
+}
+.session-summary-section {
+  margin-top: 8px;
+}
+.session-summary-section strong {
+  color: #7eb8f0;
+  display: block;
+  margin-bottom: 4px;
+}
+.session-summary-section ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.session-summary-section li {
+  margin-bottom: 2px;
+}
+.session-summary-section p {
+  margin: 0;
+}
+
+/* ── Banni\u00e8re avertissement handoff ─────────────────────────────── */
+.handoff-warning-banner {
+  background: #2a2000;
+  border: 1px solid #665500;
+  border-left: 4px solid #ffb700;
+  color: #ffd966;
+  font-size: 0.85rem;
+  padding: 10px 16px;
+  margin: 0 16px 8px;
+  border-radius: 6px;
+}
+
+/* ── Session accordion sidebar ──────────────────────────────────── */
+.session-wrapper {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.session-wrapper .conv-item:last-child {
+  border-bottom: none;
+}
+.btn-session-toggle {
+  background: none;
+  border: none;
+  color: #8899aa;
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0 4px 0 0;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+}
+.btn-session-toggle:hover {
+  color: #aabbcc;
+}
+.session-history {
+  margin-left: 0;
+}
+.conv-item-ancestor {
+  padding-left: 24px;
+  background: rgba(255,255,255,0.02);
+  border-left: 2px solid #2e4a6a;
+}
+.conv-item-ancestor:hover {
+  background: rgba(255,255,255,0.05);
+}
+.archived-label {
+  opacity: 0.7;
+  font-size: 0.82rem;
+}

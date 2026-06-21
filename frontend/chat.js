@@ -1,7 +1,9 @@
 // État interne
 let currentConvId = null;
 let conversations = [];
-const activeJobPollers = new Map(); // Map<convId, {intervalId, jobId}>
+const activeJobPollers = new Map();
+let currentUserMsgCount = 0;
+const HANDOFF_WARNING_THRESHOLD = 14; // Avertir à 14 messages (seuil handoff = 15)
 
 // ── Éléments DOM ──────────────────────────────────────────────────
 const convList      = document.getElementById('conv-list');
@@ -56,48 +58,120 @@ function showTestModeBanner(name) {
     `⚠️ Mode test actif — <strong>${escapeHtml(name)}</strong>&nbsp;&nbsp;<a href="settings.html" class="test-banner-link">Gérer</a>`;
 }
 
-// ── Sidebar : liste des conversations ────────────────────────────
+// ── Sidebar : liste des conversations (sessions) ─────────────────
 function renderConvList() {
   if (conversations.length === 0) {
-    convList.innerHTML = '<div class="sidebar-state">Aucune conversation pour l\'instant. Cliquez sur Nouvelle conversation pour commencer.</div>';
+    convList.innerHTML = '<div class="sidebar-state">Aucune conversation. Cliquez sur Nouvelle conversation pour commencer.</div>';
     return;
   }
-  convList.innerHTML = '';
+
+  const byId = {};
+  const successorOf = new Set();
   for (const conv of conversations) {
-    convList.appendChild(buildConvItem(conv));
+    byId[conv.id] = conv;
+    if (conv.previous_conversation_id != null) {
+      successorOf.add(conv.previous_conversation_id);
+    }
+  }
+
+  const heads = conversations
+    .filter(c => !successorOf.has(c.id))
+    .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+  convList.innerHTML = '';
+  for (const head of heads) {
+    const ancestors = [];
+    let cur = head;
+    while (cur.previous_conversation_id != null && byId[cur.previous_conversation_id]) {
+      cur = byId[cur.previous_conversation_id];
+      ancestors.push(cur);
+    }
+    convList.appendChild(buildSessionItem(head, ancestors));
   }
 }
 
-function buildConvItem(conv) {
-  const item = document.createElement('div');
-  item.className = 'conv-item' + (conv.id === currentConvId ? ' active' : '');
-  item.dataset.id = conv.id;
+function buildConvItem() {
+  renderConvList();
+  return null;
+}
 
-  const titleText = conv.title || 'Sans titre';
-  const titleClass = conv.title ? 'conv-item-title' : 'conv-item-title no-title';
+function buildSessionItem(head, ancestors) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'session-wrapper';
+  wrapper.dataset.headId = head.id;
 
-  item.innerHTML = `
+  const headEl = document.createElement('div');
+  headEl.className = 'conv-item' + (head.id === currentConvId ? ' active' : '');
+  headEl.dataset.id = head.id;
+
+  const titleText = head.title || 'Sans titre';
+  const titleClass = head.title ? 'conv-item-title' : 'conv-item-title no-title';
+  const hasAncestors = ancestors.length > 0;
+
+  headEl.innerHTML = `
     <div class="conv-item-body">
+      ${hasAncestors ? '<button class="btn-session-toggle" title="Voir l\'historique de session">▶</button>' : ''}
       <div class="${titleClass}">${escapeHtmlSafe(titleText)}</div>
-      <div class="conv-item-date">${formatDate(conv.updated_at)}</div>
+      <div class="conv-item-date">${formatDate(head.updated_at)}</div>
     </div>
     <button class="btn-delete-conv" title="Supprimer">🗑</button>`;
 
-  item.querySelector('.conv-item-body').addEventListener('click', () => loadConversation(conv.id));
-  item.querySelector('.btn-delete-conv').addEventListener('click', (e) => {
+  headEl.querySelector('.conv-item-body').addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-session-toggle')) {
+      toggleSessionHistory(wrapper);
+      return;
+    }
+    loadConversation(head.id);
+  });
+  headEl.querySelector('.btn-delete-conv').addEventListener('click', (e) => {
     e.stopPropagation();
-    confirmDeleteConversation(conv.id);
+    confirmDeleteConversation(head.id);
   });
 
-  return item;
+  wrapper.appendChild(headEl);
+
+  if (hasAncestors) {
+    const historyEl = document.createElement('div');
+    historyEl.className = 'session-history';
+    const isAncestorActive = ancestors.some(a => a.id === currentConvId);
+    if (!isAncestorActive) {
+      historyEl.style.display = 'none';
+    } else {
+      const toggle = headEl.querySelector('.btn-session-toggle');
+      if (toggle) toggle.textContent = '▼';
+    }
+
+    for (const anc of ancestors) {
+      const ancEl = document.createElement('div');
+      ancEl.className = 'conv-item conv-item-ancestor' + (anc.id === currentConvId ? ' active' : '');
+      ancEl.dataset.id = anc.id;
+      const ancTitle = anc.title || 'Sans titre';
+      ancEl.innerHTML = `
+        <div class="conv-item-body">
+          <div class="conv-item-title archived-label">${escapeHtmlSafe(ancTitle)}</div>
+          <div class="conv-item-date">${formatDate(anc.updated_at)}</div>
+        </div>`;
+      ancEl.addEventListener('click', () => loadConversation(anc.id));
+      historyEl.appendChild(ancEl);
+    }
+    wrapper.appendChild(historyEl);
+  }
+
+  return wrapper;
 }
 
-function updateSidebarItem(conv) {
-  const existing = convList.querySelector(`[data-id="${conv.id}"]`);
-  if (existing) {
-    const fresh = buildConvItem(conv);
-    convList.replaceChild(fresh, existing);
-  }
+function toggleSessionHistory(wrapper) {
+  const history = wrapper.querySelector('.session-history');
+  const toggle = wrapper.querySelector('.btn-session-toggle');
+  if (!history) return;
+  const isHidden = history.style.display === 'none';
+  history.style.display = isHidden ? 'block' : 'none';
+  if (toggle) toggle.textContent = isHidden ? '▼' : '▶';
+}
+
+function updateSidebarItem() {
+  renderConvList();
+  setActiveConvInSidebar(currentConvId);
 }
 
 function setActiveConvInSidebar(id) {
@@ -112,18 +186,43 @@ function escapeHtmlSafe(str) {
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+async function fetchSessionSummary(convId) {
+  try {
+    const resp = await fetch(`/api/conversations/${convId}/session-summary`);
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch (e) {
+    return null;
+  }
+}
+
 // ── Charger une conversation ──────────────────────────────────────
 async function loadConversation(id) {
   currentConvId = id;
   setActiveConvInSidebar(id);
-  btnArchiveConv.style.display = '';
 
   // Titre
   const conv = conversations.find(c => c.id === id);
   renderTitle(conv ? conv.title : null);
 
+  // Masquer le bouton Archiver si la conversation est déjà archivée
+  if (conv && conv.status === 'archived') {
+    btnArchiveConv.style.display = 'none';
+  } else {
+    btnArchiveConv.style.display = '';
+  }
+
   // Messages
   msgContainer.innerHTML = '';
+
+  // Bilan ARCHIVISTE pour les conversations archivées
+  if (conv && conv.status === 'archived') {
+    const summary = await fetchSessionSummary(id);
+    if (summary) {
+      appendSessionSummaryCard(summary);
+    }
+  }
+
   try {
     const messages = await getMessages(id);
     if (messages.length === 0) {
@@ -132,6 +231,8 @@ async function loadConversation(id) {
       for (const msg of messages) {
         appendMessage(msg.role, msg.content);
       }
+      currentUserMsgCount = messages.filter(m => m.role === 'user').length;
+      checkHandoffWarning();
       scrollToBottom();
     }
   } catch (e) {
@@ -200,6 +301,38 @@ function startTitleEdit() {
 }
 
 // ── Messages ──────────────────────────────────────────────────────
+function appendSessionSummaryCard(summary) {
+  const card = document.createElement('div');
+  card.className = 'session-summary-card';
+
+  let html = '<div class="session-summary-header">📋 Bilan de cette session archivée</div>';
+
+  if (summary.summary_json) {
+    let data;
+    try { data = JSON.parse(summary.summary_json); } catch(e) { data = null; }
+    if (data) {
+      if (data.sujet_principal) {
+        html += `<div class="session-summary-subject">${escapeHtmlSafe(data.sujet_principal)}</div>`;
+      }
+      if (data.decisions_prises && data.decisions_prises.length > 0) {
+        html += '<div class="session-summary-section"><strong>Décisions</strong><ul>';
+        data.decisions_prises.forEach(d => {
+          html += `<li>${escapeHtmlSafe(d)}</li>`;
+        });
+        html += '</ul></div>';
+      }
+      if (data.prochaine_etape) {
+        html += `<div class="session-summary-section"><strong>Prochaine étape</strong><p>${escapeHtmlSafe(data.prochaine_etape)}</p></div>`;
+      }
+    }
+  } else if (summary.summary_text) {
+    html += `<div class="session-summary-section">${escapeHtmlSafe(summary.summary_text)}</div>`;
+  }
+
+  card.innerHTML = html;
+  msgContainer.appendChild(card);
+}
+
 function appendMessage(role, content) {
   const row = document.createElement('div');
   row.className = `msg-row ${role}`;
@@ -223,6 +356,9 @@ function showConvEmptyState() {
 
 function showEmptyState() {
   msgContainer.innerHTML = '';
+  const warn = document.getElementById('handoff-warning');
+  if (warn) warn.remove();
+  currentUserMsgCount = 0;
   convTitleEl.textContent = '';
   renderPinnedList([]);
   disableInput();
@@ -273,6 +409,21 @@ function showErrorIndicator(message) {
   scrollToBottom();
 }
 
+function checkHandoffWarning() {
+  const existing = document.getElementById('handoff-warning');
+  if (existing) existing.remove();
+
+  if (currentUserMsgCount >= HANDOFF_WARNING_THRESHOLD) {
+    const banner = document.createElement('div');
+    banner.id = 'handoff-warning';
+    banner.className = 'handoff-warning-banner';
+    banner.textContent =
+      '⚠️ Cette conversation approche de sa limite. Le prochain échange déclenchera l\'archivage automatique et ouvrira une nouvelle session.';
+    const inputZone = document.getElementById('input-zone');
+    inputZone.parentNode.insertBefore(banner, inputZone);
+  }
+}
+
 // ── Envoi de message ──────────────────────────────────────────────
 async function sendMessage() {
   const content = msgInput.value.trim();
@@ -285,6 +436,7 @@ async function sendMessage() {
   disableInput();
   msgInput.value = '';
   appendMessage('user', content);
+  currentUserMsgCount++;
   scrollToBottom();
 
   try {
@@ -293,6 +445,9 @@ async function sendMessage() {
 
     // Handoff : conversation archivée → nouvelle créée automatiquement
     if (result.new_conversation_id) {
+      const warn = document.getElementById('handoff-warning');
+      if (warn) warn.remove();
+      currentUserMsgCount = 0;
       const newId = result.new_conversation_id;
       conversations.unshift({
         id: newId,
@@ -340,6 +495,7 @@ function startJobPoller(convId, jobId) {
           if (job.final_response) appendMessage('boss', job.final_response);
           scrollToBottom();
           enableInput();
+          checkHandoffWarning();
           // Rafraîchir pinned
           try {
             const pinned = await getPinned(convId);

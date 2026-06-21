@@ -44,6 +44,41 @@ def _build_conversation_text(conversation_id: int, db: sqlite3.Connection) -> tu
     return "\n\n".join(lines), len(rows), total_chars // 4
 
 
+def _index_in_session_memory(
+    session_rag,
+    conversation_id: int,
+    summary_json: str | None,
+    summary_text: str | None,
+    trigger_reason: str,
+) -> None:
+    """Construit le texte à indexer depuis le bilan et l'insère dans session_memory."""
+    import json as _json
+    text_parts = []
+    if summary_json:
+        try:
+            data = _json.loads(summary_json)
+            if data.get("sujet_principal"):
+                text_parts.append(f"Sujet : {data['sujet_principal']}")
+            if data.get("decisions_prises"):
+                text_parts.append("Décisions : " + " | ".join(data["decisions_prises"]))
+            if data.get("informations_cles"):
+                text_parts.append("Informations clés : " + " | ".join(data["informations_cles"]))
+            if data.get("questions_ouvertes"):
+                text_parts.append("Questions en suspens : " + " | ".join(data["questions_ouvertes"]))
+            if data.get("prochaine_etape"):
+                text_parts.append(f"Prochaine étape : {data['prochaine_etape']}")
+        except Exception:
+            pass
+    if not text_parts and summary_text:
+        text_parts.append(summary_text[:800])
+    if not text_parts:
+        return
+    text = "\n".join(text_parts)
+    doc_id = f"session_{conversation_id}"
+    metadata = {"conversation_id": str(conversation_id), "trigger_reason": trigger_reason}
+    session_rag.add_text(text, doc_id, metadata)
+
+
 async def run(
     conversation_id: int,
     next_conversation_id: int | None,
@@ -98,6 +133,12 @@ async def run(
              trigger_reason, messages_count, estimated_tokens),
         )
         db.commit()
+
+        from backend.services.rag_engine import get_session_rag
+        session_rag = get_session_rag()
+        if session_rag is not None:
+            _index_in_session_memory(session_rag, conversation_id, summary_json, summary_text, trigger_reason)
+
         logger.info(
             "ARCHIVISTE — bilan stocké pour conversation %d (trigger=%s, %d msgs, ~%d tokens)",
             conversation_id, trigger_reason, messages_count, estimated_tokens,

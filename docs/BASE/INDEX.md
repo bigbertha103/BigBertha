@@ -8,8 +8,8 @@
 
 | Fichier | Thème | Dernière MAJ | Propriétaire |
 |---|---|---|---|
-| [langage.md](langage.md) | Glossaire commun — définitions non-négociables | — | À définir |
-| [elements_figes.md](elements_figes.md) | Décisions inviolables du projet | — | Kinder |
+| [langage.md](langage.md) | Glossaire commun — définitions non-négociables | 2026-06-21 | À définir |
+| [elements_figes.md](elements_figes.md) | Décisions inviolables du projet | 2026-06-21 | Kinder |
 | [Tech/architecture.md](Tech/architecture.md) | Stack, structure, principes techniques | — | Kinder |
 | [Produit/vision.md](Produit/vision.md) | Vision produit, cible, proposition de valeur | — | À définir |
 | [Commercial/tarification.md](Commercial/tarification.md) | Pricing, modèle commercial | — | À définir |

@@ -1,5 +1,44 @@
 # CHANGELOG — Big Bertha
 
+## 2026-06-21 — Corrections post-audit V2-Mémoire
+- `backend/services/context_builder.py` : `_build_session_memory()` cherche via JOIN `previous_conversation_id` — robuste même si ARCHIVISTE n'a pas encore renseigné `next_conversation_id`
+- `backend/services/job_runner.py` : `asyncio.ensure_future()` → `asyncio.create_task()` (Python 3.10+)
+- `tests/test_archiviste.py` : 13 tests unitaires créés — conversation text, validation JSON 5 clés, indexation session_memory, conformité prompt ARCHIVISTE
+
+## 2026-06-21 — Clôture session V2-Mémoire
+- [DOC] docs/BASE/langage.md — ajout 6 termes V2-Mémoire (handoff, session, bilan ARCHIVISTE, RAG bicéphale, trigger, session memory) + last_updated
+- [DOC] docs/BASE/elements_figes.md — ajout section "Architecture V2-Mémoire" avec décisions figées model routing, pinned LIMIT 5, ChromaDB 2 collections, handoff trigger, previous_conversation_id
+- [DOC] docs/BASE/INDEX.md — mise à jour dates des deux fichiers modifiés
+
+## 2026-06-21 — Sidebar sessions en accordiéon
+- `frontend/chat.js` : `renderConvList()` regroup les conversations en sessions via `successorOf` + chaîne `previous_conversation_id` ; `buildSessionItem()` construit tête + sous-entrées archivées ; `toggleSessionHistory()` plie/déplie ; `updateSidebarItem()` simplifié (délègue à `renderConvList`)
+- `frontend/style.css` : `.session-wrapper`, `.btn-session-toggle`, `.session-history`, `.conv-item-ancestor`, `.archived-label` ajoutés
+
+## 2026-06-21 — Bannière handoff + correction bouton Archiver sur conv archivée
+- `frontend/chat.js` : `currentUserMsgCount` + `HANDOFF_WARNING_THRESHOLD=14` ; `checkHandoffWarning()` ajoutée ; `loadConversation()` masque le bouton Archiver si `status==='archived'` et compte les msgs ; `sendMessage()` incrémente + nettoie au handoff ; poller DONE appelle `checkHandoffWarning()` ; `showEmptyState()` remet à zéro
+- `frontend/style.css` : `.handoff-warning-banner` ajoutée (fond sombre jaune, bordure gauche `#ffb700`)
+
+## 2026-06-21 — Card bilan ARCHIVISTE dans l'UI chat
+- `frontend/chat.js` : `fetchSessionSummary()` ajoutée ; `loadConversation()` affiche la card si `conv.status === 'archived'` ; `appendSessionSummaryCard()` ajoutée avant `appendMessage()`
+- `frontend/style.css` : styles `.session-summary-card` ajoutés en fin de fichier (fond sombre, bordure gauche bleue)
+
+## 2026-06-21 — Champ previous_conversation_id + status exposé dans l'API
+- `backend/database.py` : colonne `previous_conversation_id INTEGER` ajoutée dans le SCHEMA_SQL ; migration `ALTER TABLE` dans `init_db()` pour les bases existantes
+- `backend/schemas/conversation.py` : `ConversationOut` enrichi avec `status: str` et `previous_conversation_id: Optional[int]`
+- `backend/routers/conversations.py` : INSERT conversation post-archivage renseigne `previous_conversation_id`
+
+## 2026-06-21 — Retrieval sémantique session_memory branché dans le pipeline de routing
+- `backend/services/job_runner.py` : `_fetch_session_memory_context()` ajoutée (top_k=1) ; appelée dans `process_job()` après `_fetch_kb_context()` ; `session_kb_context` passé à `run_routing()`
+- `backend/services/boss_service.py` : `run_routing()` reçoit `session_kb_context` et le passe à `build_routing_payload()`
+- `backend/services/context_builder.py` : `build_routing_payload()` reçoit `session_kb_context`, injecté dans le system après `kb_context` sous le label "Mémoire sessions précédentes"
+
+## 2026-06-21 — Indexation bilan ARCHIVISTE dans session_memory
+- `backend/services/archiviste_service.py` : fonction `_index_in_session_memory()` ajoutée ; appelée dans `run()` après `db.commit()` si `get_session_rag()` est disponible — doc_id = `session_{conversation_id}`
+
+## 2026-06-21 — Collection ChromaDB session_memory
+- `backend/services/rag_engine.py` : méthode `add_text()` ajoutée dans `RAGManager` ; singleton `_session_manager` + `init_session_rag()` + `get_session_rag()` ajoutés en fin de fichier
+- `backend/main.py` : import de `init_session_rag`, appel dans `lifespan` après `init_rag()` avec log et gestion d'erreur
+
 ## 2026-06-21 — Injection mémoire session précédente dans le contexte Boss
 - `backend/services/context_builder.py` : fonction `_build_session_memory()` ajoutée — lit `session_summaries` via `next_conversation_id`, formate le bilan JSON en texte ; injectée dans `build_routing_payload()` avant `kb_context`
 - `backend/routers/conversations.py` : route `GET /conversations/{id}/session-summary` ajoutée

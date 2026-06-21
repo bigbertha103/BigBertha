@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS conversations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT,
     status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'archived')),
+    previous_conversation_id INTEGER,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -227,6 +228,14 @@ def init_db() -> None:
         conn.executescript(SCHEMA_SQL)
         conn.commit()
         logger.info("Base de données initialisée.")
+        try:
+            conn.execute(
+                "ALTER TABLE conversations ADD COLUMN previous_conversation_id INTEGER"
+            )
+            conn.commit()
+            logger.info("Migration : colonne previous_conversation_id ajoutée.")
+        except Exception:
+            pass
     finally:
         conn.close()
 

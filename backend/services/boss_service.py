@@ -8,7 +8,7 @@ from backend.services import context_builder, model_router
 logger = logging.getLogger(__name__)
 
 
-async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "") -> dict:
+async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "", session_kb_context: str = "") -> dict:
     job = db.execute("SELECT * FROM jobs WHERE id = ?", (job_id,)).fetchone()
     conversation_id = job["conversation_id"]
 
@@ -18,7 +18,7 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "")
     inference_mode = config.get("inference_mode", "openrouter")
     ollama_base_url = config.get("ollama_base_url", "http://localhost:11434")
 
-    payload = context_builder.build_routing_payload(conversation_id, db, kb_context=kb_context)
+    payload = context_builder.build_routing_payload(conversation_id, db, kb_context=kb_context, session_kb_context=session_kb_context)
 
     result = await model_router.call_llm(
         system_prompt=payload["system"],
