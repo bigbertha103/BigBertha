@@ -16,7 +16,7 @@ import urllib.request
 from pathlib import Path
 
 POLL_INTERVAL = 2
-POLL_TIMEOUT = 120
+POLL_TIMEOUT = 180
 
 
 # ── Helpers HTTP (stdlib uniquement) ─────────────────────────────

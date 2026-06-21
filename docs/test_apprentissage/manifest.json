@@ -1,0 +1,81 @@
+{
+  "days": {
+    "1": {
+      "documents": [
+        "j1_marche_conseil_ia_france_2026.md",
+        "j1_referentiel_competences_conseil_ia.md"
+      ],
+      "messages": [
+        "Analysez les principales tendances du marché du conseil en IA en France pour 2026 : quels segments progressent le plus rapidement et pourquoi ?",
+        "Rédigez un email d'introduction à destination de prospects du secteur bancaire pour présenter Neuraltech Consulting et ses domaines d'expertise en agents IA."
+      ]
+    },
+    "2": {
+      "documents": [
+        "j2_methodologie_poc_ia_interne.md",
+        "j2_cas_client_banque_risque_credit.md"
+      ],
+      "messages": [
+        "Comparez les approches POC IA classiques (pilote isolé) versus les POC IA intégrés dans un pipeline de données existant. Quelles sont les implications pour un client bancaire ?",
+        "Rédigez une note de cadrage d'un POC IA pour un client bancaire souhaitant automatiser l'analyse de risque crédit avec un LLM.",
+        "Quels sont les facteurs de succès critiques pour qu'un POC IA se transforme en projet production ?"
+      ]
+    },
+    "3": {
+      "documents": [
+        "j3_enjeux_rag_secteur_retail.md",
+        "j3_benchmark_llm_francais_2026.md",
+        "j3_pipeline_donnees_ml_retail.md"
+      ],
+      "messages": [
+        "Analysez les enjeux spécifiques de déploiement RAG dans le secteur retail : quelles données, quels volumes, quels défis d'intégration ?",
+        "Évaluez les modèles LLM open-weight disponibles en 2026 pour du RAG en français dans un contexte retail. Critères : qualité du français, taille inférieure à 32B, licence commerciale."
+      ]
+    },
+    "4": {
+      "documents": [
+        "j4_note_strategique_q3_2026.md",
+        "j4_grille_evaluation_solutions_rag.md"
+      ],
+      "messages": [
+        "Rédigez une proposition commerciale complète pour un client retail souhaitant déployer un assistant IA interne basé sur RAG pour ses équipes merchandising.",
+        "Comparez les frameworks RAG du marché (LlamaIndex, LangChain, solution custom) pour un déploiement on-premise dans une ETI retail de 500 collaborateurs.",
+        "Préparez une fiche de présentation d'une page de Neuraltech Consulting destinée à être partagée lors d'un événement sectoriel sur l'IA en retail."
+      ]
+    },
+    "5": {
+      "documents": [
+        "j5_cr_mission_banque_j3_j5.md",
+        "j5_analyse_finetuning_vs_rag.md",
+        "j5_template_proposition_commerciale.md"
+      ],
+      "messages": [
+        "Sur la base du compte-rendu de mission bancaire, identifiez les points bloquants et les signaux positifs. Quelle recommandation prioritaire formuleriez-vous pour la suite ?",
+        "Rédigez un compte-rendu de réunion de suivi POC pour le client bancaire, incluant les avancées, les risques identifiés et les prochaines étapes pour les 2 semaines suivantes.",
+        "Fine-tuning ou RAG pour un cas d'usage de classification de documents bancaires en français ? Analysez les trade-offs en termes de coût, délai et maintenabilité."
+      ]
+    },
+    "6": {
+      "documents": [
+        "j6_retour_experience_agents_ia.md",
+        "j6_rapport_satisfaction_client_q2.md"
+      ],
+      "messages": [
+        "Analysez le retour d'expérience agents IA Neuraltech au Q2 2026 : quels types de missions ont généré le plus de valeur mesurable pour les clients ?",
+        "Rédigez une synthèse des résultats Q2 2026 à destination des associés de Neuraltech, mettant en valeur les missions réussies et les axes d'amélioration pour H2."
+      ]
+    },
+    "7": {
+      "documents": [
+        "j7_roadmap_produit_ia_2026_2027.md",
+        "j7_agents_multimodaux_entreprise.md",
+        "j7_metriques_roi_ia_clients.md"
+      ],
+      "messages": [
+        "En croisant la roadmap IA 2026-2027 et les retours clients du Q2, quelles sont les 3 capacités d'agents IA que Neuraltech devrait prioritairement intégrer dans ses offres de conseil ?",
+        "Rédigez une note stratégique sur l'opportunité des agents IA multimodaux pour les secteurs banque et retail. Format attendu : contexte → analyse → recommandations → prochaines étapes.",
+        "Sur la base des déploiements documentés, estimez le ROI moyen des projets agents IA Neuraltech et identifiez les secteurs présentant le meilleur potentiel de valeur."
+      ]
+    }
+  }
+}
