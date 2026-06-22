@@ -1,6 +1,6 @@
 ---
 owner: Kinder + tezcatlypoca
-last_updated: 2026-06-22
+last_updated: 2026-06-22 (session simulation)
 review_every: 30j
 ---
 
@@ -81,3 +81,22 @@ review_every: 30j
 
 **Test session** : environnement isolé avec sa propre collection vectorielle (`bigbertha_test_{session_id}`). Teste l'apprentissage sans altérer la production (`bigbertha_prod`).
 | N'est PAS : une conversation de test normale, un environnement de staging classique.
+
+---
+
+## Termes simulation et tests
+
+**Plan de simulation** : répartition docs/messages sur X jours générée automatiquement par `plan_simulation.py` depuis un dossier `Samples/`. Produit un `manifest.json` dans `docs/Test/runs/`. Validé par Kinder avant tout lancement.
+| N'est PAS : un script de test unitaire, le manifest interne de simulate_all.
+
+**Run** : instance de simulation. Dossier `docs/Test/runs/{company}_{timestamp}/` créé à chaque plan de lancement. Contient le manifest.json consommé par simulate_all.py.
+| N'est PAS : un environnement de staging, un déploiement.
+
+**Log JSON** : fichier de résultats `docs/Test/logs/{company}_{timestamp}_log.json` produit après chaque simulation. Contient scores SENTINEL, réponses agents (preview), proposals approuvées. Commitable pour analyse.
+| N'est PAS : les logs techniques serveur, le bilan_simulation.md (format Markdown).
+
+**Geste employé** : pattern de message de simulation reproduisant un comportement réel (apporter un article, signaler une norme, question terrain). Généré par le LLM en Phase 1 depuis les problématiques de l'entreprise.
+| N'est PAS : une question d'audit consultant, un scénario de test technique.
+
+**Mode court/moyen/long** : durées standardisées — court=7j, moyen=14j, long=30j. day-duration=0 recommandé dans tous les modes (les proposals s'appliquent immédiatement).
+| N'est PAS : un paramètre de performance réseau, un mode de déploiement.

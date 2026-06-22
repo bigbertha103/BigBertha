@@ -31,9 +31,16 @@ backend/
 └── data/           ← DB SQLite + vecteurs (.npz/.json) + logs
 
 frontend/           ← HTML/CSS/JS vanilla
-docs/               ← documentation et corpus de test
-Samples/            ← entreprises fake pour tests
-tests/              ← scripts de simulation
+docs/
+├── BASE/           ← connaissance partagée (source de vérité)
+├── Test/
+│   ├── runs/       ← manifests de simulation (plan_simulation.py)
+│   └── logs/       ← logs JSON par run (simulate_all.py)
+└── Prompt/         ← protocoles de session (clôture, lancement tests)
+Samples/            ← entreprises fake — un dossier par entreprise (md/txt/pdf/docx)
+tests/
+├── plan_simulation.py   ← génère manifest depuis Samples/{company}/
+└── simulate_all.py      ← exécute la simulation, produit le log JSON
 ```
 
 ## Pipeline d'un message utilisateur

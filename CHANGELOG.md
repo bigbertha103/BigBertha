@@ -1,5 +1,10 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-06-22 — Clôture session — mise à jour docs/BASE
+- [DOC] docs/BASE/langage.md — section "Termes simulation et tests" ajoutée (plan de simulation, run, log JSON, geste employé, mode court/moyen/long)
+- [DOC] docs/BASE/Tech/architecture.md — structure dossiers complétée (docs/Test/runs/, docs/Test/logs/, docs/Prompt/, détail tests/)
+- [DOC] docs/BASE/INDEX.md — dates mises à jour pour langage.md, elements_figes.md, architecture.md (2026-06-21 → 2026-06-22)
+
 ## 2026-06-22 — Protocole lancement test apprentissage v2 (session 27)
 - `docs/Prompt/lancement_test_apprentissage.md` réécrit : 5 étapes détaillées (4 questions collecte, critères validation plan, commandes git récupération), tableau des 10 entreprises avec détail des types de fichiers par dossier
 
