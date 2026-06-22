@@ -1,6 +1,6 @@
 ---
 owner: Kinder
-last_updated: 2026-06-21
+last_updated: 2026-06-22
 review_every: 30j
 ---
 
@@ -19,7 +19,7 @@ review_every: 30j
 | Frontend | HTML5 / CSS3 / JS vanilla |
 | LLM (V1/v2-pc) | OpenRouter (cloud) |
 | LLM (v2-machine) | Ollama (local) |
-| RAG | ChromaDB + all-MiniLM-L6-v2 |
+| RAG | SimpleVectorStore (pure Python/numpy) — ChromaDB retiré (incompatible Python 3.14) |
 
 ## Structure dossiers
 
@@ -28,7 +28,7 @@ backend/
 ├── routers/        ← routes FastAPI
 ├── services/       ← logique métier (boss, agents, sentinel, rag...)
 ├── schemas/        ← modèles Pydantic
-└── data/           ← DB SQLite + ChromaDB + logs
+└── data/           ← DB SQLite + vecteurs (.npz/.json) + logs
 
 frontend/           ← HTML/CSS/JS vanilla
 docs/               ← documentation et corpus de test
@@ -67,7 +67,7 @@ Deux blocs ajoutés en V2 :
 **Bloc B — Archivage conversations** :
 - `conversations.status` = active/archived
 - Archivage manuel (bouton UI) ou handoff automatique (seuils `handoff_token_threshold` / `handoff_message_fallback`)
-- L'archivage déclenche l'ARCHIVISTE → résumé JSON stocké dans `session_summaries` et vectorisé dans `session_memory` (ChromaDB)
+- L'archivage déclenche l'ARCHIVISTE → résumé JSON stocké dans `session_summaries` et vectorisé dans `session_memory`
 - Le bilan est réinjecté en contexte dans la conversation suivante via RAG bicéphale
 
 ## Tables principales DB (SQLite)
@@ -83,8 +83,10 @@ Deux blocs ajoutés en V2 :
 - `test_sessions` — sessions de test isolées
 - `session_summaries` — résumés ARCHIVISTE (SQLite, pas ChromaDB)
 
-## Collections ChromaDB
+## Collections vectorielles (SimpleVectorStore)
 
-- `kb_documents` — documents clients (top_k=3 à chaque appel)
+Stockage : `backend/data/chroma_db/<collection_name>/` (fichiers `.npz` + `.json`)
+
+- `bigbertha_prod` — documents clients (top_k=3 à chaque appel)
 - `session_memory` — bilans ARCHIVISTE vectorisés (top_k=1)
 - `bigbertha_test_{session_id}` — collection isolée par test session

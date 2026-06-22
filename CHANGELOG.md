@@ -1,4 +1,4 @@
-# CHANGELOG — Big Bertha
+﻿# CHANGELOG — Big Bertha
 
 ## 2026-06-22 — Protocole lancement test apprentissage v2 (session 27)
 - `docs/Prompt/lancement_test_apprentissage.md` réécrit : 5 étapes détaillées (4 questions collecte, critères validation plan, commandes git récupération), tableau des 10 entreprises avec détail des types de fichiers par dossier
@@ -15,6 +15,13 @@
 ## 2026-06-21 — Fix routing JSON invalide (prefill trop faible)
 - `backend/services/context_builder.py` : prefill renforcé de `{` vers `{"agent_code": "` pour contraindre le modèle à produire du JSON structuré
 - `backend/services/boss_service.py` : reconstruction JSON adaptée au nouveau prefill — `{"agent_code": "` + contenu si pas de `{` initial
+
+## 2026-06-22 — Remplacement ChromaDB + correction docs/BASE
+- [FIX] backend/services/rag_engine.py — ChromaDB supprimé (incompatible Python 3.14, backend Rust), remplacé par SimpleVectorStore (pure Python/numpy, persistance .npz+.json)
+- [FIX] start.bat — --reload retiré (boucle infinie WatchFiles sur Windows)
+- [DOC] docs/BASE/Tech/architecture.md — stack RAG mis à jour (SimpleVectorStore), section Collections renommée
+- [DOC] docs/BASE/elements_figes.md — décision figée SimpleVectorStore, mention ChromaDB retirée
+- [DOC] docs/BASE/langage.md — 3 termes dépouillés de la référence ChromaDB
 
 ## 2026-06-21 — Alimentation docs/BASE — vision produit + glossaire
 - [DOC] docs/BASE/langage.md — squelette → 18 termes définis avec contre-définitions (fondamentaux + V2-Mémoire)

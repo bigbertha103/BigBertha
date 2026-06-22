@@ -1,7 +1,10 @@
 import hashlib
+import json
 import logging
 import os
 from pathlib import Path
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +30,6 @@ class CustomTextSplitter:
                 if len(para) <= self._chunk_size:
                     current = para
                 else:
-                    # Découper le paragraphe long par phrases
                     sentences = para.replace(". ", ".\n").replace("! ", "!\n").replace("? ", "?\n").split("\n")
                     for sent in sentences:
                         sent = sent.strip()
@@ -41,7 +43,6 @@ class CustomTextSplitter:
                             if len(sent) <= self._chunk_size:
                                 current = sent
                             else:
-                                # Découper par caractères en dernier recours
                                 for i in range(0, len(sent), self._chunk_size - self._chunk_overlap):
                                     piece = sent[i:i + self._chunk_size]
                                     if piece.strip():
@@ -78,73 +79,182 @@ class DocumentLoader:
                     pages.append(text)
             return "\n\n".join(pages)
         except Exception as exc:
-            logger.error("Erreur lecture PDF %s : %s", file_path.name, exc)
-            raise
+            logger.warning("Erreur lecture PDF %s : %s", file_path.name, exc)
+            return ""
 
     @staticmethod
     def _load_docx(file_path: Path) -> str:
         try:
             import docx
             doc = docx.Document(str(file_path))
-            paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
-            return "\n\n".join(paragraphs)
+            return "\n\n".join(p.text for p in doc.paragraphs if p.text.strip())
         except Exception as exc:
-            logger.error("Erreur lecture DOCX %s : %s", file_path.name, exc)
-            raise
-
-    @staticmethod
-    def load_doc(path: Path) -> str:
-        # Stratégie 1 : essayer python-docx (fonctionne sur .doc récents)
-        try:
-            import docx
-            doc = docx.Document(str(path))
-            return "\n".join(p.text for p in doc.paragraphs if p.text.strip())
-        except Exception:
-            pass
-        # Stratégie 2 : lire comme texte brut (fonctionne pour .doc = HTML/RTF web)
-        import re
-        for enc in ("utf-8", "latin-1", "cp1252"):
-            try:
-                raw = path.read_text(encoding=enc)
-                clean = re.sub(r"<[^>]+>", " ", raw)
-                clean = re.sub(r"\s+", " ", clean).strip()
-                if len(clean) > 100:
-                    return clean
-            except Exception:
-                continue
-        return ""
+            logger.warning("Erreur lecture DOCX %s : %s", file_path.name, exc)
+            return ""
 
     @classmethod
     def load(cls, file_path: Path) -> str:
         suffix = file_path.suffix.lower()
-        if suffix not in cls.SUPPORTED:
-            raise ValueError(f"Extension non supportée : {suffix}")
         if suffix == ".pdf":
             return cls._load_pdf(file_path)
-        if suffix == ".docx":
+        if suffix in {".docx", ".doc"}:
             return cls._load_docx(file_path)
-        if suffix == ".doc":
-            return cls.load_doc(file_path)
-        return cls._load_text(file_path)
+        if suffix in {".txt", ".md", ".py"}:
+            return cls._load_text(file_path)
+        logger.warning("Extension non supportée : %s", suffix)
+        return ""
+
+
+# ── BagOfWordsEmbeddingFunction ───────────────────────────────────
+
+class _BagOfWordsEmbeddingFunction:
+    _DIM = 384
+
+    def name(self) -> str:
+        return "bag_of_words_384"
+
+    def __call__(self, input: list[str]) -> list[list[float]]:
+        import re
+        result = []
+        for text in input:
+            vec = np.zeros(self._DIM, dtype=np.float32)
+            tokens = re.findall(r"[a-zA-ZÀ-ÿ0-9]+", text.lower())
+            for token in tokens:
+                vec[hash(token) % self._DIM] += 1.0
+            norm = float(np.linalg.norm(vec))
+            if norm > 0:
+                vec = vec / norm
+            result.append(vec.tolist())
+        return result
+
+
+# ── SimpleVectorStore — remplace ChromaDB ────────────────────────
+
+class SimpleVectorStore:
+    """Vector store pure Python/numpy, compatible Python 3.14+."""
+
+    _DIM = 384
+
+    def __init__(self, persist_dir: str, collection_name: str):
+        self._dir = Path(persist_dir) / collection_name
+        self._dir.mkdir(parents=True, exist_ok=True)
+        self._vectors_file = self._dir / "vectors.npz"
+        self._meta_file = self._dir / "metadata.json"
+        self._load()
+
+    def _load(self):
+        if self._vectors_file.exists() and self._meta_file.exists():
+            try:
+                data = np.load(str(self._vectors_file), allow_pickle=True)
+                self._ids: list[str] = list(data["ids"])
+                self._embeddings: np.ndarray = data["embeddings"]
+                self._documents: list[str] = list(data["documents"])
+                with open(self._meta_file, encoding="utf-8") as f:
+                    self._metadatas: list[dict] = json.load(f)
+                return
+            except Exception as exc:
+                logger.warning("Impossible de charger le vector store, réinitialisation : %s", exc)
+        self._ids = []
+        self._embeddings = np.zeros((0, self._DIM), dtype=np.float32)
+        self._documents = []
+        self._metadatas = []
+
+    def _save(self):
+        np.savez(
+            str(self._vectors_file),
+            ids=np.array(self._ids, dtype=object),
+            embeddings=self._embeddings,
+            documents=np.array(self._documents, dtype=object),
+        )
+        with open(self._meta_file, "w", encoding="utf-8") as f:
+            json.dump(self._metadatas, f, ensure_ascii=False)
+
+    def count(self) -> int:
+        return len(self._ids)
+
+    def add(
+        self,
+        documents: list[str],
+        ids: list[str],
+        embeddings: list[list[float]],
+        metadatas: list[dict] | None = None,
+    ):
+        emb = np.array(embeddings, dtype=np.float32)
+        self._ids.extend(ids)
+        self._documents.extend(documents)
+        self._metadatas.extend(metadatas or [{} for _ in ids])
+        self._embeddings = np.vstack([self._embeddings, emb]) if self._embeddings.shape[0] > 0 else emb
+        self._save()
+
+    def upsert(
+        self,
+        documents: list[str],
+        ids: list[str],
+        embeddings: list[list[float]],
+        metadatas: list[dict] | None = None,
+    ):
+        existing = {id_: i for i, id_ in enumerate(self._ids)}
+        for doc, id_, emb, meta in zip(
+            documents, ids, embeddings, metadatas or [{} for _ in ids]
+        ):
+            if id_ in existing:
+                idx = existing[id_]
+                self._documents[idx] = doc
+                self._metadatas[idx] = meta
+                self._embeddings[idx] = np.array(emb, dtype=np.float32)
+            else:
+                self._ids.append(id_)
+                self._documents.append(doc)
+                self._metadatas.append(meta)
+                new_emb = np.array([emb], dtype=np.float32)
+                self._embeddings = np.vstack([self._embeddings, new_emb]) if self._embeddings.shape[0] > 0 else new_emb
+        self._save()
+
+    def delete(self, ids: list[str]):
+        to_remove = set(ids)
+        keep = [i for i, id_ in enumerate(self._ids) if id_ not in to_remove]
+        self._ids = [self._ids[i] for i in keep]
+        self._documents = [self._documents[i] for i in keep]
+        self._metadatas = [self._metadatas[i] for i in keep]
+        self._embeddings = self._embeddings[keep] if keep else np.zeros((0, self._DIM), dtype=np.float32)
+        self._save()
+
+    def query(
+        self,
+        query_embeddings: list[list[float]],
+        n_results: int = 3,
+    ) -> dict:
+        if self.count() == 0:
+            return {"documents": [[]], "metadatas": [[]], "ids": [[]], "distances": [[]]}
+        q = np.array(query_embeddings[0], dtype=np.float32)
+        q_norm = float(np.linalg.norm(q))
+        if q_norm > 0:
+            q = q / q_norm
+        norms = np.linalg.norm(self._embeddings, axis=1, keepdims=True)
+        normed = np.where(norms > 0, self._embeddings / norms, self._embeddings)
+        sims = normed @ q
+        n = min(n_results, self.count())
+        top_idx = np.argsort(-sims)[:n].tolist()
+        return {
+            "documents": [[self._documents[i] for i in top_idx]],
+            "metadatas": [[self._metadatas[i] for i in top_idx]],
+            "ids": [[self._ids[i] for i in top_idx]],
+            "distances": [[float(1.0 - sims[i]) for i in top_idx]],
+        }
 
 
 # ── RAGManager ────────────────────────────────────────────────────
 
 class RAGManager:
     def __init__(self, collection_name: str, persist_dir: str, embedding_model: str):
-        import chromadb
-        from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
-
         self._collection_name = collection_name
         self._persist_dir = persist_dir
         self._embedding_model = embedding_model
 
-        Path(persist_dir).mkdir(parents=True, exist_ok=True)
-        self._client = chromadb.PersistentClient(path=persist_dir)
-        self._ef = DefaultEmbeddingFunction()
-        self._collection = self._client.get_or_create_collection(
-            name=collection_name,
-            embedding_function=self._ef,
+        self._ef = _BagOfWordsEmbeddingFunction()
+        self._collection = SimpleVectorStore(
+            persist_dir=persist_dir,
+            collection_name=collection_name,
         )
         logger.info(
             "RAGManager — collection '%s' prête (%d docs)",
@@ -176,8 +286,9 @@ class RAGManager:
         filename_hash = hashlib.md5(file_path.name.encode()).hexdigest()[:8]
         ids = [f"{filename_hash}_{file_path.stem}_chunk_{i}" for i in range(len(chunks))]
         metas = [dict(base_meta) for _ in chunks]
+        embeddings = self._ef(chunks)
 
-        self._collection.add(documents=chunks, ids=ids, metadatas=metas)
+        self._collection.add(documents=chunks, ids=ids, embeddings=embeddings, metadatas=metas)
         logger.info("Document '%s' indexé — %d chunks", file_path.name, len(chunks))
         return ids
 
@@ -191,10 +302,8 @@ class RAGManager:
             if count == 0:
                 return []
             n = min(top_k, count)
-            results = self._collection.query(
-                query_texts=[query],
-                n_results=n,
-            )
+            q_emb = self._ef([query])
+            results = self._collection.query(query_embeddings=q_emb, n_results=n)
             output = []
             docs = results.get("documents", [[]])[0]
             metas = results.get("metadatas", [[]])[0]
@@ -217,10 +326,10 @@ class RAGManager:
         return "\n\n---\n\n".join(parts)
 
     def add_text(self, text: str, doc_id: str, metadata: dict | None = None) -> None:
-        """Indexe un texte brut directement (sans passer par un fichier)."""
         meta = dict(metadata) if metadata else {}
         try:
-            self._collection.upsert(documents=[text], ids=[doc_id], metadatas=[meta])
+            emb = self._ef([text])
+            self._collection.upsert(documents=[text], ids=[doc_id], embeddings=emb, metadatas=[meta])
             logger.info("session_memory — bilan indexé id=%s", doc_id)
         except Exception as exc:
             logger.error("session_memory — erreur indexation id=%s : %s", doc_id, exc)
@@ -229,7 +338,10 @@ class RAGManager:
         return {"name": self._collection_name, "count": self._collection.count()}
 
     def delete_collection(self) -> None:
-        self._client.delete_collection(name=self._collection_name)
+        import shutil
+        coll_dir = Path(self._persist_dir) / self._collection_name
+        if coll_dir.exists():
+            shutil.rmtree(str(coll_dir))
         logger.info("Collection '%s' supprimée", self._collection_name)
 
 
