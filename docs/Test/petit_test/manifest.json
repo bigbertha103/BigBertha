@@ -2,35 +2,34 @@
   "days": {
     "1": {
       "documents": [
-        "j1_vision_orchestration_ia.md",
-        "j1_orchestration_gouvernance.md"
+        "../../bdd_learn/base.md",
+        "../../bdd_learn/The Enterprise Local AI Stack_ Models, Serving, RAG, Agents, Governance _ VDF AI.doc"
       ],
       "messages": [
-        "Quels sont les avantages d'une architecture IA souveraine on-premise pour une entreprise qui veut garder ses données en interne ?",
-        "Rédigez un résumé de 3 paragraphes sur notre positionnement produit en matière de souveraineté et de gouvernance IA."
+        "Quels sont les avantages d'une architecture IA souveraine on-premise pour une entreprise cliente qui veut garder ses données en interne ? Quels arguments Neuraltech Consulting peut-il mettre en avant ?",
+        "Rédigez un résumé de 3 paragraphes sur le positionnement de Neuraltech Consulting en matière de souveraineté et de gouvernance IA, utilisable dans nos propositions commerciales."
       ]
     },
     "2": {
       "documents": [
-        "j2_moteurs_locaux.md",
-        "j2_modeles_et_evaluation.md",
-        "j2_recherche_optimisation.md"
+        "../../bdd_learn/AI Models in 2026_ Which One Should You Actually Use_.pdf",
+        "../../bdd_learn/EDB Docs - EDB Postgres AI Innovation Release - AI Factory Architecture on Hybrid Manager.doc",
+        "../../bdd_learn/theorempath_com.pdf"
       ],
       "messages": [
-        "Comparez Ollama, vLLM et llama.cpp pour un premier déploiement local. Quel outil recommandez-vous et pourquoi ?",
-        "Analysez les familles de modèles open-weight disponibles en 2026 et proposez une stratégie de routing selon la sensibilité des données."
+        "Comparez Ollama, vLLM et llama.cpp pour un premier déploiement local chez un client entreprise. Quel outil recommandez-vous et pourquoi ?",
+        "Analysez les familles de modèles open-weight disponibles en 2026 et proposez une stratégie de routing selon la sensibilité des données pour un client du secteur financier."
       ]
     },
     "3": {
       "documents": [
-        "j3_gpu_hardware_concurrence.md",
-        "j3_penurie_memoire_energie.md",
-        "j3_opportunites_et_roadmap.md"
+        "../../bdd_learn/As AI gobbles up memory chips, prices for devices may rise _ NPR.md",
+        "../../bdd_learn/Memory chip shortage to last through 2027_ Synopsys CEO.txt"
       ],
       "messages": [
-        "Analysez l'impact de la pénurie de mémoire HBM sur les stratégies de déploiement IA local en entreprise.",
-        "Rédigez une note stratégique sur nos opportunités de différenciation face aux acteurs cloud majeurs du marché IA 2026.",
-        "Quel plan de veille technologique recommandez-vous pour rester à jour sur l'évolution des modèles et du hardware IA ?"
+        "Analysez l'impact de la pénurie de mémoire HBM sur les stratégies de déploiement IA local en entreprise. Que conseillez-vous à nos clients ?",
+        "Rédigez une note stratégique sur les opportunités de différenciation de Neuraltech Consulting face aux acteurs cloud majeurs dans le contexte du marché IA 2026.",
+        "Quel plan de veille technologique recommandez-vous pour que Neuraltech reste à jour sur l'évolution des modèles et du hardware IA ?"
       ]
     }
   }

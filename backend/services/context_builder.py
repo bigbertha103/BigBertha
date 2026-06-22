@@ -206,8 +206,8 @@ def build_routing_payload(
         for r in reversed(rows)
     ]
 
-    # Prefill JSON : force le modèle à continuer depuis { (évite les réponses texte libre)
-    messages.append({"role": "assistant", "content": "{"})
+    # Prefill JSON : force le modèle à retourner {"agent_code": "..." (contrainte forte)
+    messages.append({"role": "assistant", "content": '{"agent_code": "'})
 
     return {"system": system, "messages": messages}
 

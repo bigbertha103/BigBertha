@@ -1,5 +1,12 @@
 # CHANGELOG — Big Bertha
 
+## 2026-06-21 — Fix synthesis JSON invalide (caractères de contrôle)
+- `backend/services/boss_service.py` : nettoyage `\r\n`, `\r`, `\n`, `\t` → séquences échappées avant `json.loads` dans `run_synthesis` — corrige 15 occurrences "Invalid control character"
+
+## 2026-06-21 — Fix routing JSON invalide (prefill trop faible)
+- `backend/services/context_builder.py` : prefill renforcé de `{` vers `{"agent_code": "` pour contraindre le modèle à produire du JSON structuré
+- `backend/services/boss_service.py` : reconstruction JSON adaptée au nouveau prefill — `{"agent_code": "` + contenu si pas de `{` initial
+
 ## 2026-06-21 — Alimentation docs/BASE — vision produit + glossaire
 - [DOC] docs/BASE/langage.md — squelette → 18 termes définis avec contre-définitions (fondamentaux + V2-Mémoire)
 - [DOC] docs/BASE/elements_figes.md — +7 décisions : 4 API, cible PME, triangle, décision OpenRouter dev/test

@@ -46,9 +46,9 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "",
     if content.startswith("```"):
         lines = content.splitlines()
         content = "\n".join(lines[1:-1]) if len(lines) > 2 else content
-    # Reconstruction JSON si prefill { utilisé (le modèle génère la suite sans l'accolade ouvrante)
-    if content and not content.startswith("{") and not content.startswith("["):
-        content = "{" + content
+    # Reconstruction JSON si le prefill {"agent_code": " a été strippé par l'API
+    if content and not content.startswith("{"):
+        content = '{"agent_code": "' + content
     # Mistral échappe parfois les underscores en markdown : {"agent\_code": ...}
     content = content.replace("\\_", "_")
 
@@ -135,6 +135,8 @@ async def run_synthesis(
     # Reconstruction JSON si prefill { utilisé
     if content and not content.startswith("{") and not content.startswith("["):
         content = "{" + content
+    # Nettoie les caractères de contrôle non échappés (newlines, tabs littéraux dans les valeurs JSON)
+    content = content.replace('\r\n', '\\n').replace('\r', '\\n').replace('\n', '\\n').replace('\t', '\\t')
 
     try:
         synthesis = json.loads(content)

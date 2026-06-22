@@ -478,6 +478,16 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-06-21 (session 24)
+- `boss_service.py` `run_synthesis` : `.replace('\r\n','\\n').replace('\r','\\n').replace('\n','\\n').replace('\t','\\t')` ajouté avant `json.loads` — élimine les caractères de contrôle non échappés que Mistral-Nemo injecte dans les valeurs de chaînes JSON
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-21 (session 23)
+- `context_builder.py` : prefill `{"agent_code": "` remplace `{` — force le modèle à compléter un JSON structuré au lieu du texte libre
+- `boss_service.py` : reconstruction `'{"agent_code": "' + content` si pas de `{` initial (adapté au nouveau prefill)
+- Cause bug : Mistral-Nemo complétait `{` avec du texte libre → `{Neuraltech...}` invalide JSON
+- Validation : `py_compile` OK
+
 ### Résultat de la session — 2026-06-21 (session 22)
 - `chat.js` : `renderConvList()` construit un index `byId` + set `successorOf`, identifie les têtes de session, remonte les chaînes d'ancêtres via `previous_conversation_id` ; `buildSessionItem(head, ancestors)` génère entrée principale + sous-entrées pliables ; `toggleSessionHistory(wrapper)` bascule affichage + icône ▶/▼ ; `updateSidebarItem()` simplifié — délègue à `renderConvList()`
 - `style.css` : `.session-wrapper`, `.btn-session-toggle`, `.session-history`, `.conv-item-ancestor` (indent 24px, bordure gauche bleue), `.archived-label` (opacité 0.7)
