@@ -478,6 +478,17 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-06-22 (session 27)
+- `docs/Prompt/lancement_test_apprentissage.md` réécrit — protocole complet 5 étapes : 4 questions collecte avec détail mode/durée/day-duration/modèle, critères de validation plan, commandes exactes étape 4 et 5, tableau 10 entreprises avec types de fichiers (md/txt/pdf/docx) ; section 12 ajoutée dans PROJET_CONTEXTE
+
+### Résultat de la session — 2026-06-22 (session 26)
+- `tests/simulate_all.py` modifié (3 zones ciblées) : A) `--run-dir` + `--company` ajoutés, `--corpus-dir` rétrocompat, lecture `meta` manifest (company/mode/n_days) ; B) `create_test_session(api_url, company)` — POST /api/test-sessions + activate, silencieux sur erreur ; C) `fetch_last_response()` — GET messages conv, détection agent_code via jobs.routing_output, kb_cited ; `generate_log()` — écrit `docs/Test/logs/{company}_{timestamp}_log.json`
+- Validation : `py_compile` OK, `--help` OK
+
+### Résultat de la session — 2026-06-22 (session 25)
+- `tests/plan_simulation.py` créé — script standalone : extraction .md/.txt/.pdf/.docx (pypdf + python-docx), appel OpenRouter via urllib (stdlib), affichage + confirmation interactive, écriture `docs/Test/runs/{company}_{timestamp}/manifest.json` avec chemins relatifs `../../../Samples/{company}/{fichier}`
+- Validation : `py_compile` OK, `--help` OK
+
 ### Résultat de la session — 2026-06-21 (session 24)
 - `boss_service.py` `run_synthesis` : `.replace('\r\n','\\n').replace('\r','\\n').replace('\n','\\n').replace('\t','\\t')` ajouté avant `json.loads` — élimine les caractères de contrôle non échappés que Mistral-Nemo injecte dans les valeurs de chaînes JSON
 - Validation : `py_compile` OK
@@ -696,7 +707,21 @@ RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadra
 - [ ] Tentative d'envoyer un 2e message pendant un job actif → bloqué (UI désactivée + 409 API)
 
 ---
-## 12. ROADMAP V2 (hors scope V1)
+## 12. PROTOCOLE TEST APPRENTISSAGE
+
+Référence : `docs/Prompt/lancement_test_apprentissage.md`
+
+Pipeline standard en 5 étapes :
+1. Collecte paramètres (entreprise / mode / day-duration / modèle)
+2. Génération plan via `tests/plan_simulation.py` → manifest dans `docs/Test/runs/`
+3. Validation du plan (thèmes, messages, docs)
+4. Lancement via `tests/simulate_all.py --run-dir` sur la machine cible
+5. Récupération log JSON depuis `docs/Test/logs/` via git
+
+Entreprises disponibles : 10 dossiers dans `Samples/` (voir tableau dans le protocole).
+
+---
+## 13. ROADMAP V2 (hors scope V1)
 | Fonctionnalité | Priorité |
 |---|---|
 | Streaming des réponses (SSE) | P1 |

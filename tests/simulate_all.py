@@ -8,11 +8,13 @@ Usage :
 
 import argparse
 import json
+import os
 import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import datetime
 from pathlib import Path
 
 POLL_INTERVAL = 2
@@ -160,11 +162,12 @@ def ensure_conversation(api_url: str, conv_id: int | None) -> int:
         raise RuntimeError(f"Impossible de créer une conversation : {exc}") from exc
 
 
-def send_messages(api_url: str, conv_id: int, messages: list[str]) -> int:
+def send_messages(api_url: str, conv_id: int, messages: list[str]) -> tuple[int, list[dict]]:
     if not messages:
         print("  (aucun message ce jour)")
-        return 0
+        return 0, []
     sent = 0
+    exchanges: list[dict] = []
     for msg in messages:
         print(f"\n  [MSG] {msg[:80]}{'…' if len(msg) > 80 else ''}")
         try:
@@ -181,9 +184,12 @@ def send_messages(api_url: str, conv_id: int, messages: list[str]) -> int:
             final_response = _poll_job(api_url, job_id)
             print(f"\n    → {final_response[:300]}{'…' if len(final_response) > 300 else ''}")
             sent += 1
+            response_data = fetch_last_response(api_url, conv_id)
+            response_data["message"] = msg
+            exchanges.append(response_data)
         except Exception as exc:
             print(f"    [ERROR] {exc}")
-    return sent
+    return sent, exchanges
 
 
 def run_sentinel(api_url: str) -> dict:
@@ -244,6 +250,153 @@ def wait_next_day(day_duration: int, is_last: bool) -> None:
         print(f"  Prochain jour dans {remaining}s…")
         time.sleep(step)
         remaining -= step
+
+
+# ── Mod B — Session de test dédiée ──────────────────────────────
+
+def create_test_session(api_url: str, company: str) -> int | None:
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    name = f"{company}_{timestamp}"
+    try:
+        result = _post_json(f"{api_url}/api/test-sessions", {"name": name})
+        session_id = result.get("id") or result.get("session_id")
+        if not session_id:
+            print(f"  [WARN] create_test_session : pas d'id dans la réponse")
+            return None
+        try:
+            _post_json(f"{api_url}/api/test-sessions/{session_id}/activate", {})
+        except Exception as exc:
+            print(f"  [WARN] Activation session #{session_id} : {exc}")
+        print(f"  Session de test créée : #{session_id} ({name})")
+        return session_id
+    except Exception as exc:
+        print(f"  [WARN] create_test_session ignorée : {exc}")
+        return None
+
+
+# ── Mod C — Capture dernière réponse ─────────────────────────────
+
+def fetch_last_response(api_url: str, conversation_id: int) -> dict:
+    empty = {"agent_code": "?", "response_preview": "", "response_length": 0, "kb_cited": False}
+    try:
+        messages = _get(f"{api_url}/api/conversations/{conversation_id}/messages")
+        if not isinstance(messages, list) or not messages:
+            return empty
+        boss_msgs = [m for m in messages if m.get("role") in ("boss", "assistant")]
+        if not boss_msgs:
+            return empty
+        last = boss_msgs[-1]
+        content = last.get("content", "")
+        job_id = last.get("job_id")
+        agent_code = "?"
+        if job_id:
+            try:
+                job = _get(f"{api_url}/api/jobs/{job_id}")
+                routing_raw = job.get("routing_output") or "{}"
+                routing = json.loads(routing_raw) if isinstance(routing_raw, str) else routing_raw
+                agent_code = routing.get("agent_code", "?")
+            except Exception:
+                pass
+        kb_cited = any(
+            kw in content.lower()
+            for kw in ("source", "[doc", "document")
+        )
+        return {
+            "agent_code": agent_code,
+            "response_preview": content[:300],
+            "response_length": len(content),
+            "kb_cited": kb_cited,
+        }
+    except Exception:
+        return empty
+
+
+# ── Mod C — Génération log JSON ───────────────────────────────────
+
+def generate_log(
+    api_url: str,
+    run_dir: Path | None,
+    company: str,
+    mode: str,
+    conv_id: int,
+    simulation_reports: list[dict],
+    approved_by_day: list[list[dict]],
+    exchanges_by_day: list[list[dict]],
+) -> None:
+    logs_dir = Path("docs/Test/logs")
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_filename = f"{company}_{timestamp}_log.json"
+    log_path = logs_dir / log_filename
+
+    n_days = len(simulation_reports)
+    n_messages = sum(len(ex) for ex in exchanges_by_day)
+    n_docs = sum(
+        len(simulation_reports[i].get("documents", []))
+        for i in range(n_days)
+    )
+
+    days_log = []
+    for idx, (report, approved, exchanges) in enumerate(
+        zip(simulation_reports, approved_by_day, exchanges_by_day), start=1
+    ):
+        metrics = report.get("metrics", {})
+        sentinel_entry = {
+            "score": report.get("score", 0),
+            "routing_coherence": metrics.get("routing_coherence", 0),
+            "pinned_rate": metrics.get("pinned_rate", 0),
+            "kb_citation_rate": metrics.get("kb_citation_rate", 0),
+        }
+        days_log.append({
+            "day": idx,
+            "docs_imported": report.get("documents", []),
+            "sentinel": sentinel_entry,
+            "proposals_approved": len(approved),
+            "exchanges": [
+                {
+                    "message": ex.get("message", ""),
+                    "agent_code": ex.get("agent_code", "?"),
+                    "response_preview": ex.get("response_preview", ""),
+                    "response_length": ex.get("response_length", 0),
+                    "kb_cited": ex.get("kb_cited", False),
+                }
+                for ex in exchanges
+            ],
+        })
+
+    score_start = simulation_reports[0].get("score", 0) if simulation_reports else 0
+    score_end = simulation_reports[-1].get("score", 0) if simulation_reports else 0
+    delta = score_end - score_start
+    routing_fallback_count = sum(
+        1
+        for day_exchanges in exchanges_by_day
+        for ex in day_exchanges
+        if ex.get("agent_code") == "BOSS"
+    )
+
+    log_data = {
+        "meta": {
+            "company": company,
+            "mode": mode,
+            "date": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+            "n_days": n_days,
+            "n_messages": n_messages,
+            "n_docs": n_docs,
+        },
+        "days": days_log,
+        "summary": {
+            "score_start": score_start,
+            "score_end": score_end,
+            "delta": f"{delta:+d}",
+            "total_proposals_approved": sum(len(a) for a in approved_by_day),
+            "routing_fallback_count": routing_fallback_count,
+        },
+    }
+
+    with open(log_path, "w", encoding="utf-8") as fh:
+        json.dump(log_data, fh, ensure_ascii=False, indent=2)
+
+    print(f"Log JSON sauvegardé : {log_path}")
 
 
 # ── Bilan final ──────────────────────────────────────────────────
@@ -392,8 +545,18 @@ def main() -> None:
     )
     parser.add_argument(
         "--corpus-dir",
-        required=True,
-        help="Dossier contenant le manifest.json et les documents",
+        default=None,
+        help="Dossier contenant le manifest.json et les documents (rétrocompat)",
+    )
+    parser.add_argument(
+        "--run-dir",
+        default=None,
+        help="Dossier généré par plan_simulation.py (ex: docs/Test/runs/bluecart_20260622/)",
+    )
+    parser.add_argument(
+        "--company",
+        default=None,
+        help="Nom de l'entreprise (extrait du meta du manifest si absent)",
     )
     parser.add_argument(
         "--api-url",
@@ -414,7 +577,12 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    corpus_dir = Path(args.corpus_dir).resolve()
+    if not args.run_dir and not args.corpus_dir:
+        print("[FATAL] Fournir --run-dir ou --corpus-dir")
+        sys.exit(1)
+
+    corpus_dir = Path(args.run_dir or args.corpus_dir).resolve()
+    run_dir = Path(args.run_dir).resolve() if args.run_dir else None
     api_url = args.api_url.rstrip("/")
     day_duration = args.day_duration
     conv_id = args.conv_id
@@ -446,14 +614,27 @@ def main() -> None:
     sorted_days = sorted(days.keys(), key=lambda k: int(k))
     n_days = len(sorted_days)
 
+    if "meta" in manifest:
+        company = manifest["meta"].get("company", "unknown")
+        mode = manifest["meta"].get("mode", "")
+        n_days = manifest["meta"].get("n_days", n_days)
+    else:
+        company = args.company or "unknown"
+        mode = ""
+
     print(f"\n{'='*50}")
     print(f"  SIMULATION COMPLÈTE — Big Bertha")
     print(f"{'='*50}")
-    print(f"Corpus : {corpus_dir}")
-    print(f"API    : {api_url}")
-    print(f"Jours  : {n_days}")
-    print(f"Pause  : {day_duration}s")
+    print(f"Corpus  : {corpus_dir}")
+    print(f"API     : {api_url}")
+    print(f"Jours   : {n_days}")
+    print(f"Pause   : {day_duration}s")
+    print(f"Company : {company} | Mode : {mode or '—'}")
     print(f"{'='*50}\n")
+
+    # Mod B — Session de test dédiée
+    print("── Session de test ───────────────────────────")
+    create_test_session(api_url, company)
 
     # Créer la conversation une seule fois si besoin
     print("── Initialisation conversation ───────────────")
@@ -464,6 +645,7 @@ def main() -> None:
         sys.exit(1)
 
     approved_by_day: list[list[dict]] = []
+    exchanges_by_day: list[list[dict]] = []
 
     for idx, day_key in enumerate(sorted_days, start=1):
         day_data = days[day_key]
@@ -484,7 +666,8 @@ def main() -> None:
         print(f"  Utilisation de la conversation #{conv_id}")
 
         # Étape C — messages
-        send_messages(api_url, conv_id, messages)
+        _sent, day_exchanges = send_messages(api_url, conv_id, messages)
+        exchanges_by_day.append(day_exchanges)
 
         # Étape D — attente jour suivant
         is_last = idx == n_days
@@ -499,6 +682,18 @@ def main() -> None:
 
     # Étape G/H — bilan final
     generate_final_report(api_url, corpus_dir, day_duration, conv_id, n_days, approved_by_day)
+
+    # Mod C — log JSON
+    try:
+        sentinel_reports_raw = _get(f"{api_url}/api/sentinel/reports")
+        simulation_reports = (sentinel_reports_raw if isinstance(sentinel_reports_raw, list) else [])[:n_days]
+        simulation_reports = list(reversed(simulation_reports))
+    except Exception:
+        simulation_reports = [{} for _ in range(len(sorted_days))]
+    generate_log(
+        api_url, run_dir, company, mode, conv_id,
+        simulation_reports, approved_by_day, exchanges_by_day,
+    )
 
 
 if __name__ == "__main__":

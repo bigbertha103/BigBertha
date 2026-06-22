@@ -1,5 +1,14 @@
 # CHANGELOG — Big Bertha
 
+## 2026-06-22 — Protocole lancement test apprentissage v2 (session 27)
+- `docs/Prompt/lancement_test_apprentissage.md` réécrit : 5 étapes détaillées (4 questions collecte, critères validation plan, commandes git récupération), tableau des 10 entreprises avec détail des types de fichiers par dossier
+
+## 2026-06-22 — Enrichissement simulate_all.py (session 26)
+- `tests/simulate_all.py` — 3 modifications ciblées : A) `--run-dir` + `--company` + lecture `meta` manifest ; B) `create_test_session()` (POST /api/test-sessions, silencieux si route absente) ; C) `fetch_last_response()` + `generate_log()` → `docs/Test/logs/{company}_{timestamp}_log.json`
+
+## 2026-06-22 — Générateur de plan de simulation (session 25)
+- `tests/plan_simulation.py` créé : script standalone qui lit Samples/{company}/, appelle OpenRouter (urllib stdlib) pour générer un plan multi-jours, affiche le plan + confirmation, écrit `docs/Test/runs/{company}_{timestamp}/manifest.json`
+
 ## 2026-06-21 — Fix synthesis JSON invalide (caractères de contrôle)
 - `backend/services/boss_service.py` : nettoyage `\r\n`, `\r`, `\n`, `\t` → séquences échappées avant `json.loads` dans `run_synthesis` — corrige 15 occurrences "Invalid control character"
 
