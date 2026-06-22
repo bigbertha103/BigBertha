@@ -1,6 +1,6 @@
 ---
 owner: Kinder + tezcatlypoca
-last_updated: 2026-06-21
+last_updated: 2026-06-22
 review_every: 30j
 ---
 
@@ -48,7 +48,7 @@ review_every: 30j
 **Company** (company_profile) : profil de l'entreprise cliente. Injecté dans chaque appel LLM (nom, secteur, ton, règles métier). Une seule ligne en DB (mono-tenant). 404 si pas encore configuré.
 | N'est PAS : un compte utilisateur, un tenant SaaS.
 
-**Corpus** : ensemble de documents importés dans la base de connaissance (RAG), indexés dans ChromaDB. Alimenté via l'UI (PDF/MD/TXT/DOCX). Top-3 pertinents injectés dans chaque appel LLM.
+**Corpus** : ensemble de documents importés dans la base de connaissance (RAG), indexés dans le vector store. Alimenté via l'UI (PDF/MD/TXT/DOCX). Top-3 pertinents injectés dans chaque appel LLM.
 | N'est PAS : l'historique des conversations, les prompts système des agents.
 
 **Apprentissage** : cycle automatique SENTINEL → proposals → approbation → mise à jour des prompts/règles. S'appuie sur les jobs réels passés.
@@ -77,7 +77,7 @@ review_every: 30j
 
 **Trigger** : cause d'un archivage. Valeurs possibles : `token_threshold`, `message_threshold`, `manual`.
 
-**Session memory** : collection ChromaDB distincte (`session_memory`) qui stocke les bilans ARCHIVISTE sous forme d'embeddings. Séparée de `kb_documents` (documents clients).
+**Session memory** : collection vectorielle distincte (`session_memory`) qui stocke les bilans ARCHIVISTE sous forme d'embeddings. Séparée de `bigbertha_prod` (documents clients).
 
-**Test session** : environnement isolé avec sa propre collection ChromaDB (`bigbertha_test_{session_id}`). Teste l'apprentissage sans altérer la production (`bigbertha_prod`).
+**Test session** : environnement isolé avec sa propre collection vectorielle (`bigbertha_test_{session_id}`). Teste l'apprentissage sans altérer la production (`bigbertha_prod`).
 | N'est PAS : une conversation de test normale, un environnement de staging classique.
