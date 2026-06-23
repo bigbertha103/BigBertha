@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "company": "Neuraltech Consulting",
+    "mode": "court",
+    "generated_at": "2026-06-23T13:57:03",
+    "n_days": 7
+  },
+  "days": {
+    "1": {
+      "theme": "État des lieux de l'intelligence artificielle en 2026",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md"
+      ],
+      "messages": [
+        "Bonjour, j'ai trouvé un article intéressant sur les modèles d'intelligence artificielle en 2026. Pensez-vous que cela pourrait être utile pour notre projet?",
+        "Je voudrais discuter avec vous des différents modèles d'IA pour déterminer lequel convient le mieux à nos besoins."
+      ]
+    },
+    "2": {
+      "theme": "Pénurie de puces de mémoire",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/As AI gobbles up memory chips, prices for devices may rise _ NPR.md",
+        "../../../../Samples/Neuraltech Consulting/Memory chip shortage to last through 2027_ Synopsys CEO.txt"
+      ],
+      "messages": [
+        "J'ai trouvé un article qui indique que la pénurie de puces de mémoire pourrait durer encore longtemps. Pensez-vous que cela pourrait affecter notre projet?",
+        "Je voudrais obtenir plus d'informations sur la situation actuelle de la pénurie de puces de mémoire et savoir comment nous pouvons y faire face."
+      ]
+    },
+    "3": {
+      "theme": "Architecture d'orchestration d'agents IA",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/EDB Docs - EDB Postgres AI Innovation Release - AI Factory Architecture on Hybrid Manager.doc",
+        "../../../../Samples/Neuraltech Consulting/The Enterprise Local AI Stack_ Models, Serving, RAG, Agents, Governance _ VDF AI.doc"
+      ],
+      "messages": [
+        "Je voudrais discuter avec vous de l'architecture d'orchestration d'agents IA que nous avons découverte. Pensez-vous que cela pourrait être utile pour notre projet?",
+        "J'ai des questions sur la manière de mettre en œuvre l'architecture d'orchestration d'agents IA. Pouvez-vous m'aider?"
+      ]
+    },
+    "4": {
+      "theme": "Construire une plateforme d'orchestration d'agents IA",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md"
+      ],
+      "messages": [
+        "Je voudrais discuter avec vous de la manière de construire une plateforme d'orchestration d'agents IA. Pensez-vous que cela pourrait être utile pour notre projet?",
+        "J'ai des questions sur la manière de mettre en œuvre la plateforme d'orchestration d'agents IA. Pouvez-vous m'aider?"
+      ]
+    },
+    "5": {
+      "theme": "GPU Architectures",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/theorempath_com.pdf"
+      ],
+      "messages": [
+        "Je voudrais discuter avec vous des GPU Architectures. Pensez-vous que cela pourrait être utile pour notre projet?",
+        "J'ai des questions sur la manière de mettre en œuvre les GPU Architectures. Pouvez-vous m'aider?"
+      ]
+    },
+    "6": {
+      "theme": "Orchestration et gouvernance",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/EDB Docs - EDB Postgres AI Innovation Release - AI Factory Architecture on Hybrid Manager.doc",
+        "../../../../Samples/Neuraltech Consulting/The Enterprise Local AI Stack_ Models, Serving, RAG, Agents, Governance _ VDF AI.doc"
+      ],
+      "messages": [
+        "Je voudrais discuter avec vous de l'orchestration et de la gouvernance de notre projet. Pensez-vous que cela pourrait être utile?",
+        "J'ai des questions sur la manière de mettre en œuvre l'orchestration et la gouvernance. Pouvez-vous m'aider?"
+      ]
+    },
+    "7": {
+      "theme": "Conclusion",
+      "documents": [],
+      "messages": [
+        "Je pense que nous avons fait de grands progrès dans la compréhension de l'intelligence artificielle en 2026 et de la manière de la mettre en œuvre. Merci pour votre aide et votre soutien!",
+        "Je suis heureux de voir que nous sommes sur la bonne voie. Je pense que nous pouvons continuer à améliorer notre projet en utilisant les connaissances et les ressources que nous avons acquis."
+      ]
+    }
+  }
+}

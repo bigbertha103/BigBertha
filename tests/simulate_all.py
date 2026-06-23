@@ -132,7 +132,7 @@ def import_documents(api_url: str, corpus_dir: Path, doc_filenames: list[str]) -
         return 0
     imported = 0
     for filename in doc_filenames:
-        filepath = corpus_dir / filename
+        filepath = (corpus_dir / filename).resolve()
         if not filepath.exists():
             print(f"  [WARN] Fichier introuvable : {filepath}")
             continue

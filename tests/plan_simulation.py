@@ -41,7 +41,7 @@ DB_PATH = Path("backend/data/bigbertha.db")
 SAMPLES_DIR = Path("Samples")
 RUNS_DIR = Path("docs/Test/runs")
 CHAR_LIMIT = 2500
-DEFAULT_MODEL = "mistralai/mistral-nemo"
+DEFAULT_MODEL = "anthropic/claude-haiku-4-5"
 MODES = {"court": 7, "moyen": 14, "long": 30}
 
 SYSTEM_PROMPT_TEMPLATE = (
@@ -103,7 +103,11 @@ def _read_docx(path: Path) -> str:
     if docx is None:
         logger.warning("python-docx non disponible — %s ignoré", path.name)
         return ""
-    doc = docx.Document(str(path))
+    try:
+        doc = docx.Document(str(path))
+    except (ValueError, Exception) as exc:
+        logger.warning("Fichier Word illisible — %s ignoré (%s)", path.name, exc)
+        return ""
     return "\n".join(p.text for p in doc.paragraphs)
 
 
@@ -263,7 +267,7 @@ def write_manifest(company: str, mode: str, n_days: int, days: list) -> Path:
     for day_obj in days:
         day_num = str(day_obj.get("day", "?"))
         relative_docs = [
-            f"../../../Samples/{company}/{fname}"
+            f"../../../../Samples/{company}/{fname}"
             for fname in day_obj.get("documents", [])
         ]
         manifest["days"][day_num] = {
@@ -326,7 +330,7 @@ def main() -> None:
     if not api_key:
         logger.error("openrouter_api_key vide dans app_config.")
         sys.exit(1)
-    model = config.get("routing_model_cost", "").strip() or DEFAULT_MODEL
+    model = config.get("routing_model_perf", "").strip() or DEFAULT_MODEL
 
     system_prompt = SYSTEM_PROMPT_TEMPLATE.format(N=n_days)
     user_prompt = "\n\n".join(
@@ -350,7 +354,7 @@ def main() -> None:
     run_dir = write_manifest(company, mode, n_days, days)
     run_rel = run_dir.as_posix().replace("docs/Test/runs", "docs/Test/runs")
 
-    print(f"✓ Manifest écrit : {run_dir}/manifest.json")
+    print(f"OK Manifest ecrit : {run_dir}/manifest.json")
     print(f" Lancer la simulation avec :")
     print(f" python tests/simulate_all.py --run-dir {run_dir.as_posix()}")
 
