@@ -20,6 +20,7 @@ async def call_llm(
     json_mode: bool = False,
     inference_mode: str = "openrouter",
     ollama_base_url: str = "http://localhost:11434",
+    max_tokens: int | None = None,
 ) -> dict:
     if inference_mode == "ollama":
         return await _call_ollama(
@@ -28,6 +29,7 @@ async def call_llm(
             model_id=model_id,
             json_mode=json_mode,
             base_url=ollama_base_url,
+            max_tokens=max_tokens,
         )
     return await _call_openrouter(
         system_prompt=system_prompt,
@@ -35,6 +37,7 @@ async def call_llm(
         model_id=model_id,
         api_key=api_key,
         json_mode=json_mode,
+        max_tokens=max_tokens,
     )
 
 
@@ -44,6 +47,7 @@ async def _call_ollama(
     model_id: str,
     json_mode: bool,
     base_url: str,
+    max_tokens: int | None = None,
 ) -> dict:
     url = f"{base_url.rstrip('/')}/api/chat"
     payload = {
@@ -53,6 +57,8 @@ async def _call_ollama(
     }
     if json_mode:
         payload["format"] = "json"
+    if max_tokens is not None:
+        payload["options"] = {"num_predict": max_tokens}
 
     headers = {"Content-Type": "application/json"}
 
@@ -91,6 +97,7 @@ async def _call_openrouter(
     model_id: str,
     api_key: str,
     json_mode: bool,
+    max_tokens: int | None = None,
 ) -> dict:
     if not api_key or not api_key.strip():
         raise RuntimeError(
@@ -103,6 +110,8 @@ async def _call_openrouter(
     }
     if json_mode:
         payload["response_format"] = {"type": "json_object"}
+    if max_tokens is not None:
+        payload["max_tokens"] = max_tokens
 
     headers = {
         "Authorization": f"Bearer {api_key.strip()}",

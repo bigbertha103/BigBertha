@@ -28,6 +28,7 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "",
         json_mode=True,
         inference_mode=inference_mode,
         ollama_base_url=ollama_base_url,
+        max_tokens=300,
     )
 
     model_router.log_decision(
@@ -138,15 +139,47 @@ async def run_synthesis(
     # Nettoie les caractères de contrôle non échappés (newlines, tabs littéraux dans les valeurs JSON)
     content = content.replace('\r\n', '\\n').replace('\r', '\\n').replace('\n', '\\n').replace('\t', '\\t')
 
+    import re as _re
+
     try:
         synthesis = json.loads(content)
-        if isinstance(synthesis, list):
-            synthesis = synthesis[0] if synthesis else {}
+    except json.JSONDecodeError as exc:
+        # mistral-nemo génère parfois des chars de contrôle non-échappés dans les strings JSON
+        try:
+            content_safe = _re.sub(
+                r'[\x00-\x1f]',
+                lambda m: json.dumps(m.group())[1:-1],
+                content,
+            )
+            synthesis = json.loads(content_safe)
+            logger.info("Synthesis JSON réparé (sanitisation control chars)")
+        except json.JSONDecodeError:
+            logger.error("Synthesis JSON invalide — fallback extraction. Erreur : %s", exc)
+            # Tenter d'extraire le champ response plutôt que retourner le JSON brut
+            m = _re.search(r'"response"\s*:\s*"((?:[^"\\]|\\.)*)"', content, _re.DOTALL)
+            response = m.group(1).replace('\\n', '\n').replace('\\"', '"').replace('\\\\', '\\') if m else content
+            pinned = []
+            db.execute(
+                "UPDATE jobs SET final_response = ?, updated_at = datetime('now') WHERE id = ?",
+                (response, job_id),
+            )
+            for pin_content in pinned:
+                if pin_content and isinstance(pin_content, str):
+                    db.execute(
+                        """INSERT INTO pinned_context (conversation_id, content, source, job_id, is_active)
+                           VALUES (?, ?, 'boss', ?, 1)""",
+                        (conversation_id, pin_content, job_id),
+                    )
+            db.commit()
+            return response
+    if isinstance(synthesis, list):
+        synthesis = synthesis[0] if synthesis else {}
+    try:
         response = synthesis["response"]
         pinned = synthesis.get("pinned", [])
-    except (json.JSONDecodeError, KeyError, TypeError, IndexError) as exc:
-        logger.error("Synthesis JSON invalide — utilisation réponse brute. Erreur : %s", exc)
-        response = content
+    except (KeyError, TypeError, AttributeError) as exc:
+        logger.error("Synthesis champ 'response' manquant : %s | contenu : %s", exc, str(synthesis)[:200])
+        response = str(synthesis)
         pinned = []
 
     db.execute(

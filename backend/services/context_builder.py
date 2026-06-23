@@ -34,14 +34,16 @@ Tu disposes ci-dessus du profil de l'entreprise cliente, de la liste des agents 
 
 Le champ task est la seule information que l'agent recevra en plus de son propre system prompt et du profil entreprise — il ne voit ni l'historique, ni ce message système. Formule donc une tâche complète et autonome : reformule la demande en intégrant tout le contexte nécessaire (sujet exact, contraintes, éléments figés pertinents), sans renvoyer à "comme demandé plus haut" ou "voir l'historique".
 
+## Aide-mémoire routing rapide
+Si le message contient : "rédigez", "rédige", "prépare", "préparez", "écris", "écrivez", "note", "proposition", "email", "compte-rendu", "rapport final", "document" → **REDACTEUR**
+Si le message contient : "analysez", "analyse", "comparez", "comparez", "expliquez", "quels sont", "comment", "pourquoi", "synthétisez", "évaluez", "benchmark" → **ANALYSTE**
+Salutation, question sur le système, demande ambiguë → **BOSS**
+RAPPEL ABSOLU : tu ne rédiges JAMAIS le contenu demandé. Tu retournes UNIQUEMENT le JSON de routing. Si tu ressens l'envie d'écrire le document, c'est le signe que tu dois choisir REDACTEUR et t'arrêter là.
+
 ## Format de sortie
-
 Tu dois retourner UNIQUEMENT le JSON suivant, sans aucun texte avant ou après, sans balises markdown autour :
-
 {"agent_code": "ANALYSTE", "task": "...", "rationale": "..."}
-
 Valeurs possibles pour agent_code : ANALYSTE, REDACTEUR, BOSS
-
 Aucune autre sortie n'est acceptée. Pas de phrase d'introduction, pas d'explication hors du JSON."""
 
 BOSS_SYNTHESIS_PROMPT = """Tu es le Boss de Big Bertha. Dans cette phase, ta mission est de composer la réponse finale affichée à l'utilisateur, à partir du résultat brut produit par un agent — ou de répondre toi-même si la Phase 1 a choisi BOSS directement.
@@ -202,7 +204,10 @@ def build_routing_payload(
         (conversation_id,),
     ).fetchall()
     messages = [
-        {"role": "assistant" if r["role"] == "boss" else r["role"], "content": r["content"]}
+        {
+            "role": "assistant" if r["role"] == "boss" else r["role"],
+            "content": r["content"][:300] if r["role"] == "boss" else r["content"],
+        }
         for r in reversed(rows)
     ]
 

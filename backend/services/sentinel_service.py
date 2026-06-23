@@ -198,16 +198,19 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
     config = load_config()
     model_id = model_router.get_model_for_task("sentinel", config)
     api_key = config.get("openrouter_api_key", "")
+    inference_mode = config.get("inference_mode", "openrouter")
+    ollama_base_url = config.get("ollama_base_url", "http://localhost:11434")
 
     result = await model_router.call_llm(
         system_prompt=system_prompt,
         messages=[
             {"role": "user", "content": "Produis le rapport SENTINEL."},
-            {"role": "assistant", "content": "{"},
         ],
         model_id=model_id,
         api_key=api_key,
         json_mode=True,
+        inference_mode=inference_mode,
+        ollama_base_url=ollama_base_url,
     )
 
     content = result["content"].strip()
@@ -250,7 +253,16 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
                 continue
         elif ptype == "ARCHIVE_DOCUMENT":
             try:
-                int(target)
+                doc_id = int(target)
+                if doc_id <= 0:
+                    raise ValueError("id <= 0")
+                exists = db.execute(
+                    "SELECT id FROM knowledge_documents WHERE id = ? AND is_active = 1",
+                    (doc_id,),
+                ).fetchone()
+                if not exists:
+                    logger.warning("SENTINEL proposal rejetée — document #%d inexistant ou inactif", doc_id)
+                    continue
             except (ValueError, TypeError):
                 logger.warning("SENTINEL proposal rejetée — target ARCHIVE_DOCUMENT non entier : %s", target)
                 continue
@@ -273,6 +285,8 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
     db.commit()
 
     for p in valid_proposals:
+        raw_content = p.get("content") or ""
+        raw_rationale = p.get("rationale") or ""
         db.execute(
             """INSERT INTO learning_proposals
                (sentinel_report_id, proposal_type, target, content, previous_value, rationale, status)
@@ -280,9 +294,9 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
             (
                 report_id,
                 p["proposal_type"],
-                p.get("target", ""),
-                p.get("content", ""),
-                p.get("rationale", ""),
+                str(p.get("target") or ""),
+                json.dumps(raw_content) if isinstance(raw_content, (dict, list)) else raw_content,
+                json.dumps(raw_rationale) if isinstance(raw_rationale, (dict, list)) else raw_rationale,
             ),
         )
     db.commit()

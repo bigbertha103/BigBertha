@@ -511,15 +511,16 @@ def generate_final_report(
     corpus_dir: Path,
     day_duration: int,
     conv_id: int,
-    n_days: int,
+    sentinel_report_ids: list[int],
     approved_by_day: list[list[dict]],
 ) -> Path:
     print("\n\n=== Bilan final multi-jours ===")
-    reports = _get(f"{api_url}/api/sentinel/reports")
-    if not isinstance(reports, list):
-        reports = []
-    simulation_reports = reports[:n_days]
-    simulation_reports.reverse()  # du plus ancien au plus récent
+    all_reports = _get(f"{api_url}/api/sentinel/reports")
+    if not isinstance(all_reports, list):
+        all_reports = []
+    # Filtrer uniquement les rapports créés pendant ce run, dans l'ordre chronologique
+    id_set = set(r for r in sentinel_report_ids if r is not None)
+    simulation_reports = [r for r in reversed(all_reports) if r.get("id") in id_set]
 
     content = build_report(corpus_dir, day_duration, conv_id, simulation_reports, approved_by_day)
     output_path = corpus_dir / "bilan_simulation.md"
@@ -646,6 +647,7 @@ def main() -> None:
 
     approved_by_day: list[list[dict]] = []
     exchanges_by_day: list[list[dict]] = []
+    sentinel_report_ids: list[int] = []
 
     for idx, day_key in enumerate(sorted_days, start=1):
         day_data = days[day_key]
@@ -674,14 +676,15 @@ def main() -> None:
         wait_next_day(day_duration, is_last)
 
         # Étape E — SENTINEL
-        run_sentinel(api_url)
+        report = run_sentinel(api_url)
+        sentinel_report_ids.append(report.get("id"))
 
         # Étape F — auto-approbation proposals
         approved = auto_approve_proposals(api_url)
         approved_by_day.append(approved)
 
     # Étape G/H — bilan final
-    generate_final_report(api_url, corpus_dir, day_duration, conv_id, n_days, approved_by_day)
+    generate_final_report(api_url, corpus_dir, day_duration, conv_id, sentinel_report_ids, approved_by_day)
 
     # Mod C — log JSON
     try:
