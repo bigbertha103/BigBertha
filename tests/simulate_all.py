@@ -126,15 +126,17 @@ def _poll_job(api_url: str, job_id: int) -> str:
 
 # ── Étapes par jour ──────────────────────────────────────────────
 
-def import_documents(api_url: str, corpus_dir: Path, doc_filenames: list[str]) -> int:
+def import_documents(api_url: str, corpus_dir: Path, doc_filenames: list[str]) -> tuple[int, list[dict]]:
     if not doc_filenames:
         print("  (aucun document à importer ce jour)")
-        return 0
+        return 0, []
     imported = 0
+    imported_docs: list[dict] = []
     for filename in doc_filenames:
         filepath = (corpus_dir / filename).resolve()
         if not filepath.exists():
             print(f"  [WARN] Fichier introuvable : {filepath}")
+            imported_docs.append({"file": Path(filename).name, "status": "NOT_FOUND", "error": "fichier introuvable"})
             continue
         try:
             result = _post_multipart(f"{api_url}/api/knowledge/import", filepath)
@@ -142,11 +144,15 @@ def import_documents(api_url: str, corpus_dir: Path, doc_filenames: list[str]) -
             statuses = [r.get("status", "?") for r in items]
             status_str = ", ".join(statuses) if statuses else "?"
             print(f"  [IMPORT] {filename} → {status_str}")
+            first_status = statuses[0] if statuses else "?"
+            first_error = items[0].get("error") if items else None
+            imported_docs.append({"file": Path(filename).name, "status": first_status, "error": first_error})
             if any(s == "INDEXED" for s in statuses):
                 imported += 1
         except Exception as exc:
             print(f"  [ERROR] Import {filename} : {exc}")
-    return imported
+            imported_docs.append({"file": Path(filename).name, "status": "ERROR", "error": str(exc)[:200]})
+    return imported, imported_docs
 
 
 def ensure_conversation(api_url: str, conv_id: int | None) -> int:
@@ -289,23 +295,19 @@ def fetch_last_response(api_url: str, conversation_id: int) -> dict:
         content = last.get("content", "")
         job_id = last.get("job_id")
         agent_code = "?"
+        kb_used = 0
         if job_id:
             try:
                 job = _get(f"{api_url}/api/jobs/{job_id}")
-                routing_raw = job.get("routing_output") or "{}"
-                routing = json.loads(routing_raw) if isinstance(routing_raw, str) else routing_raw
-                agent_code = routing.get("agent_code", "?")
+                agent_code = job.get("agent_code", "?") or "?"
+                kb_used = job.get("kb_used", 0)
             except Exception:
                 pass
-        kb_cited = any(
-            kw in content.lower()
-            for kw in ("source", "[doc", "document")
-        )
         return {
             "agent_code": agent_code,
             "response_preview": content[:300],
             "response_length": len(content),
-            "kb_cited": kb_cited,
+            "kb_cited": bool(kb_used),
         }
     except Exception:
         return empty
@@ -322,6 +324,7 @@ def generate_log(
     simulation_reports: list[dict],
     approved_by_day: list[list[dict]],
     exchanges_by_day: list[list[dict]],
+    imported_docs_by_day: list[list[dict]] | None = None,
 ) -> None:
     logs_dir = Path("docs/Test/logs")
     logs_dir.mkdir(parents=True, exist_ok=True)
@@ -329,11 +332,14 @@ def generate_log(
     log_filename = f"{company}_{timestamp}_log.json"
     log_path = logs_dir / log_filename
 
+    if imported_docs_by_day is None:
+        imported_docs_by_day = [[] for _ in simulation_reports]
+
     n_days = len(simulation_reports)
     n_messages = sum(len(ex) for ex in exchanges_by_day)
     n_docs = sum(
-        len(simulation_reports[i].get("documents", []))
-        for i in range(n_days)
+        sum(1 for d in day_docs if d.get("status") == "INDEXED")
+        for day_docs in (imported_docs_by_day or [])
     )
 
     days_log = []
@@ -347,9 +353,10 @@ def generate_log(
             "pinned_rate": metrics.get("pinned_rate", 0),
             "kb_citation_rate": metrics.get("kb_citation_rate", 0),
         }
+        day_docs = (imported_docs_by_day[idx - 1] if imported_docs_by_day and idx - 1 < len(imported_docs_by_day) else [])
         days_log.append({
             "day": idx,
-            "docs_imported": report.get("documents", []),
+            "docs_imported": day_docs,
             "sentinel": sentinel_entry,
             "proposals_approved": len(approved),
             "exchanges": [
@@ -371,7 +378,7 @@ def generate_log(
         1
         for day_exchanges in exchanges_by_day
         for ex in day_exchanges
-        if ex.get("agent_code") == "BOSS"
+        if ex.get("agent_code") in ("BOSS", "?")
     )
 
     log_data = {
@@ -647,6 +654,7 @@ def main() -> None:
 
     approved_by_day: list[list[dict]] = []
     exchanges_by_day: list[list[dict]] = []
+    imported_docs_by_day: list[list[dict]] = []
     sentinel_report_ids: list[int] = []
 
     for idx, day_key in enumerate(sorted_days, start=1):
@@ -661,7 +669,8 @@ def main() -> None:
 
         # Étape A — import documents
         print("── Import documents ──────────────────────────")
-        import_documents(api_url, corpus_dir, doc_filenames)
+        _imported_count, day_imported_docs = import_documents(api_url, corpus_dir, doc_filenames)
+        imported_docs_by_day.append(day_imported_docs)
 
         # Étape B — conversation (réutilisée)
         print("\n── Conversation ──────────────────────────────")
@@ -696,6 +705,7 @@ def main() -> None:
     generate_log(
         api_url, run_dir, company, mode, conv_id,
         simulation_reports, approved_by_day, exchanges_by_day,
+        imported_docs_by_day=imported_docs_by_day,
     )
 
 

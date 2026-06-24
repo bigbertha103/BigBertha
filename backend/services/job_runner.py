@@ -200,8 +200,8 @@ async def process_job(job_id: int) -> None:
 
         db.execute(
             """UPDATE jobs SET status = 'DONE', completed_at = datetime('now'),
-               updated_at = datetime('now') WHERE id = ?""",
-            (job_id,),
+               updated_at = datetime('now'), kb_used = ? WHERE id = ?""",
+            (1 if kb_context else 0, job_id),
         )
         db.commit()
         logger.info("Job %d status=DONE", job_id)

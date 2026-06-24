@@ -125,6 +125,20 @@ async def import_documents(files: list[UploadFile]):
 
             db = get_connection()
             try:
+                if not chunk_ids:
+                    db.execute(
+                        "UPDATE knowledge_documents SET status='ERROR', error_message=? WHERE id=?",
+                        ("Aucun chunk extrait — format non supporté ou fichier vide", doc_id),
+                    )
+                    db.commit()
+                    results.append({
+                        "filename": filename,
+                        "status": "ERROR",
+                        "chunk_count": 0,
+                        "error": "Aucun chunk extrait — format non supporté ou fichier vide",
+                    })
+                    logger.warning("Import %s : 0 chunks extraits", filename)
+                    continue
                 db.execute(
                     """UPDATE knowledge_documents
                        SET status='INDEXED', chroma_doc_ids=?, chunk_count=?

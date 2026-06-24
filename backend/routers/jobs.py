@@ -47,6 +47,7 @@ def get_job(job_id: int):
                 "status": status,
                 "final_response": job.get("final_response"),
                 "agent_code": agent_code,
+                "kb_used": job.get("kb_used", 0),
             }
 
         if status == "ERROR":

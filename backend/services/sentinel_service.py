@@ -22,9 +22,15 @@ de l'entreprise cliente.
 ## Rapport précédent
 {PREVIOUS_REPORT}
 
-## Données d'analyse
+## Métriques calculées (valeurs exactes — ne pas modifier)
+Ces valeurs sont calculées programmatiquement depuis la base de données.
+Tu dois les utiliser telles quelles dans ta réponse JSON, sans les recalculer.
 
-### Derniers jobs ({JOB_COUNT} jobs analysés)
+- pinned_rate (cumulatif) : {PINNED_RATE}
+- boss_direct_rate (cumulatif) : {BOSS_DIRECT_RATE}
+- kb_citation_rate (cumulatif) : {KB_CITATION_RATE}
+
+## Données d'analyse — période courante ({JOB_COUNT} jobs depuis le dernier rapport)
 {JOBS_SUMMARY}
 
 ### Statistiques base de connaissance
@@ -33,8 +39,9 @@ de l'entreprise cliente.
 ## Ta mission
 
 Analyse l'évolution de la qualité de l'équipe depuis le baseline.
-Produis un rapport d'évaluation structuré et des propositions d'amélioration
-concrètes et applicables.
+Attribue un score global (0-100) en tenant compte des métriques fournies.
+Estime routing_coherence en analysant la pertinence des choix d'agent pour chaque demande.
+Produis des propositions d'amélioration concrètes ancrées sur les jobs de la période courante.
 
 Règles pour les proposals :
 - Uniquement 3 types autorisés : UPDATE_AGENT_PROMPT, UPDATE_COMPANY_RULE, ARCHIVE_DOCUMENT
@@ -44,34 +51,27 @@ Règles pour les proposals :
 - Maximum 3 proposals par rapport. 0 si rien ne le justifie.
 - Ne proposer que ce que les données observées justifient clairement.
 
-IMPORTANT : Les valeurs numériques dans l'exemple ci-dessous sont fictives et illustrent uniquement la structure JSON attendue.
-Tu dois calculer tes propres valeurs en analysant les données réelles fournies dans ce prompt.
-Ne reproduis jamais les valeurs de l'exemple — produis des valeurs qui reflètent ce que tu observes réellement dans les jobs et la KB.
-
-Format de sortie (structure uniquement — calculer toutes les valeurs à partir des données réelles) :
+Format de sortie :
 {
   "score": 45,
   "metrics": {
-    "routing_coherence": 0.60,
-    "pinned_rate": 0.20,
-    "boss_direct_rate": 0.35,
-    "kb_citation_rate": 0.40
+    "routing_coherence": 0.60
   },
   "observations": [
-    "Premier constat concret basé sur les jobs analysés — décrire ce que les données révèlent réellement.",
-    "Deuxième constat concret basé sur les données — décrire un constat différent du premier."
+    "Premier constat concret basé sur les jobs analysés.",
+    "Deuxième constat concret basé sur les données."
   ],
   "delta_vs_baseline": {
     "score_delta": 5,
     "routing_coherence_delta": 0.05,
-    "summary": "Synthèse de l'évolution observée depuis le baseline, basée sur les données réelles."
+    "summary": "Synthèse de l'évolution depuis le baseline."
   },
   "proposals": [
     {
       "proposal_type": "UPDATE_AGENT_PROMPT",
       "target": "ANALYSTE",
-      "content": "System prompt complet et réel de l'agent ici — pas un placeholder.",
-      "rationale": "Justification basée sur les observations réelles des jobs analysés.",
+      "content": "System prompt complet ici.",
+      "rationale": "Justification basée sur les observations réelles.",
       "previous_value": null
     }
   ]
@@ -95,21 +95,75 @@ def _build_profil_entreprise(db: sqlite3.Connection) -> str:
     return "\n".join(parts)
 
 
-def _build_jobs_summary(db: sqlite3.Connection) -> tuple[str, int]:
-    rows = db.execute(
-        """SELECT j.id, j.routing_output, j.agent_input, j.agent_output,
-                  j.final_response,
-                  COUNT(pc.id) as pinned_count
-           FROM jobs j
-           LEFT JOIN pinned_context pc ON pc.job_id = j.id AND pc.is_active = 1
-           WHERE j.status = 'DONE'
-           GROUP BY j.id
-           ORDER BY j.id DESC
-           LIMIT 50"""
-    ).fetchall()
+def _get_previous_sentinel_timestamp(db: sqlite3.Connection) -> str | None:
+    row = db.execute(
+        "SELECT created_at FROM sentinel_reports ORDER BY created_at DESC LIMIT 1"
+    ).fetchone()
+    return row["created_at"] if row else None
+
+
+def _compute_metrics(db: sqlite3.Connection) -> dict:
+    total = db.execute(
+        "SELECT COUNT(*) FROM jobs WHERE status='DONE'"
+    ).fetchone()[0]
+
+    if total == 0:
+        return {"pinned_rate": 0.0, "boss_direct_rate": 0.0, "kb_citation_rate": 0.0}
+
+    pinned_jobs = db.execute(
+        """SELECT COUNT(DISTINCT j.id) FROM jobs j
+           JOIN pinned_context pc ON pc.job_id = j.id AND pc.is_active = 1
+           WHERE j.status = 'DONE'"""
+    ).fetchone()[0]
+
+    boss_jobs = db.execute(
+        """SELECT COUNT(*) FROM jobs
+           WHERE status = 'DONE'
+             AND routing_output LIKE '%"agent_code": "BOSS"%'"""
+    ).fetchone()[0]
+
+    kb_jobs = db.execute(
+        """SELECT COUNT(*) FROM jobs
+           WHERE status = 'DONE'
+             AND kb_used = 1"""
+    ).fetchone()[0]
+
+    return {
+        "pinned_rate": round(pinned_jobs / total, 2),
+        "boss_direct_rate": round(boss_jobs / total, 2),
+        "kb_citation_rate": round(kb_jobs / total, 2),
+    }
+
+
+def _build_jobs_summary(db: sqlite3.Connection, since_ts: str | None) -> tuple[str, int]:
+    if since_ts:
+        rows = db.execute(
+            """SELECT j.id, j.routing_output, j.agent_input, j.agent_output,
+                      j.final_response,
+                      COUNT(pc.id) as pinned_count
+               FROM jobs j
+               LEFT JOIN pinned_context pc ON pc.job_id = j.id AND pc.is_active = 1
+               WHERE j.status = 'DONE' AND j.created_at > ?
+               GROUP BY j.id
+               ORDER BY j.id DESC
+               LIMIT 50""",
+            (since_ts,),
+        ).fetchall()
+    else:
+        rows = db.execute(
+            """SELECT j.id, j.routing_output, j.agent_input, j.agent_output,
+                      j.final_response,
+                      COUNT(pc.id) as pinned_count
+               FROM jobs j
+               LEFT JOIN pinned_context pc ON pc.job_id = j.id AND pc.is_active = 1
+               WHERE j.status = 'DONE'
+               GROUP BY j.id
+               ORDER BY j.id DESC
+               LIMIT 50"""
+        ).fetchall()
 
     if not rows:
-        return "(aucun job DONE disponible)", 0
+        return "(aucun job DONE disponible pour cette période)", 0
 
     lines = []
     for r in rows:
@@ -160,7 +214,6 @@ def _format_report_for_prompt(row) -> str:
 
 async def run_analysis(db: sqlite3.Connection) -> dict:
     profil = _build_profil_entreprise(db)
-    jobs_summary, job_count = _build_jobs_summary(db)
     kb_stats = _build_kb_stats(db)
 
     baseline_row = db.execute(
@@ -173,6 +226,11 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
     is_first_run = db.execute(
         "SELECT COUNT(*) FROM sentinel_reports"
     ).fetchone()[0] == 0
+
+    # Dual-window : métriques cumulatives + jobs de la période courante pour le LLM
+    since_ts = _get_previous_sentinel_timestamp(db)
+    computed_metrics = _compute_metrics(db)
+    jobs_summary, job_count = _build_jobs_summary(db, since_ts=since_ts)
 
     baseline_text = (
         "(aucun baseline — ce rapport sera le baseline)"
@@ -190,6 +248,9 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
         .replace("{PROFIL_ENTREPRISE}", profil)
         .replace("{BASELINE_REPORT}", baseline_text)
         .replace("{PREVIOUS_REPORT}", previous_text)
+        .replace("{PINNED_RATE}", str(computed_metrics["pinned_rate"]))
+        .replace("{BOSS_DIRECT_RATE}", str(computed_metrics["boss_direct_rate"]))
+        .replace("{KB_CITATION_RATE}", str(computed_metrics["kb_citation_rate"]))
         .replace("{JOB_COUNT}", str(job_count))
         .replace("{JOBS_SUMMARY}", jobs_summary)
         .replace("{KB_STATS}", kb_stats)
@@ -233,7 +294,12 @@ async def run_analysis(db: sqlite3.Connection) -> dict:
         raise ValueError(f"Réponse SENTINEL inattendue — type {type(parsed).__name__} au lieu de dict")
 
     score = int(parsed.get("score", 0))
-    metrics = parsed.get("metrics", {})
+    # Métriques LLM limitées à routing_coherence — les autres sont écrasées par les valeurs calculées
+    llm_metrics = parsed.get("metrics", {})
+    metrics = {
+        "routing_coherence": round(float(llm_metrics.get("routing_coherence", 0.0)), 2),
+        **computed_metrics,
+    }
     observations = parsed.get("observations", [])
     delta = parsed.get("delta_vs_baseline", None)
     if is_first_run:

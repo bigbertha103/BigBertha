@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     agent_output TEXT,
     final_response TEXT,
     error_message TEXT,
+    kb_used INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now')),
     completed_at TEXT,
@@ -236,6 +237,14 @@ def init_db() -> None:
             logger.info("Migration : colonne previous_conversation_id ajoutée.")
         except Exception:
             pass
+        try:
+            conn.execute(
+                "ALTER TABLE jobs ADD COLUMN kb_used INTEGER NOT NULL DEFAULT 0"
+            )
+            conn.commit()
+            logger.info("Migration : colonne kb_used ajoutée à jobs.")
+        except Exception:
+            pass
     finally:
         conn.close()
 
@@ -313,13 +322,13 @@ def seed_agents() -> None:
             ("boss_synthesis_prompt", ""),
             ("sentinel_suggestion_pending", "0"),
             ("active_test_session_id", ""),
-            ("routing_model_cost",   "meta-llama/llama-3.1-8b-instruct"),
+            ("routing_model_cost",   "qwen/qwen-2.5-7b-instruct"),
             ("routing_model_perf",   "anthropic/claude-haiku-4-5"),
             ("agent_model_cost",     "mistralai/mistral-nemo"),
             ("agent_model_perf",     "anthropic/claude-sonnet-4-5"),
             ("synthesis_model_cost", "mistralai/mistral-nemo"),
             ("synthesis_model_perf", "anthropic/claude-sonnet-4-5"),
-            ("sentinel_model_cost",  "meta-llama/llama-3.1-8b-instruct"),
+            ("sentinel_model_cost",  "qwen/qwen-2.5-7b-instruct"),
             ("sentinel_model_perf",  "anthropic/claude-sonnet-4-5"),
             ("archiviste_model_cost","meta-llama/llama-3.1-8b-instruct"),
             ("archiviste_model_perf","anthropic/claude-haiku-4-5"),
