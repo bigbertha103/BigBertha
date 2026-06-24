@@ -1,5 +1,10 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-06-24 — Corrections post-test Neuraltech (session 32)
+- [P1] `kb_citation_rate` bloqué à 0 (structural) : ajout champ `kb_used` dans `jobs`, setter dans `job_runner.py`, calcul dans `sentinel_service.py`, lecture dans `simulate_all.py`, exposition dans `jobs.py`
+- [P2] Fichiers `.doc` 0 chunks silencieux : `knowledge.py` → marque `ERROR` si chunk_count=0 après parsing
+- [P3] `sentinel_model_cost` default `meta-llama/llama-3.1-8b-instruct` → `qwen/qwen-2.5-7b-instruct`
+
 ## 2026-06-24 — Clôture session 31 — fix content_hash UNIQUE + résultats test Neuraltech
 - `backend/routers/knowledge.py` : fix UNIQUE constraint sur `content_hash` — doc archivé (is_active=0) supprimé proprement avant réinsertion (évite HTTP 500 lors de réimport après ARCHIVE_DOCUMENT)
 - Test Neuraltech Consulting (OpenRouter, 7 jours, mode court) : score 60→45 (delta -15), 14 proposals approuvées, routing 100% qwen, 0 fallback BOSS ✅
