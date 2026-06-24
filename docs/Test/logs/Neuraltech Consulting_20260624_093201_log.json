@@ -1,0 +1,208 @@
+{
+  "meta": {
+    "company": "Neuraltech Consulting",
+    "mode": "court",
+    "date": "2026-06-24T09:32:01",
+    "n_days": 7,
+    "n_messages": 14,
+    "n_docs": 0
+  },
+  "days": [
+    {
+      "day": 1,
+      "docs_imported": [],
+      "sentinel": {
+        "score": 50,
+        "routing_coherence": 0.65,
+        "pinned_rate": 0.23,
+        "kb_citation_rate": 0.43
+      },
+      "proposals_approved": 2,
+      "exchanges": [
+        {
+          "message": "J'ai trouvé cet article qui compare les 4 modèles frontier en 2026. On doit décider quel modèle utiliser pour nos cas d'usage client. Ça dit quoi sur le coding et le reasoning ?",
+          "agent_code": "?",
+          "response_preview": "Merci pour cet article. Il semble intéressant. Concernant le coding et le reasoning, pouvez-vous préciser ce que vous attendez de ces fonctionnalités pour vos cas d'utilisation ?",
+          "response_length": 178,
+          "kb_cited": false
+        },
+        {
+          "message": "Est-ce que tu peux me résumer les forces et faiblesses de chaque modèle selon nos besoins — on est plutôt sur de la rédaction et de l'automatisation métier",
+          "agent_code": "?",
+          "response_preview": "Voici un résumé des forces et faiblesses des différents modèles frontaliers en fonction de vos besoins en rédaction et automatisation métier :\n\n* Modèles de transformateur :\n\t+ Forces : Capacité à générer du texte cohérent et contextuellement approprié, capacité à comprendre le contexte et à générer",
+          "response_length": 2652,
+          "kb_cited": true
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "docs_imported": [],
+      "sentinel": {
+        "score": 58,
+        "routing_coherence": 0.68,
+        "pinned_rate": 0.25,
+        "kb_citation_rate": 0.5
+      },
+      "proposals_approved": 1,
+      "exchanges": [
+        {
+          "message": "J'ai lu que les pénuries de chips mémoire vont continuer jusqu'en 2027 à cause des data centers IA. Ça impacte quoi pour nous si on veut déployer localement ?",
+          "agent_code": "?",
+          "response_preview": "Bonjour ! Les pénuries de chips mémoire sont effectivement un enjeu actuel dans le secteur de l'IA. Si vous prévoyez de déployer localement des data centers, il est important de prendre en compte cette contrainte. Cependant, il est difficile de prédire avec précision comment cette situation va évolu",
+          "response_length": 455,
+          "kb_cited": false
+        },
+        {
+          "message": "Les prix des composants vont monter — on devrait checker nos budgets infrastructure avant de scaler",
+          "agent_code": "?",
+          "response_preview": "Merci pour cette information. Nous allons donc inclure une vérification des budgets infrastructure dans notre processus de planification. Pouvez-vous nous donner plus de détails sur les hausses de prix prévues ?",
+          "response_length": 211,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "docs_imported": [],
+      "sentinel": {
+        "score": 52,
+        "routing_coherence": 0.65,
+        "pinned_rate": 0.25,
+        "kb_citation_rate": 0.45
+      },
+      "proposals_approved": 1,
+      "exchanges": [
+        {
+          "message": "Je lis qu'on doit penser souveraineté et contrôle local des données. C'est quoi exactement l'AI Factory Architecture ? Comment ça s'intègre avec nos besoins ?",
+          "agent_code": "?",
+          "response_preview": "L'AI Factory Architecture est un cadre de conception pour la création de systèmes d'IA évolutifs et scalables. Elle est composée de plusieurs éléments clés qui travaillent ensemble pour permettre la création, le déploiement et la gestion de modèles d'IA de manière efficace et contrôlée. Voici les pr",
+          "response_length": 2894,
+          "kb_cited": true
+        },
+        {
+          "message": "On parle de routage multi-fournisseurs et d'exécution sur clusters Kubernetes — c'est pour ça que tu mentionnes la mémoire entreprise et le cloisonnement par tenant ?",
+          "agent_code": "?",
+          "response_preview": "En effet, pour assurer un routage multi-fournisseurs et une exécution sur clusters Kubernetes, il est crucial de prendre en compte la mémoire entreprise et le cloisonnement par tenant. Cela permet de garantir une gestion efficace des ressources et une sécurité renforcée.",
+          "response_length": 271,
+          "kb_cited": true
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "docs_imported": [],
+      "sentinel": {
+        "score": 58,
+        "routing_coherence": 0.68,
+        "pinned_rate": 0.28,
+        "kb_citation_rate": 0.5
+      },
+      "proposals_approved": 2,
+      "exchanges": [
+        {
+          "message": "Je dois comprendre les 7 couches du stack local IA — modèles, serving, RAG, agents, gouvernance. Tu peux détailler ce qui manque dans notre architecture actuelle ?",
+          "agent_code": "?",
+          "response_preview": "La souveraineté des données est un concept clé dans le domaine de l'IA, qui implique que les données sensibles soient stockées et traitées sur des serveurs locaux plutôt que sur des serveurs cloud tiers. Cela garantit que les données sensibles ne soient pas exposées à des tiers et assurent ainsi la ",
+          "response_length": 2716,
+          "kb_cited": true
+        },
+        {
+          "message": "Comment on gouverne les agents avant exécution ? Politiques, budgets, approbations — c'est quoi les best practices terrain ?",
+          "agent_code": "?",
+          "response_preview": "Pour gérer les agents avant exécution, il est important de mettre en place des politiques claires en matière de données, notamment en ce qui concerne la protection de la vie privée, la sécurité des données et la conformité aux réglementations en vigueur. Il est également important de définir des règ",
+          "response_length": 674,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "docs_imported": [],
+      "sentinel": {
+        "score": 50,
+        "routing_coherence": 0.62,
+        "pinned_rate": 0.25,
+        "kb_citation_rate": 0.42
+      },
+      "proposals_approved": 2,
+      "exchanges": [
+        {
+          "message": "J'ai un doc technique sur les architectures GPU NVIDIA — H100, H200, B200. C'est quoi vraiment le problème de bande passante mémoire pour les LLM ?",
+          "agent_code": "?",
+          "response_preview": "Bonjour !\n\nLes modèles de langage de grande taille (LLM) comme moi-même nécessitent une grande quantité de mémoire pour stocker leurs paramètres. Les cartes graphiques (GPU) comme les NVIDIA H100, H200 et B200 sont souvent utilisées pour entraîner et exécuter ces modèles. Cependant, la bande passant",
+          "response_length": 674,
+          "kb_cited": false
+        },
+        {
+          "message": "Si la bande passante est le vrai goulet et pas la compute, ça change comment on doit sélectionner notre hardware pour l'inférence locale ?",
+          "agent_code": "?",
+          "response_preview": "Si la bande passante est le vrai goulet et pas la compute, il est important de comprendre que la bande passante est limitée par la vitesse de la mémoire et du bus de données. Pour améliorer la bande passante sans augmenter la consommation de puissance ou le coût, il peut être judicieux de considérer",
+          "response_length": 416,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "docs_imported": [],
+      "sentinel": {
+        "score": 53,
+        "routing_coherence": 0.66,
+        "pinned_rate": 0.25,
+        "kb_citation_rate": 0.45
+      },
+      "proposals_approved": 3,
+      "exchanges": [
+        {
+          "message": "Récap de ma réflexion : on a des modèles frontier qui performent différemment, une pénurie de chips qui dure, et des contraintes mémoire GPU réelles. Quel mix local + cloud on recommande ?",
+          "agent_code": "?",
+          "response_preview": "Merci pour ces éléments de contexte. En effet, la performance des modèles Frontier varie et la pénurie de chips pose un défi supplémentaire. Les contraintes mémoire GPU doivent également être prises en compte. Pour répondre à votre question, nous recommandons un mix de traitement local et cloud. Les",
+          "response_length": 685,
+          "kb_cited": true
+        },
+        {
+          "message": "Je dois proposer un roadmap pour nos déploiements — souverain, local, cost-efficient. Tu as un plan cohérent avec tout ce qu'on a vu ?",
+          "agent_code": "?",
+          "response_preview": "Bien sûr, voici un plan en trois étapes pour vos déploiements :\n\n1. **Souveraineté** : Nous commencerons par mettre en place des serveurs et des infrastructures de calcul sur votre territoire. Cela garantira la souveraineté de vos données et vous donnera un contrôle total sur leur traitement.\n\n2. **",
+          "response_length": 1000,
+          "kb_cited": true
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "docs_imported": [],
+      "sentinel": {
+        "score": 58,
+        "routing_coherence": 0.67,
+        "pinned_rate": 0.24,
+        "kb_citation_rate": 0.47
+      },
+      "proposals_approved": 2,
+      "exchanges": [
+        {
+          "message": "On est prêts à lancer un POC souverain avec orchestration d'agents. Quelles sont les règles de gouvernance qu'on met en place dès le départ ?",
+          "agent_code": "?",
+          "response_preview": "Pour garantir un POC souverain avec orchestration d'agents, il est crucial de mettre en place des règles de gouvernance dès le départ. Voici quelques éléments clés à prendre en compte :\n\n1. Définir les responsabilités et les rôles : Établir clairement les responsabilités de chaque partie prenante, n",
+          "response_length": 1290,
+          "kb_cited": false
+        },
+        {
+          "message": "Audit, révocation, journal de prompts, sélection auto de modèles selon la tâche — par où on commence concrètement sur nos équipes ?",
+          "agent_code": "?",
+          "response_preview": "Pour mettre en place un audit, une révocation, un journal de prompts et un système de sélection automatique de modèles selon la tâche chez Neuraltech Consulting, voici les étapes concrètes à suivre :\n\n1. Définir les critères de sélection des modèles : Il est important de définir les critères de séle",
+          "response_length": 2048,
+          "kb_cited": true
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "score_start": 50,
+    "score_end": 58,
+    "delta": "+8",
+    "total_proposals_approved": 13,
+    "routing_fallback_count": 0
+  }
+}

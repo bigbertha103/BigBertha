@@ -29,7 +29,7 @@ Puis créer la structure de dossiers section 4.
 | V1 | Même architecture locale, appels LLM via OpenRouter |
 | Statut | V1 build complet — en cours de validation |
 | Utilisateurs | Employés de l'entreprise cliente, réseau interne |
-| Dernière mise à jour | 2026-06-20 |
+| Dernière mise à jour | 2026-06-24 |
 
 ---
 ## 2. STACK TECHNIQUE (figé)
@@ -477,6 +477,16 @@ Règles métier :
 ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et papers IA, comparatifs d'outils
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
+
+### Résultat de la session — 2026-06-24 (session 28)
+- Test apprentissage **Neuraltech Consulting** (court, 7j, COST) terminé — log JSON : `docs/Test/logs/Neuraltech Consulting_20260624_093201_log.json`
+- Score SENTINEL : 50 → 58 (+8), oscillant (50→58→52→58→50→53→58), 13 proposals approuvées
+- Fix `tests/plan_simulation.py` : strip markdown fences avant `json.loads` (le modèle retourne ```json ... ```)
+- **Bugs identifiés non corrigés :**
+  - P1 — `routing_model_cost` (`meta-llama/llama-3.1-8b-instruct`) génère JSON invalide avec prefill : `{"agent_code": "["ANALYSTE"]` → 36% de fallback routing
+  - P2 — `simulate_all.py` : `routing_fallback_count`, `docs_imported`, `agent_code` tous faux dans le log JSON (valeurs 0/[]/?)
+  - P3 — `base.md` import ERROR en session de test (jours 3, 4, 6, 7) — cause inconnue
+  - P4 — Score SENTINEL oscillant sur 7j — à observer sur mode `moyen` (14j)
 
 ### Résultat de la session — 2026-06-22 (session 27)
 - `docs/Prompt/lancement_test_apprentissage.md` réécrit — protocole complet 5 étapes : 4 questions collecte avec détail mode/durée/day-duration/modèle, critères de validation plan, commandes exactes étape 4 et 5, tableau 10 entreprises avec types de fichiers (md/txt/pdf/docx) ; section 12 ajoutée dans PROJET_CONTEXTE

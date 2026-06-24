@@ -189,8 +189,22 @@ def call_openrouter(api_key: str, model: str, system_prompt: str, user_prompt: s
 
 # ── Étape 3 — Parse et validation ────────────────────────────────────────────
 
+def _strip_markdown_fences(text: str) -> str:
+    """Retire les blocs ```json ... ``` que certains modèles ajoutent autour du JSON."""
+    text = text.strip()
+    if text.startswith("```"):
+        lines = text.split("\n")
+        start = 1  # saute la ligne ```json ou ```
+        end = len(lines)
+        if lines[-1].strip() == "```":
+            end -= 1
+        text = "\n".join(lines[start:end]).strip()
+    return text
+
+
 def parse_and_validate(raw_json: str, available_files: set, company: str) -> list:
     """Parse le JSON LLM, valide les noms de fichiers, retourne la liste days."""
+    raw_json = _strip_markdown_fences(raw_json)
     try:
         data = json.loads(raw_json)
     except json.JSONDecodeError as e:

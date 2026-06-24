@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "company": "Neuraltech Consulting",
+    "mode": "court",
+    "generated_at": "2026-06-24T09:15:38",
+    "n_days": 7
+  },
+  "days": {
+    "1": {
+      "theme": "Panorama IA 2026 et choix de modèles pour l'entreprise",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/AI Models in 2026_ Which One Should You Actually Use_.pdf"
+      ],
+      "messages": [
+        "J'ai trouvé cet article qui compare les 4 modèles frontier en 2026. On doit décider quel modèle utiliser pour nos cas d'usage client. Ça dit quoi sur le coding et le reasoning ?",
+        "Est-ce que tu peux me résumer les forces et faiblesses de chaque modèle selon nos besoins — on est plutôt sur de la rédaction et de l'automatisation métier"
+      ]
+    },
+    "2": {
+      "theme": "Enjeux d'infrastructure IA et shortage de mémoire",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/As AI gobbles up memory chips, prices for devices may rise _ NPR.md",
+        "../../../../Samples/Neuraltech Consulting/Memory chip shortage to last through 2027_ Synopsys CEO.txt"
+      ],
+      "messages": [
+        "J'ai lu que les pénuries de chips mémoire vont continuer jusqu'en 2027 à cause des data centers IA. Ça impacte quoi pour nous si on veut déployer localement ?",
+        "Les prix des composants vont monter — on devrait checker nos budgets infrastructure avant de scaler"
+      ]
+    },
+    "3": {
+      "theme": "Souveraineté IA et architecture locale",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md",
+        "../../../../Samples/Neuraltech Consulting/EDB Docs - EDB Postgres AI Innovation Release - AI Factory Architecture on Hybrid Manager.doc"
+      ],
+      "messages": [
+        "Je lis qu'on doit penser souveraineté et contrôle local des données. C'est quoi exactement l'AI Factory Architecture ? Comment ça s'intègre avec nos besoins ?",
+        "On parle de routage multi-fournisseurs et d'exécution sur clusters Kubernetes — c'est pour ça que tu mentionnes la mémoire entreprise et le cloisonnement par tenant ?"
+      ]
+    },
+    "4": {
+      "theme": "Stack local d'entreprise et orchestration",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/The Enterprise Local AI Stack_ Models, Serving, RAG, Agents, Governance _ VDF AI.doc",
+        "../../../../Samples/Neuraltech Consulting/base.md"
+      ],
+      "messages": [
+        "Je dois comprendre les 7 couches du stack local IA — modèles, serving, RAG, agents, gouvernance. Tu peux détailler ce qui manque dans notre architecture actuelle ?",
+        "Comment on gouverne les agents avant exécution ? Politiques, budgets, approbations — c'est quoi les best practices terrain ?"
+      ]
+    },
+    "5": {
+      "theme": "Matériel GPU et goulets d'étranglement mémoire",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/theorempath_com.pdf"
+      ],
+      "messages": [
+        "J'ai un doc technique sur les architectures GPU NVIDIA — H100, H200, B200. C'est quoi vraiment le problème de bande passante mémoire pour les LLM ?",
+        "Si la bande passante est le vrai goulet et pas la compute, ça change comment on doit sélectionner notre hardware pour l'inférence locale ?"
+      ]
+    },
+    "6": {
+      "theme": "Convergence architecture et décision d'infra",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md",
+        "../../../../Samples/Neuraltech Consulting/AI Models in 2026_ Which One Should You Actually Use_.pdf",
+        "../../../../Samples/Neuraltech Consulting/theorempath_com.pdf"
+      ],
+      "messages": [
+        "Récap de ma réflexion : on a des modèles frontier qui performent différemment, une pénurie de chips qui dure, et des contraintes mémoire GPU réelles. Quel mix local + cloud on recommande ?",
+        "Je dois proposer un roadmap pour nos déploiements — souverain, local, cost-efficient. Tu as un plan cohérent avec tout ce qu'on a vu ?"
+      ]
+    },
+    "7": {
+      "theme": "Mise en action : gouvernance et déploiement terrain",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md",
+        "../../../../Samples/Neuraltech Consulting/The Enterprise Local AI Stack_ Models, Serving, RAG, Agents, Governance _ VDF AI.doc"
+      ],
+      "messages": [
+        "On est prêts à lancer un POC souverain avec orchestration d'agents. Quelles sont les règles de gouvernance qu'on met en place dès le départ ?",
+        "Audit, révocation, journal de prompts, sélection auto de modèles selon la tâche — par où on commence concrètement sur nos équipes ?"
+      ]
+    }
+  }
+}
