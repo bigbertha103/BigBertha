@@ -44,6 +44,16 @@ Autre valeur possible si on veut tester la stabilité dans le temps (ex : `300` 
 - `COST` — Mistral-Nemo (défaut, rapide, économique)
 - `PERFORMANCE` — selon config `routing_model_perf` dans les Settings
 
+**5. Moteur LLM ?**
+- `openrouter` — appels via OpenRouter (défaut en production)
+- `ollama` — appels via Ollama local (v2-machine uniquement)
+
+Si la réponse diffère de la valeur actuelle en DB, exécuter **avant** le lancement du test :
+```
+python -c "import sqlite3; db=sqlite3.connect('backend/data/bigbertha.db'); db.execute(\"UPDATE app_config SET value='{mode}' WHERE key='inference_mode'\"); db.commit(); print('inference_mode → {mode}')"
+```
+*(remplacer `{mode}` par `openrouter` ou `ollama`)*
+
 ---
 
 ## Étape 2 — Génération du plan

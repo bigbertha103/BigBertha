@@ -1,5 +1,18 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-06-24 — Clôture session 30 — fix inference_mode + protocole lancement
+- `.env` : ajout `INFERENCE_MODE=openrouter` (DB fraîches correctement initialisées)
+- `docs/Prompt/lancement_test_apprentissage.md` : Q5 ajoutée (moteur LLM openrouter/ollama + commande SQLite de mise à jour avant test)
+- [DOC] docs/BASE/langage.md — "Inference mode" scindé en "Mode de performance" (perf_mode COST/PERFORMANCE) et "Moteur LLM" (inference_mode openrouter/ollama)
+
+## 2026-06-24 — Corrections P1/P2 + UX DUPLICATE (session 29)
+- `backend/database.py` : `routing_model_cost` par défaut `qwen/qwen-2.5-7b-instruct` (corrige P1 JSON routing invalide)
+- `backend/services/boss_service.py` : `VALID_AGENT_CODES` + validation `agent_code` dans `run_routing()` ; commentaire reconstruction JSON mis à jour
+- `backend/services/context_builder.py` : suppression du prefill assistant `{"agent_code": "..."` dans `build_routing_payload()`
+- `tests/simulate_all.py` : `import_documents()` retourne `list[dict]` avec statut `NOT_FOUND` ; `generate_log()` compte uniquement `INDEXED` et lit `imported_docs_by_day` par `idx-1`
+- `frontend/settings.js` : statut `DUPLICATE` affiché comme info neutre (pas d'erreur rouge)
+- Validation : `py_compile` OK sur les 4 fichiers Python
+
 ## 2026-06-22 — Clôture session — mise à jour docs/BASE
 - [DOC] docs/BASE/langage.md — section "Termes simulation et tests" ajoutée (plan de simulation, run, log JSON, geste employé, mode court/moyen/long)
 - [DOC] docs/BASE/Tech/architecture.md — structure dossiers complétée (docs/Test/runs/, docs/Test/logs/, docs/Prompt/, détail tests/)

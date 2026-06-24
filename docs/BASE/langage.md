@@ -1,6 +1,6 @@
 ---
 owner: Kinder + tezcatlypoca
-last_updated: 2026-06-22 (session simulation)
+last_updated: 2026-06-24
 review_every: 30j
 ---
 
@@ -60,8 +60,11 @@ review_every: 30j
 **Sample** : entreprise fictive pour tests d'apprentissage. Dossier dans `Samples/` avec documents + script de simulation. 9 entreprises fake disponibles. Profil de test prod = "Neuraltech Consulting".
 | N'est PAS : une démo pour vrai client, un template d'onboarding.
 
-**Inference mode** : mode de sélection des modèles LLM. COST (modèles légers) ou PERFORMANCE (modèles puissants). Toggle `perf_mode` dans les settings. 11 clés `app_config`, une par tâche.
+**Mode de performance** : sélection du niveau de qualité des modèles LLM. COST (modèles légers, rapides, économiques) ou PERFORMANCE (modèles puissants). Toggle `perf_mode` dans les Settings. 11 clés `app_config` distinctes, une par tâche (routing, agents, synthesis, sentinel, archiviste).
 | N'est PAS : un paramètre par requête, un indicateur de vitesse affiché à l'utilisateur.
+
+**Moteur LLM** : moteur d'inférence utilisé pour tous les appels LLM. Clé `inference_mode` dans `app_config`. Valeurs : `openrouter` (cloud, phase dev/test) ou `ollama` (local, cible v2-machine). Non exposé dans les Settings UI — modifiable uniquement via SQLite direct ou via Q5 du protocole de lancement de test.
+| N'est PAS : le mode de performance COST/PERFORMANCE (clé `perf_mode`), un paramètre par appel.
 
 ---
 
