@@ -1,5 +1,8 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-06-24 — Clôture session 32
+- [DOC] docs/BASE/Tech/architecture.md — table jobs : ajout mention champ kb_used (traceur utilisation RAG, source de vérité kb_citation_rate)
+
 ## 2026-06-24 — Corrections post-test Neuraltech (session 32)
 - [P1] `kb_citation_rate` bloqué à 0 (structural) : ajout champ `kb_used` dans `jobs`, setter dans `job_runner.py`, calcul dans `sentinel_service.py`, lecture dans `simulate_all.py`, exposition dans `jobs.py`
 - [P2] Fichiers `.doc` 0 chunks silencieux : `knowledge.py` → marque `ERROR` si chunk_count=0 après parsing

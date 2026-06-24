@@ -1,6 +1,6 @@
 ---
 owner: Kinder
-last_updated: 2026-06-22
+last_updated: 2026-06-24
 review_every: 30j
 ---
 
@@ -81,7 +81,7 @@ Deux blocs ajoutés en V2 :
 
 - `conversations` — statut active/archived, lien `previous_conversation_id`
 - `messages` — rôles user/boss
-- `jobs` — pipeline de traitement
+- `jobs` — pipeline de traitement ; champ `kb_used` (1 si le RAG avait du contexte à injecter, 0 sinon — source de vérité pour `kb_citation_rate` SENTINEL)
 - `agents` — prompts système des agents
 - `pinned_context` — éléments épinglés (soft-delete)
 - `app_config` — configuration clé/valeur

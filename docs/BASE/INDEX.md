@@ -10,7 +10,7 @@
 |---|---|---|---|
 | [langage.md](langage.md) | Glossaire commun — définitions non-négociables | 2026-06-24 | Kinder + tezcatlypoca |
 | [elements_figes.md](elements_figes.md) | Décisions inviolables du projet | 2026-06-22 | Kinder |
-| [Tech/architecture.md](Tech/architecture.md) | Stack, structure, principes techniques | 2026-06-22 | Kinder |
+| [Tech/architecture.md](Tech/architecture.md) | Stack, structure, principes techniques | 2026-06-24 | Kinder |
 | [Produit/vision.md](Produit/vision.md) | Vision produit, cible, proposition de valeur | 2026-06-21 | Kinder + tezcatlypoca |
 | [Commercial/tarification.md](Commercial/tarification.md) | Pricing, modèle commercial | 2026-06-21 | Kinder + tezcatlypoca |
 | [Juridique/](Juridique/) | *(vide — à alimenter)* | — | — |
