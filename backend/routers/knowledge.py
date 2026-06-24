@@ -77,17 +77,21 @@ async def import_documents(files: list[UploadFile]):
         db = get_connection()
         try:
             existing = db.execute(
-                "SELECT id FROM knowledge_documents WHERE content_hash = ? AND is_active = 1",
+                "SELECT id, is_active FROM knowledge_documents WHERE content_hash = ?",
                 (content_hash,),
             ).fetchone()
             if existing:
-                results.append({
-                    "filename": filename,
-                    "status": "ERROR",
-                    "chunk_count": 0,
-                    "error": "Document déjà importé",
-                })
-                continue
+                if existing["is_active"] == 1:
+                    results.append({
+                        "filename": filename,
+                        "status": "DUPLICATE",
+                        "chunk_count": 0,
+                        "error": None,
+                    })
+                    continue
+                # Doc précédemment archivé (is_active=0) — supprimer l'entrée pour permettre la réinsertion
+                db.execute("DELETE FROM knowledge_documents WHERE id = ?", (existing["id"],))
+                db.commit()
 
             cur = db.execute(
                 """INSERT INTO knowledge_documents

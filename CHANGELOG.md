@@ -1,5 +1,10 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-06-24 — Clôture session 31 — fix content_hash UNIQUE + résultats test Neuraltech
+- `backend/routers/knowledge.py` : fix UNIQUE constraint sur `content_hash` — doc archivé (is_active=0) supprimé proprement avant réinsertion (évite HTTP 500 lors de réimport après ARCHIVE_DOCUMENT)
+- Test Neuraltech Consulting (OpenRouter, 7 jours, mode court) : score 60→45 (delta -15), 14 proposals approuvées, routing 100% qwen, 0 fallback BOSS ✅
+- Bugs résiduels non bloquants : 2 fichiers .doc (0 chunks, content type mismatch) ; score oscillant phénomène connu
+
 ## 2026-06-24 — Clôture session 30 — fix inference_mode + protocole lancement
 - `.env` : ajout `INFERENCE_MODE=openrouter` (DB fraîches correctement initialisées)
 - `docs/Prompt/lancement_test_apprentissage.md` : Q5 ajoutée (moteur LLM openrouter/ollama + commande SQLite de mise à jour avant test)
