@@ -1,5 +1,9 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-06-26 — Fix plan_simulation.py : fallback .env pour clé API
+- `tests/plan_simulation.py` : `load_config_from_db()` modifiée — fallback sur `OPENROUTER_API_KEY` depuis `.env` si clé vide ou absente en DB ; ajout import `load_dotenv` ; gestion robuste de DB inexistante (pas exit d'erreur, retour config vide)
+- Corrige issue de test sur serveur : clé API en `.env` non synchronisée avec DB lors du lancement du script de simulation
+
 ## 2026-06-24 — Clôture session 32
 - [DOC] docs/BASE/Tech/architecture.md — table jobs : ajout mention champ kb_used (traceur utilisation RAG, source de vérité kb_citation_rate)
 

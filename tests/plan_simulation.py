@@ -18,6 +18,8 @@ import urllib.error
 from datetime import datetime
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # ── Bibliothèques doc (déjà dans requirements.txt) ─────────────────────────
 try:
     import pypdf
@@ -135,17 +137,32 @@ def extract_company_files(company_dir: Path) -> dict:
 # ── Étape 2 — Appel LLM ──────────────────────────────────────────────────────
 
 def load_config_from_db() -> dict:
-    """Lit openrouter_api_key et routing_model_cost depuis bigbertha.db."""
-    if not DB_PATH.exists():
-        logger.error("DB introuvable : %s", DB_PATH)
-        sys.exit(1)
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.row_factory = sqlite3.Row
-    cur = conn.execute(
-        "SELECT key, value FROM app_config WHERE key IN ('openrouter_api_key', 'routing_model_cost')"
-    )
-    config = {row["key"]: row["value"] for row in cur.fetchall()}
-    conn.close()
+    """Lit openrouter_api_key depuis bigbertha.db, avec fallback sur .env"""
+    load_dotenv()  # Charge .env en mémoire
+    
+    config = {}
+    if DB_PATH.exists():
+        try:
+            conn = sqlite3.connect(str(DB_PATH))
+            conn.row_factory = sqlite3.Row
+            cur = conn.execute(
+                "SELECT key, value FROM app_config WHERE key IN ('openrouter_api_key', 'routing_model_cost')"
+            )
+            config = {row["key"]: row["value"] for row in cur.fetchall()}
+            conn.close()
+        except Exception as e:
+            logger.warning("Impossible de lire app_config : %s", e)
+    
+    # Fallback sur .env si la clé n'est pas en DB
+    if not config.get("openrouter_api_key"):
+        api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+        if api_key:
+            config["openrouter_api_key"] = api_key
+            logger.info("Clé API chargée depuis .env")
+    
+    if not config.get("routing_model_cost"):
+        config["routing_model_cost"] = os.getenv("MODEL_ID", "")
+    
     return config
 
 
