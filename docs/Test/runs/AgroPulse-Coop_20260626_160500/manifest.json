@@ -1,0 +1,315 @@
+{
+  "meta": {
+    "company": "AgroPulse-Coop",
+    "mode": "long",
+    "generated_at": "2026-06-26T16:05:00",
+    "n_days": 30
+  },
+  "days": {
+    "1": {
+      "theme": "Découverte de l'outil et contexte coopératif",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/company_profile.md"
+      ],
+      "messages": [
+        "Salut, je suis nouveau à AgroPulse. Je dois comprendre comment l'IA peut m'aider à répondre aux adhérents plus vite. C'est quoi exactement notre positionnement ?",
+        "On a 230 coopérateurs qui appellent avec des questions différentes selon la saison. Comment l'outil peut gérer cette hétérogénéité ?"
+      ]
+    },
+    "2": {
+      "theme": "Cadre stratégique et objectifs métier",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "J'ai lu l'article interne sur le conseil assisté. Donc on doit vraiment combiner la météo ET les observations terrain, c'est pas juste des recommandations génériques ?",
+        "Comment je présente ça aux adhérents sans leur dire 'c'est de l'IA' d'une façon qui les rassure ?"
+      ]
+    },
+    "3": {
+      "theme": "Réponses aux demandes les plus fréquentes",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Un adhérent m'appelle : 'Comment je fais pour avoir une recommandation de fertilisation ?' Qu'est-ce que je lui dis exactement ?",
+        "Il demande aussi s'il peut voir ses rendements comparés aux autres. C'est possible ?"
+      ]
+    },
+    "4": {
+      "theme": "Synthèse des problématiques terrain",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "On reçoit les mêmes questions tous les jours : 'Quand traiter ?', 'Il faut combien d'azote ?' Les adhérents ne lisent pas les bulletins. Comment on leur rend ça actionnable ?",
+        "Et puis il y a ceux qui comprennent l'agronomie et ceux qui veulent juste la réponse. Comment gérer ça ?"
+      ]
+    },
+    "5": {
+      "theme": "Cas d'usage réel : demande fertilisation simple",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Bernard de Champagne appelle : il veut un avis de fertilisation pour son blé. Il a une analyse de sol d'il y a 2 ans. Comment je procède ?",
+        "Il me dit 'Vous aviez recommandé 160 kg/ha l'année dernière, c'est toujours bon ?' Je fais quoi ?"
+      ]
+    },
+    "6": {
+      "theme": "Météo et fenêtres de traitement",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "Martine demande si elle peut traiter demain contre l'oïdium. Il y a des prévisions météo quelque part que je peux lui fournir ?",
+        "Elle veut un avis rapide, pas un rapport de 5 pages. Comment je formule ?"
+      ]
+    },
+    "7": {
+      "theme": "Alertes régionales et communication collective",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Il est mercredi, c'est le jour des alertes maladies. J'en reçois une sur septoriose. Comment je la traduis pour qu'elle soit utile aux adhérents ?",
+        "Certains vont dire 'ça ne me concerne pas', d'autres 'j'ai déjà vu ça'. Comment je cible ?"
+      ]
+    },
+    "8": {
+      "theme": "Gestion de l'hétérogénéité technique",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "J'ai eu deux appels le même jour : un ingénieur agro qui veut les paramètres détaillés, un petit céréalier qui veut juste 'vert ou rouge'. Comment l'IA adapte son langage ?",
+        "Comment je me fais confiance que la recommandation est valide pour les deux ?"
+      ]
+    },
+    "9": {
+      "theme": "Historique et traçabilité des conseils",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "Sophie me rappelle 3 semaines après ma recommandation : 'Vous aviez dit de traiter, mais ça n'a pas marché.' Je dois retrouver exactement ce que j'ai dit et avec quelles données.",
+        "L'outil garde un historique ?"
+      ]
+    },
+    "10": {
+      "theme": "Contextualisation économique des recommandations",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Un adhérent : 'Vous me recommandez du cuivre, mais c'est 40 € le litre maintenant, ça casse ma marge.' Comment je prends ça en compte dans mon avis ?",
+        "L'outil peut intégrer les prix et le ROI ?"
+      ]
+    },
+    "11": {
+      "theme": "Questions sur les limites de l'IA",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Un adhérent dit : 'Votre IA va me dire de traiter pour tout ?' Je dois pouvoir dire à quel moment c'est pertinent et à quel moment ce n'est pas rentable.",
+        "Comment je reste crédible si je dis 'je ne sais pas' ou 'c'est trop risqué' ?"
+      ]
+    },
+    "12": {
+      "theme": "Intégration données météo réelle",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "Il pleut depuis 48h chez Thierry en Alsace. Les conditions sont bonnes pour le mildiou. Je dois chercher la météo locale pour confirmer ou l'outil le fait ?",
+        "Combien de temps avant une pluie on peut traiter ?"
+      ]
+    },
+    "13": {
+      "theme": "Synthèse bulletin technique → recommandation",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "Le bulletin cultures sort ce matin : 'Pression septoriose forte en région parisienne, conditions favorables jusqu'à jeudi.' Je dois l'envoyer comment aux adhérents pour qu'ils agissent ?",
+        "Comment je rends ça plus utile qu'un simple copier-coller ?"
+      ]
+    },
+    "14": {
+      "theme": "Comparaison de rendements et benchmarking",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Marc : 'J'ai fait 75 q/ha de blé, c'est bon ?' Je peux lui donner la moyenne anonymisée de ses pairs dans le secteur ?",
+        "Comment je présente ça sans que ça paraisse comme on le juge ?"
+      ]
+    },
+    "15": {
+      "theme": "Requête terrain complexe : multi-critères",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Christine : 'J'ai un champ de colza, sol argileux, pluies prévues, analyse de sol de 2023, rendement l'année dernière 42 q/ha. Qu'est-ce que je fais maintenant pour l'N ?' C'est quoi la vraie réponse ?",
+        "L'outil combine vraiment tous ces paramètres ou il me donne juste une recommandation basique ?"
+      ]
+    },
+    "16": {
+      "theme": "Cas d'échec et apprentissage",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "François a suivi un conseil et c'est allé mal. Il dit que la météo a changé brutalement. Comment je lui explique que c'était pas ma faute mais que j'aurais dû mentionner le risque ?",
+        "Comment l'outil apprend de ça pour la prochaine fois ?"
+      ]
+    },
+    "17": {
+      "theme": "Variabilité des adhérents : petit vs gros",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/company_profile.md"
+      ],
+      "messages": [
+        "J'ai un petit exploitant avec 30 ha et un gros avec 500 ha le même jour qui demandent pareil. Mais leurs enjeux économiques sont différents. Comment je différencie ?",
+        "Est-ce que l'outil sait que pour le petit, 100 € de traitement c'est critique ?"
+      ]
+    },
+    "18": {
+      "theme": "Utilisation du portail adhérent pour les recommandations",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Anne-Marie : 'Je suis pas sur le portail, vous pouvez me donner mon conseil par mail ?' Je vais chercher ses données où ? Est-ce que l'IA peut m'aider à structurer ma réponse même sans ses infos numériques ?",
+        "Comment je gère les adhérents 'analogiques' ?"
+      ]
+    },
+    "19": {
+      "theme": "Limites agronomiques et explicitation des contraintes",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Un adhérent demande : 'On peut pas juste pulvériser du glyphosate avant moisson pour accélérer la récolte ?' Je dois pouvoir dire les limites réglementaires et agronomiques clairement.",
+        "L'outil m'aide à structurer ça ?"
+      ]
+    },
+    "20": {
+      "theme": "Saisonnalité et calendrier cultural",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/company_profile.md"
+      ],
+      "messages": [
+        "C'est fin août. Les demandes vont basculer du blé/orge vers la préparation des semis d'hiver. Comment l'outil s'adapte au calendrier ?",
+        "Est-ce que je dois changer ma façon de lui poser les questions ?"
+      ]
+    },
+    "21": {
+      "theme": "Volatilité des intrants et impact sur les recommandations",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/company_profile.md",
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "Les prix de l'urée ont grimpé de 20% cette semaine. Mon conseil de fertilisation d'hier est peut-être pas pertinent aujourd'hui. L'outil suit les prix ?",
+        "Où je trouve les prix actuels rapidement ?"
+      ]
+    },
+    "22": {
+      "theme": "Conseil d'achat groupé couplé à la recommandation",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/company_profile.md"
+      ],
+      "messages": [
+        "Je recommande un traitement fongicide. On peut proposer en même temps : 'On en achète en groupe cette semaine, 15% moins cher' ?",
+        "C'est pas un conflit d'intérêt ? Comment je présente ?"
+      ]
+    },
+    "23": {
+      "theme": "Demande multi-parcelle d'un même adhérent",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Didier a 4 parcelles de blé avec des expositions différentes et des historiques différents. Il demande un conseil pour chacune. Comment l'outil gère plusieurs parcelles ?",
+        "Je dois faire 4 conseils ou je synthétise ?"
+      ]
+    },
+    "24": {
+      "theme": "Explicitation des données manquantes",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "Véronique : 'Je n'ai pas d'analyse de sol récente.' Je dois lui dire 'allez faire une analyse' ou je peux donner un conseil même incomplet ?",
+        "Comment l'outil m'indique ce qui manque pour une réponse robuste ?"
+      ]
+    },
+    "25": {
+      "theme": "Résumé et historique pour la traçabilité",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "Je dois créer un document récapitulatif pour chaque adhérent : 'Voici tous les conseils qu'on vous a donnés depuis janvier.' Comment je m'organise pour que ce soit clair et utile au-delà de 3 mois ?",
+        "L'outil généère ça automatiquement ?"
+      ]
+    },
+    "26": {
+      "theme": "Adaptation du message selon le profil d'adhérent",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "Sylvie c'est une technicienne agricole, elle veut les détails. Pierre c'est un retraité qui loue ses terres, il veut l'essentiel. Même question, deux réponses. Comment ?",
+        "Je dois paramétrer l'outil sur chaque adhérent ?"
+      ]
+    },
+    "27": {
+      "theme": "Cas d'usage : alerte maladies + fenêtre d'action",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md",
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "Alerte régionale : botrytis actif en Bourgogne ce week-end. Temps sec prévu lundi-mardi. Je dois dire à mes adhérents bourguignons : 'Vous avez ce week-end pour traiter' ?",
+        "Comment je cible par zone géographique ?"
+      ]
+    },
+    "28": {
+      "theme": "Synthèse progressive : de la question simple à l'expertise",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "Trois niveaux de réponse possibles : 'Oui/Non', 'Oui mais attention à X', 'Voici l'analyse : contexte, risques, alternatives, coûts-bénéfices.' Comment l'outil me permet de progresser selon le besoin ?",
+        "Comment je sais si l'adhérent veut le simple ou le complexe ?"
+      ]
+    },
+    "29": {
+      "theme": "Exploitation des données collectives anonymisées",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "On a les rendements de 200 parcelles. Je peux dire à Maxime : 'Vous êtes 15% au-dessus de la moyenne locale, voilà peut-être pourquoi' ?",
+        "Comment on anonymise mais reste pertinent ?"
+      ]
+    },
+    "30": {
+      "theme": "Bilan et optimisation continue",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/company_profile.md",
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Un mois d'utilisation. Les adhérents appellent moins avec des questions basiques. Nos réponses sont plus rapides. Mais comment on mesure que c'est vraiment utile et qu'on n'a pas recommandé de bêtises ?",
+        "Comment on build la confiance avec l'outil sur le long terme ?"
+      ]
+    }
+  }
+}
