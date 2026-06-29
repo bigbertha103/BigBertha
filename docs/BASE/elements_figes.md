@@ -22,6 +22,8 @@ review_every: 60j
 - `agent_code` toujours extrait de `routing_output`, jamais depuis `selected_agent_id` (NULL quand Boss répond directement)
 - `openrouter_api_key` jamais retourné en clair dans les réponses API
 - `model_name` dans `model_decision_log` : TEXT libre sans CHECK — le catalogue OpenRouter évolue fréquemment
+- **API Key validation** : `OPENROUTER_API_KEY` doit être non-vide avant construction du header Bearer. Valider tôt dans `model_router._call_openrouter()` (ligne 121). Message d'erreur : "Clé API OpenRouter manquante. Configurez-la dans Paramètres → Clé API."
+- **Learning proposals endpoint** : `GET /api/learning-proposals?status=PENDING` implémenté dans `proposals.py`. Retourne liste des proposals SENTINEL PENDING. Dépendance critique pour auto-approbation dans `simulate_all.py`.
 
 ## Architecture V2-Mémoire (figée 2026-06-21)
 

@@ -1,5 +1,10 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-06-29 — Clôture session 33 — Bug report + docs BASE (deployment + API key validation)
+- [DOC] docs/BASE/elements_figes.md — ajout 2 règles inviolables : API Key validation (OPENROUTER_API_KEY non-vide avant Bearer header) + Learning proposals endpoint (GET /api/learning-proposals?status=PENDING)
+- [DOC] docs/BASE/Tech/architecture.md — nouvelle section "Deployment Checklist" (8 vérifications pré-déploiement LBB/production)
+- [BUG] BUG_REPORT.md créé — 5 erreurs HTTP découvertes sur LBB long-run (30j Atelier-Mecaflux) : HTTP 405 import docs/SENTINEL, Bearer token vide, HTTP 404 proposals/reports ; analyse racine + fix priority
+
 ## 2026-06-26 — Fix plan_simulation.py : fallback .env pour clé API
 - `tests/plan_simulation.py` : `load_config_from_db()` modifiée — fallback sur `OPENROUTER_API_KEY` depuis `.env` si clé vide ou absente en DB ; ajout import `load_dotenv` ; gestion robuste de DB inexistante (pas exit d'erreur, retour config vide)
 - Corrige issue de test sur serveur : clé API en `.env` non synchronisée avec DB lors du lancement du script de simulation
