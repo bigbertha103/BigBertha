@@ -1,5 +1,8 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-07-04 — Contrôle pré-lancement fail-fast dans simulate_all.py
+- `tests/simulate_all.py` : ajout `_delete()` helper HTTP ; ajout `preflight()` (vérif 3 routes critiques + sonde LLM bout-en-bout avec nettoyage) ; appel `preflight()` dans `main()` après le bloc accessibilité API ; arrêt immédiat `sys.exit(1)` si 100 % des messages du jour 1 échouent ; champ `failed` ajouté par échange dans `send_messages` (transparent pour `generate_log`)
+
 ## 2026-06-29 — Clôture session 33 — Bug report + docs BASE (deployment + API key validation)
 - [DOC] docs/BASE/elements_figes.md — ajout 2 règles inviolables : API Key validation (OPENROUTER_API_KEY non-vide avant Bearer header) + Learning proposals endpoint (GET /api/learning-proposals?status=PENDING)
 - [DOC] docs/BASE/Tech/architecture.md — nouvelle section "Deployment Checklist" (8 vérifications pré-déploiement LBB/production)

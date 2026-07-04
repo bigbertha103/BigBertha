@@ -478,6 +478,10 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-07-04 (session 34)
+- `tests/simulate_all.py` : contrôle pré-lancement fail-fast ajouté — `_delete()` helper ; `preflight()` vérifie 3 routes critiques (knowledge/documents, sentinel/reports, learning-proposals) + sonde LLM bout-en-bout avec nettoyage conversation ; appel dans `main()` après vérif accessibilité ; arrêt `sys.exit(1)` si 100 % messages jour 1 échouent ; champ `failed` par échange dans `send_messages` (transparent pour `generate_log`)
+- Validation : `py_compile` OK
+
 ### Résultat de la session — 2026-06-24 (session 29)
 - Corrections P1/P2 + UX DUPLICATE appliquées
 - `backend/database.py` : `routing_model_cost` par défaut changé en `qwen/qwen-2.5-7b-instruct` (P1 — corrige JSON routing invalide généré par `meta-llama/llama-3.1-8b-instruct`)
