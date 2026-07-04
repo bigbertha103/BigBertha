@@ -1,5 +1,9 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-07-04 — Bilan de simulation fiable dans simulate_all.py (session 35)
+- `tests/simulate_all.py` `generate_log()` : source de vérité `n_days = len(exchanges_by_day)` ; normalisation des 3 tableaux avec `_pad()` avant `zip` ; `jobs_failed` par jour dans `days` ; `job_failure_count` et `sentinel_reports_collected` dans `summary`/`meta` ; `routing_fallback_count` exclut désormais les jobs en échec
+- `tests/simulate_all.py` `build_report()` : paramètre optionnel `n_days_executed` pour afficher le nombre de jours réellement parcourus ; `generate_final_report()` passe `len(sentinel_report_ids)`
+
 ## 2026-07-04 — Contrôle pré-lancement fail-fast dans simulate_all.py
 - `tests/simulate_all.py` : ajout `_delete()` helper HTTP ; ajout `preflight()` (vérif 3 routes critiques + sonde LLM bout-en-bout avec nettoyage) ; appel `preflight()` dans `main()` après le bloc accessibilité API ; arrêt immédiat `sys.exit(1)` si 100 % des messages du jour 1 échouent ; champ `failed` ajouté par échange dans `send_messages` (transparent pour `generate_log`)
 

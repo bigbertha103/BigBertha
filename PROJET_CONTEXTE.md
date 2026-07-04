@@ -478,6 +478,11 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-07-04 (session 35)
+- `tests/simulate_all.py` `generate_log()` : `n_days` basé sur `exchanges_by_day` (source de vérité) ; `_pad()` normalise les 3 tableaux avant `zip` ; `jobs_failed` par jour ; `job_failure_count` + `sentinel_reports_collected` dans le log ; `routing_fallback_count` exclut les jobs en échec
+- `tests/simulate_all.py` `build_report()` : paramètre `n_days_executed` optionnel ; `generate_final_report()` passe `len(sentinel_report_ids)` pour afficher le bon nombre de jours
+- Validation : `py_compile` OK
+
 ### Résultat de la session — 2026-07-04 (session 34)
 - `tests/simulate_all.py` : contrôle pré-lancement fail-fast ajouté — `_delete()` helper ; `preflight()` vérifie 3 routes critiques (knowledge/documents, sentinel/reports, learning-proposals) + sonde LLM bout-en-bout avec nettoyage conversation ; appel dans `main()` après vérif accessibilité ; arrêt `sys.exit(1)` si 100 % messages jour 1 échouent ; champ `failed` par échange dans `send_messages` (transparent pour `generate_log`)
 - Validation : `py_compile` OK

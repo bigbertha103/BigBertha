@@ -417,13 +417,22 @@ def generate_log(
     log_path = logs_dir / log_filename
 
     if imported_docs_by_day is None:
-        imported_docs_by_day = [[] for _ in simulation_reports]
+        imported_docs_by_day = [[] for _ in exchanges_by_day]
 
-    n_days = len(simulation_reports)
+    n_days = len(exchanges_by_day)
+
+    def _pad(lst, n, filler):
+        lst = list(lst or [])
+        return lst + [filler for _ in range(n - len(lst))]
+
+    simulation_reports = _pad(simulation_reports, n_days, {})
+    approved_by_day    = _pad(approved_by_day, n_days, [])
+    imported_docs_by_day = _pad(imported_docs_by_day, n_days, [])
+
     n_messages = sum(len(ex) for ex in exchanges_by_day)
     n_docs = sum(
         sum(1 for d in day_docs if d.get("status") == "INDEXED")
-        for day_docs in (imported_docs_by_day or [])
+        for day_docs in imported_docs_by_day
     )
 
     days_log = []
@@ -437,12 +446,13 @@ def generate_log(
             "pinned_rate": metrics.get("pinned_rate", 0),
             "kb_citation_rate": metrics.get("kb_citation_rate", 0),
         }
-        day_docs = (imported_docs_by_day[idx - 1] if imported_docs_by_day and idx - 1 < len(imported_docs_by_day) else [])
+        day_docs = (imported_docs_by_day[idx - 1] if idx - 1 < len(imported_docs_by_day) else [])
         days_log.append({
             "day": idx,
             "docs_imported": day_docs,
             "sentinel": sentinel_entry,
             "proposals_approved": len(approved),
+            "jobs_failed": sum(1 for ex in exchanges if ex.get("failed", False)),
             "exchanges": [
                 {
                     "message": ex.get("message", ""),
@@ -462,8 +472,12 @@ def generate_log(
         1
         for day_exchanges in exchanges_by_day
         for ex in day_exchanges
-        if ex.get("agent_code") in ("BOSS", "?")
+        if not ex.get("failed", False) and ex.get("agent_code") in ("BOSS", "?")
     )
+    job_failure_count = sum(
+        1 for day in exchanges_by_day for ex in day if ex.get("failed", False)
+    )
+    sentinel_reports_collected = len([r for r in simulation_reports if r])
 
     log_data = {
         "meta": {
@@ -473,6 +487,7 @@ def generate_log(
             "n_days": n_days,
             "n_messages": n_messages,
             "n_docs": n_docs,
+            "sentinel_reports_collected": sentinel_reports_collected,
         },
         "days": days_log,
         "summary": {
@@ -481,6 +496,7 @@ def generate_log(
             "delta": f"{delta:+d}",
             "total_proposals_approved": sum(len(a) for a in approved_by_day),
             "routing_fallback_count": routing_fallback_count,
+            "job_failure_count": job_failure_count,
         },
     }
 
@@ -517,8 +533,9 @@ def build_report(
     conv_id: int,
     reports: list[dict],
     approved_by_day: list[list[dict]],
+    n_days_executed: int | None = None,
 ) -> str:
-    n_days = len(reports)
+    n_days = n_days_executed if n_days_executed is not None else len(reports)
     date_str = _format_date()
     lines = [
         f"---",
@@ -613,7 +630,7 @@ def generate_final_report(
     id_set = set(r for r in sentinel_report_ids if r is not None)
     simulation_reports = [r for r in reversed(all_reports) if r.get("id") in id_set]
 
-    content = build_report(corpus_dir, day_duration, conv_id, simulation_reports, approved_by_day)
+    content = build_report(corpus_dir, day_duration, conv_id, simulation_reports, approved_by_day, n_days_executed=len(sentinel_report_ids))
     output_path = corpus_dir / "bilan_simulation.md"
     output_path.write_text(content, encoding="utf-8")
 
