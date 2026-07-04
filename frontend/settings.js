@@ -341,10 +341,13 @@ async function importDocuments(files) {
     kbImportResults.innerHTML = '';
     for (const r of results) {
       const row = document.createElement('div');
-      row.className = 'kb-result-row ' + (r.status === 'INDEXED' ? 'ok' : 'err');
-      const icon = r.status === 'INDEXED' ? '✓' : '✗';
+      const isDup = r.status === 'DUPLICATE';
+      row.className = 'kb-result-row ' + (r.status === 'INDEXED' ? 'ok' : isDup ? 'dup' : 'err');
+      const icon = r.status === 'INDEXED' ? '✓' : isDup ? '~' : '✗';
       const msg = r.status === 'INDEXED'
         ? `${icon} ${escapeHtml(r.filename)} — ${r.chunk_count} chunks indexés`
+        : isDup
+        ? `${icon} ${escapeHtml(r.filename)} — déjà dans la base`
         : `${icon} ${escapeHtml(r.filename)} — ${escapeHtml(r.error || 'Erreur')}`;
       row.textContent = msg;
       kbImportResults.appendChild(row);

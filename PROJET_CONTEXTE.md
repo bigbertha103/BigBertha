@@ -478,6 +478,17 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-06-24 (session 29)
+- Corrections P1/P2 + UX DUPLICATE appliquées
+- `backend/database.py` : `routing_model_cost` par défaut changé en `qwen/qwen-2.5-7b-instruct` (P1 — corrige JSON routing invalide généré par `meta-llama/llama-3.1-8b-instruct`)
+- `backend/services/boss_service.py` : `VALID_AGENT_CODES` + validation `agent_code` dans `run_routing()` ; commentaire reconstruction JSON mis à jour
+- `backend/services/context_builder.py` : suppression du prefill assistant `{"agent_code": "..."` dans `build_routing_payload()`
+- `tests/simulate_all.py` : `import_documents()` retourne `list[dict]` avec statut `NOT_FOUND` ; `generate_log()` compte uniquement `INDEXED` et lit `imported_docs_by_day` par `idx-1` ; `fetch_last_response()` lit `agent_code` directement depuis `job.agent_code`
+- `frontend/settings.js` : statut `DUPLICATE` affiché comme info neutre (pas d'erreur rouge)
+- Validation : `py_compile` OK sur les 4 fichiers Python
+- **Bugs identifiés non corrigés :**
+  - P4 — Score SENTINEL oscillant sur 7j — à observer sur mode `moyen` (14j)
+
 ### Résultat de la session — 2026-06-24 (session 28)
 - Test apprentissage **Neuraltech Consulting** (court, 7j, COST) terminé — log JSON : `docs/Test/logs/Neuraltech Consulting_20260624_093201_log.json`
 - Score SENTINEL : 50 → 58 (+8), oscillant (50→58→52→58→50→53→58), 13 proposals approuvées

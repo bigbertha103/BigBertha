@@ -7,6 +7,8 @@ from backend.services import context_builder, model_router
 
 logger = logging.getLogger(__name__)
 
+VALID_AGENT_CODES = {"ANALYSTE", "REDACTEUR", "BOSS"}
+
 
 async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "", session_kb_context: str = "") -> dict:
     job = db.execute("SELECT * FROM jobs WHERE id = ?", (job_id,)).fetchone()
@@ -47,7 +49,7 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "",
     if content.startswith("```"):
         lines = content.splitlines()
         content = "\n".join(lines[1:-1]) if len(lines) > 2 else content
-    # Reconstruction JSON si le prefill {"agent_code": " a été strippé par l'API
+    # Protection si le modèle ne commence pas par { malgré json_mode=True
     if content and not content.startswith("{"):
         content = '{"agent_code": "' + content
     # Mistral échappe parfois les underscores en markdown : {"agent\_code": ...}
@@ -60,7 +62,9 @@ async def run_routing(job_id: int, db: sqlite3.Connection, kb_context: str = "",
         agent_code = routing["agent_code"]
         task = routing["task"]
         rationale = routing.get("rationale", "")
-    except (json.JSONDecodeError, KeyError, TypeError, IndexError) as exc:
+        if agent_code not in VALID_AGENT_CODES:
+            raise ValueError(f"agent_code invalide : {agent_code!r}")
+    except (json.JSONDecodeError, KeyError, TypeError, IndexError, ValueError) as exc:
         logger.error("Routing JSON invalide — fallback BOSS. Erreur : %s | Contenu : %s", exc, content)
         routing = {
             "agent_code": "BOSS",

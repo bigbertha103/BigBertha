@@ -807,6 +807,7 @@ body.settings-page {
   gap: 8px;
 }
 .kb-result-row.ok  { background: #dcfce7; color: #166534; }
+.kb-result-row.dup { background: #e0e7ff; color: #3730a3; }
 .kb-result-row.err { background: var(--color-error-bg); color: var(--color-error-text); }
 
 .kb-table {
