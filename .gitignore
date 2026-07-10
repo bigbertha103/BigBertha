@@ -10,3 +10,4 @@ Thumbs.db
 Desktop.ini
 graphify-out/
 .graphify_analysis.json
+*.db.bak_*

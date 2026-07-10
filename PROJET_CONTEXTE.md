@@ -478,6 +478,20 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-07-10 (session 36 — validation grandeur nature + clôture)
+- **Synchro branche v2** : récupération des 4 commits LBB (BUG_REPORT, test AgroPulse 30j, checklist déploiement) + **commit des correctifs session 29 restés non poussés sur ce PC** (prompt routing réécrit, validation `agent_code`, classe UI `.dup`, exclusion `.graphify_analysis.json`)
+- **Mission 3** — validation environnement PC : 3 routes critiques HTTP 200, préflight sonde OK (code v2 prouvé sain)
+- **Mission 4** — test grandeur nature **14 jours Neuraltech** (moyen, day-duration=0, OpenRouter) : **terminé 14/14** — `routing_fallback_count=0`, `job_failure_count=0`, log fiable (`n_days=14`, `n_messages=27`). Log : `docs/Test/logs/Neuraltech Consulting_20260710_101035_log.json`
+- **Bugs BUG_REPORT (5 erreurs HTTP) : RÉSOLUS** — problème de déploiement LBB (code obsolète + clé API vide), pas un bug du code v2 actuel. Le préflight (Mission 1) protège désormais contre ce cas.
+- **Bugs découverts non corrigés :**
+  - **P1 (nouveau, PRIORITAIRE) — RAG jamais cité** : `kb_citation_rate=0.0` sur 14 jours, `kb_cited=0` sur 27 échanges alors que les docs sont INDEXED → mauvaise qualité ANALYSTE (hallucinations factuelles). À investiguer.
+  - P2 — Score SENTINEL figé (45 pendant 13j, 50 au J14) — le « P4 oscillant » se manifeste comme immobile
+  - P3 — Proposals `UPDATE_COMPANY_RULE` à cible vide (2 occurrences)
+  - P4 — Routing 100 % ANALYSTE, 0 REDACTEUR sur 27 messages — biais possible
+  - P5 — Fichiers `.doc` → ERROR (bug connu, non bloquant)
+  - P6 — `simulate_all.py` crashe en sortie redirigée sous Windows sans `PYTHONIOENCODING=utf-8` (spécifique Windows, LBB non concerné)
+- **Décision méthode** : le test long réel (30j) se fera sur la machine LBB (trop long sur PC). Détail code Missions 1 & 2 : voir sessions 34 et 35 ci-dessous.
+
 ### Résultat de la session — 2026-07-04 (session 35)
 - `tests/simulate_all.py` `generate_log()` : `n_days` basé sur `exchanges_by_day` (source de vérité) ; `_pad()` normalise les 3 tableaux avant `zip` ; `jobs_failed` par jour ; `job_failure_count` + `sentinel_reports_collected` dans le log ; `routing_fallback_count` exclut les jobs en échec
 - `tests/simulate_all.py` `build_report()` : paramètre `n_days_executed` optionnel ; `generate_final_report()` passe `len(sentinel_report_ids)` pour afficher le bon nombre de jours

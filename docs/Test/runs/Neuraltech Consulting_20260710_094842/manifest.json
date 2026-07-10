@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "company": "Neuraltech Consulting",
+    "mode": "moyen",
+    "generated_at": "2026-07-10T09:48:42",
+    "n_days": 14
+  },
+  "days": {
+    "1": {
+      "theme": "Découverte du paysage IA 2026 et comparaison des modèles",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/AI Models in 2026_ Which One Should You Actually Use_.pdf"
+      ],
+      "messages": [
+        "On m'a dit qu'il y avait 4 modèles frontière en 2026. Je dois comprendre les différences entre GPT-5.4, Claude Opus et les autres pour recommander au client — peux-tu me faire un résumé des forces de chacun ?",
+        "Surtout pour le coding et le reasoning, c'est quoi les scores exacts ? Et en multimodal, qui gère le mieux l'audio et la vision ?"
+      ]
+    },
+    "2": {
+      "theme": "Enjeux d'infrastructure GPU et pénurie mémoire",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/Memory chip shortage to last through 2027_ Synopsys CEO.txt",
+        "../../../../Samples/Neuraltech Consulting/As AI gobbles up memory chips, prices for devices may rise _ NPR.md"
+      ],
+      "messages": [
+        "J'ai lu que les puces mémoire vont être en pénurie jusqu'en 2027. Ça affecte nos choix d'infra pour déployer des modèles locaux ?",
+        "Si les prix des semiconducteurs montent, comment ça impacte nos coûts de serveurs GPU pour l'inférence ?"
+      ]
+    },
+    "3": {
+      "theme": "Architecture GPU NVIDIA — bandwidth et bottlenecks",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/theorempath_com.pdf"
+      ],
+      "messages": [
+        "Je dois choisir entre H100, H200 et B200 pour nos clusters. C'est quoi vraiment la différence en termes de débit mémoire ?",
+        "On m'a dit que pour les LLM, c'est la bandwidth le problème, pas le compute. Pourquoi et comment ça change mes décisions de déploiement ?"
+      ]
+    },
+    "4": {
+      "theme": "Stack IA local en entreprise — architectures de souveraineté",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md",
+        "../../../../Samples/Neuraltech Consulting/The Enterprise Local AI Stack_ Models, Serving, RAG, Agents, Governance _ VDF AI.doc"
+      ],
+      "messages": [
+        "Je dois comprendre comment architecturer un stack IA souverain — local, air-gapped, sans dépendre d'API externes. C'est quoi les 7 couches essentielles ?",
+        "Comment on organise le routage multi-fournisseurs, la mémoire d'entreprise, et les politiques de gouvernance dans cette approche ?"
+      ]
+    },
+    "5": {
+      "theme": "Orchestration et gouvernance des agents — politiques avant exécution",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md"
+      ],
+      "messages": [
+        "On veut déployer des agents IA mais avec audit complet, budget, approbations — c'est quoi les bonnes pratiques d'orchestration ?",
+        "Comment on configure les politiques, les cloisonnements par tenant et équipe, et la révocation des accès ?"
+      ]
+    },
+    "6": {
+      "theme": "RAG, modèles locaux et inférence — architecture AI Factory",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/EDB Docs - EDB Postgres AI Innovation Release - AI Factory Architecture on Hybrid Manager.doc",
+        "../../../../Samples/Neuraltech Consulting/base.md"
+      ],
+      "messages": [
+        "L'équipe demande comment intégrer RAG avec des modèles locaux sur Kubernetes. C'est quoi l'AI Factory d'EDB Postgres ?",
+        "Est-ce qu'on peut containeriser tout ça et rester souverain sur notre infrastructure ?"
+      ]
+    },
+    "7": {
+      "theme": "Récap semaine 1 — choix stratégiques modèles + infra",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/AI Models in 2026_ Which One Should You Actually Use_.pdf",
+        "../../../../Samples/Neuraltech Consulting/theorempath_com.pdf"
+      ],
+      "messages": [
+        "Récap rapide : pour un déploiement d'agents en production, je dois arbitrer entre cloud (GPT-5.4, Claude) et local (coûts GPU vs souveraineté) — c'est quoi le meilleur ROI pour nous ?",
+        "Et les contraintes mémoire jusqu'en 2027 — ça change quoi à mes recommandations d'architecture ?"
+      ]
+    },
+    "8": {
+      "theme": "Approfondissement modèles spécialisés — use cases métier",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/AI Models in 2026_ Which One Should You Actually Use_.pdf"
+      ],
+      "messages": [
+        "Pour la génération de contenu client, c'est quoi le meilleur modèle entre Claude (128K output) et Gemini ?",
+        "Et si on a besoin de writing non-censuré, Grok c'est une option viable en production ?"
+      ]
+    },
+    "9": {
+      "theme": "Benchmarks coding et reasoning — déploiement agents code",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/AI Models in 2026_ Which One Should You Actually Use_.pdf",
+        "../../../../Samples/Neuraltech Consulting/theorempath_com.pdf"
+      ],
+      "messages": [
+        "Grok affiche 75% sur SWE-bench — c'est mieux que GPT-5.4. Ça veut dire quoi concrètement pour un agent qui doit écrire du code ?"
+      ]
+    },
+    "10": {
+      "theme": "Mémoire entreprise et cloisonnement — implémentation pratique",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md"
+      ],
+      "messages": [
+        "On a besoin de mémoriser les contextes clients sans croiser les données entre tenants. Comment architecturer la mémoire avec cloisonnement par équipe et projet ?",
+        "Qu'est-ce qu'on doit tracker en audit pour être compliant : prompts, versions, outils, décisions ?"
+      ]
+    },
+    "11": {
+      "theme": "Souveraineté avancée — air-gapped et contrôle local",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md"
+      ],
+      "messages": [
+        "Un client demande une solution 100% air-gapped — pas d'appels API externes. C'est viable avec quel stack et quels modèles ?",
+        "Les coûts GPU vont augmenter en 2027, donc c'est vraiment compétitif vs cloud en latence + contrôle ?"
+      ]
+    },
+    "12": {
+      "theme": "Sélection automatique de modèles — routage intelligent",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md",
+        "../../../../Samples/Neuraltech Consulting/AI Models in 2026_ Which One Should You Actually Use_.pdf"
+      ],
+      "messages": [
+        "Je veux implémenter une sélection automatique : selon la tâche (coding, reasoning, writing), choisir le meilleur modèle en coût/latence/qualité — c'est quoi la logique d'orchestration ?",
+        "Est-ce qu'on peut aussi router en fonction de la confidentialité ? Genre, données sensibles = modèle local seulement ?"
+      ]
+    },
+    "13": {
+      "theme": "Gouvernance et révocation — politiques avant exécution",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md"
+      ],
+      "messages": [
+        "Comment on met en place les politiques de gouvernance : budgets par agent, approbations avant exécution, sandbox pour tester ?",
+        "Et la révocation des accès — c'est quoi le workflow optimal si un modèle ou un agent devient non-compliant ?"
+      ]
+    },
+    "14": {
+      "theme": "Plan de déploiement — roadmap infra IA 2026-2027",
+      "documents": [
+        "../../../../Samples/Neuraltech Consulting/base.md",
+        "../../../../Samples/Neuraltech Consulting/AI Models in 2026_ Which One Should You Actually Use_.pdf",
+        "../../../../Samples/Neuraltech Consulting/theorempath_com.pdf",
+        "../../../../Samples/Neuraltech Consulting/Memory chip shortage to last through 2027_ Synopsys CEO.txt"
+      ],
+      "messages": [
+        "Synthèse finale : avec la pénurie mémoire, les GPU chers, et 4 modèles frontière en concurrence — c'est quoi ma stratégie pour déployer un stack IA souverain fiable en 2026 ?",
+        "Priorités : modèles + infra + governance. J'envisage H200 + Claude local + RAG. C'est judicieux ou il faut mixer avec OpenRouter pour résilience ?"
+      ]
+    }
+  }
+}

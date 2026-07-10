@@ -1,6 +1,6 @@
 ---
 owner: Kinder
-last_updated: 2026-06-24
+last_updated: 2026-07-10
 review_every: 30j
 ---
 
@@ -109,4 +109,4 @@ Avant lancement sur LBB ou production, vérifier :
 - [ ] Test : `curl -X POST http://localhost:8000/api/sentinel/analyze` → 200 OK
 - [ ] Test : `curl http://localhost:8000/api/sentinel/reports` → 200 OK (liste vide si aucun rapport)
 - [ ] Git : `git log --oneline -1` confirme branche v2 déployée
-- [ ] Simulation courte : `python tests/simulate_all.py --corpus-dir "Samples/Neuraltech Consulting" --day-duration 0 --mode quick`
+- [ ] Simulation (le préflight intégré valide automatiquement les points ci-dessus) : `python tests/simulate_all.py --run-dir "docs/Test/runs/<run>" --day-duration 0`

@@ -1,5 +1,12 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-07-10 — Clôture session 36 — validation grandeur nature + docs BASE
+- [DOC] docs/BASE/langage.md — ajout termes « Préflight » et « Sonde » (section simulation/tests) ; correction 9 → 10 entreprises fake dans « Sample »
+- [DOC] docs/BASE/Tech/architecture.md — Deployment Checklist : correction de la commande finale (`--mode quick` inexistant → `--run-dir ... --day-duration 0`, préflight intégré)
+- [DOC] docs/BASE/INDEX.md — dates langage.md et architecture.md → 2026-07-10
+- [TEST] Test grandeur nature 14j Neuraltech (moyen, OpenRouter) terminé 14/14 : routing 0 fallback, 0 job échoué, bilan fiable — log `docs/Test/logs/Neuraltech Consulting_20260710_101035_log.json`
+- [DOC] PROJET_CONTEXTE.md — résultat session 36 : bugs BUG_REPORT résolus (déploiement LBB) ; nouveau bug prioritaire P1 RAG jamais cité (`kb_citation_rate=0`)
+
 ## 2026-07-04 — Bilan de simulation fiable dans simulate_all.py (session 35)
 - `tests/simulate_all.py` `generate_log()` : source de vérité `n_days = len(exchanges_by_day)` ; normalisation des 3 tableaux avec `_pad()` avant `zip` ; `jobs_failed` par jour dans `days` ; `job_failure_count` et `sentinel_reports_collected` dans `summary`/`meta` ; `routing_fallback_count` exclut désormais les jobs en échec
 - `tests/simulate_all.py` `build_report()` : paramètre optionnel `n_days_executed` pour afficher le nombre de jours réellement parcourus ; `generate_final_report()` passe `len(sentinel_report_ids)`

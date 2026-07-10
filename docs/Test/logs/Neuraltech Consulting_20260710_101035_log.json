@@ -1,0 +1,535 @@
+{
+  "meta": {
+    "company": "Neuraltech Consulting",
+    "mode": "moyen",
+    "date": "2026-07-10T10:10:35",
+    "n_days": 14,
+    "n_messages": 27,
+    "n_docs": 5,
+    "sentinel_reports_collected": 14
+  },
+  "days": [
+    {
+      "day": 1,
+      "docs_imported": [
+        {
+          "file": "AI Models in 2026_ Which One Should You Actually Use_.pdf",
+          "status": "INDEXED",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "On m'a dit qu'il y avait 4 modèles frontière en 2026. Je dois comprendre les différences entre GPT-5.4, Claude Opus et les autres pour recommander au client — peux-tu me faire un résumé des forces de chacun ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Bien sûr, je peux vous aider à comprendre les différences entre GPT-5.4, Claude Opus et les autres modèles de langage avancés en 2026. Voici un résumé de leurs forces :\n\n* GPT-5.4 : développé par OpenAI, ce modèle de transformateur de 175 milliards de paramètres est capable de comprendre et de génér",
+          "response_length": 1546,
+          "kb_cited": false
+        },
+        {
+          "message": "Surtout pour le coding et le reasoning, c'est quoi les scores exacts ? Et en multimodal, qui gère le mieux l'audio et la vision ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "## Capacités de codage et de raisonnement\n\n### GPT-5.4\n\nGPT-5.4 est un modèle de transformateur développé par NVIDIA, basé sur le framework Megatron. Il est connu pour ses performances en compréhension du langage naturel et en génération de texte. En termes de capacités de codage et de raisonnement,",
+          "response_length": 2190,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "docs_imported": [
+        {
+          "file": "Memory chip shortage to last through 2027_ Synopsys CEO.txt",
+          "status": "INDEXED",
+          "error": null
+        },
+        {
+          "file": "As AI gobbles up memory chips, prices for devices may rise _ NPR.md",
+          "status": "INDEXED",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "J'ai lu que les puces mémoire vont être en pénurie jusqu'en 2027. Ça affecte nos choix d'infra pour déployer des modèles locaux ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Bonjour, la pénurie de puces mémoire est un enjeu important à prendre en compte pour le déploiement de modèles locaux de langage. Les modèles tels que GPT-5.4 et Claude Opus ont des exigences en termes de mémoire qui peuvent être difficiles à satisfaire en raison de cette pénurie. Pour faire face à ",
+          "response_length": 496,
+          "kb_cited": false
+        },
+        {
+          "message": "Si les prix des semiconducteurs montent, comment ça impacte nos coûts de serveurs GPU pour l'inférence ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Si les prix des semiconducteurs montent, cela impacte directement les coûts de nos serveurs GPU utilisés pour l'inférence. La pénurie de semiconducteurs a entraîné une augmentation des prix des GPU, ce qui a un impact direct sur nos coûts. Pour atténuer cet impact, nous pouvons explorer plusieurs op",
+          "response_length": 432,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "docs_imported": [
+        {
+          "file": "theorempath_com.pdf",
+          "status": "INDEXED",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "Je dois choisir entre H100, H200 et B200 pour nos clusters. C'est quoi vraiment la différence en termes de débit mémoire ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour vos clusters, la différence entre les GPUs H100, H200 et B200 se situe principalement au niveau du débit mémoire et de la capacité de mémoire. Voici un aperçu de leurs caractéristiques en termes de débit mémoire :\n\n* GPU H100 : Débit mémoire de 3 TB/s, mémoire de 80 Go HBM3, architecture NVIDIA",
+          "response_length": 774,
+          "kb_cited": false
+        },
+        {
+          "message": "On m'a dit que pour les LLM, c'est la bandwidth le problème, pas le compute. Pourquoi et comment ça change mes décisions de déploiement ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "La bande passante est un facteur critique pour le déploiement des modèles de langage de grande taille (LLM). Elle détermine la vitesse à laquelle les données peuvent être traitées et transmises. Les LLM nécessitent une grande quantité de bande passante pour charger les modèles, traiter les requêtes ",
+          "response_length": 1039,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "INDEXED",
+          "error": null
+        },
+        {
+          "file": "The Enterprise Local AI Stack_ Models, Serving, RAG, Agents, Governance _ VDF AI.doc",
+          "status": "ERROR",
+          "error": "Aucun chunk extrait — format non supporté ou fichier vide"
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "Je dois comprendre comment architecturer un stack IA souverain — local, air-gapped, sans dépendre d'API externes. C'est quoi les 7 couches essentielles ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Bien sûr, je comprends l'importance de mettre en perspective les impacts directs sur les coûts, l'infrastructure et la performance de l'entreprise lors de l'analyse des caractéristiques techniques des produits. Dans le cas de Neuraltech Consulting, qui est un cabinet de conseil en intelligence artif",
+          "response_length": 1886,
+          "kb_cited": false
+        },
+        {
+          "message": "Comment on organise le routage multi-fournisseurs, la mémoire d'entreprise, et les politiques de gouvernance dans cette approche ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour organiser le routage multi-fournisseurs, la mémoire d'entreprise et les politiques de gouvernance dans cette approche, il est important de suivre une structure d'analyse en 4 étapes : contexte, analyse, recommandations et prochaines étapes. Cette structure permettra de prendre en compte les bes",
+          "response_length": 546,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "On veut déployer des agents IA mais avec audit complet, budget, approbations — c'est quoi les bonnes pratiques d'orchestration ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour orchestrer avec succès le déploiement d'agents IA chez Neuraltech Consulting, il est crucial de suivre les bonnes pratiques suivantes :\n\n1. Planifiez rigoureusement et coordonnez efficacement les différents acteurs impliqués dans le projet.\n2. Établissez un budget réaliste pour le projet, en te",
+          "response_length": 1000,
+          "kb_cited": false
+        },
+        {
+          "message": "Comment on configure les politiques, les cloisonnements par tenant et équipe, et la révocation des accès ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour configurer les politiques, les cloisonnements par tenant et équipe, ainsi que la révocation des accès, il est important de comprendre les besoins spécifiques de Neuraltech Consulting en matière de sécurité, de conformité et de gestion des accès. Nous allons établir une stratégie de configuratio",
+          "response_length": 1007,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "docs_imported": [
+        {
+          "file": "EDB Docs - EDB Postgres AI Innovation Release - AI Factory Architecture on Hybrid Manager.doc",
+          "status": "ERROR",
+          "error": "Aucun chunk extrait — format non supporté ou fichier vide"
+        },
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "L'équipe demande comment intégrer RAG avec des modèles locaux sur Kubernetes. C'est quoi l'AI Factory d'EDB Postgres ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "L'équipe souhaite savoir comment intégrer RAG avec des modèles locaux sur Kubernetes. L'AI Factory d'EDB Postgres, c'est quoi ?",
+          "response_length": 127,
+          "kb_cited": false
+        },
+        {
+          "message": "Est-ce qu'on peut containeriser tout ça et rester souverain sur notre infrastructure ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "La containerisation des modèles locaux utilisant EDDB AI Factory permet de créer des images de conteneurs pour les modèles de traitement du langage naturel (NLP) et les modèles de deep learning, facilitant ainsi leur gestion et leur déploiement sur des infrastructures Kubernetes. Pour garantir la sé",
+          "response_length": 892,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "docs_imported": [
+        {
+          "file": "AI Models in 2026_ Which One Should You Actually Use_.pdf",
+          "status": "DUPLICATE",
+          "error": null
+        },
+        {
+          "file": "theorempath_com.pdf",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "Récap rapide : pour un déploiement d'agents en production, je dois arbitrer entre cloud (GPT-5.4, Claude) et local (coûts GPU vs souveraineté) — c'est quoi le meilleur ROI pour nous ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour un déploiement d'agents en production, vous devez arbitrer entre le cloud (GPT-5.4, Claude) et le local (coûts GPU vs souveraineté). Le choix dépend de vos besoins spécifiques en termes de souveraineté des données et de rapport coût-avantage global. Le déploiement en cloud offre flexibilité et ",
+          "response_length": 634,
+          "kb_cited": false
+        },
+        {
+          "message": "Et les contraintes mémoire jusqu'en 2027 — ça change quoi à mes recommandations d'architecture ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "La containerisation est une méthode pour emballer des applications et leurs dépendances dans des conteneurs, qui peuvent être exécutés de manière cohérente sur différents environnements. Dans le contexte de l'infrastructure Kubernetes de Neuraltech Consulting, la containerisation peut être utilisée ",
+          "response_length": 1296,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 8,
+      "docs_imported": [
+        {
+          "file": "AI Models in 2026_ Which One Should You Actually Use_.pdf",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "Pour la génération de contenu client, c'est quoi le meilleur modèle entre Claude (128K output) et Gemini ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        },
+        {
+          "message": "Et si on a besoin de writing non-censuré, Grok c'est une option viable en production ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 9,
+      "docs_imported": [
+        {
+          "file": "AI Models in 2026_ Which One Should You Actually Use_.pdf",
+          "status": "DUPLICATE",
+          "error": null
+        },
+        {
+          "file": "theorempath_com.pdf",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "Grok affiche 75% sur SWE-bench — c'est mieux que GPT-5.4. Ça veut dire quoi concrètement pour un agent qui doit écrire du code ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 10,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.05,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "On a besoin de mémoriser les contextes clients sans croiser les données entre tenants. Comment architecturer la mémoire avec cloisonnement par équipe et projet ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        },
+        {
+          "message": "Qu'est-ce qu'on doit tracker en audit pour être compliant : prompts, versions, outils, décisions ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 11,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.05,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "Un client demande une solution 100% air-gapped — pas d'appels API externes. C'est viable avec quel stack et quels modèles ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        },
+        {
+          "message": "Les coûts GPU vont augmenter en 2027, donc c'est vraiment compétitif vs cloud en latence + contrôle ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 12,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        },
+        {
+          "file": "AI Models in 2026_ Which One Should You Actually Use_.pdf",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.09,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "Je veux implémenter une sélection automatique : selon la tâche (coding, reasoning, writing), choisir le meilleur modèle en coût/latence/qualité — c'est quoi la logique d'orchestration ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        },
+        {
+          "message": "Est-ce qu'on peut aussi router en fonction de la confidentialité ? Genre, données sensibles = modèle local seulement ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 13,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.08,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "Comment on met en place les politiques de gouvernance : budgets par agent, approbations avant exécution, sandbox pour tester ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        },
+        {
+          "message": "Et la révocation des accès — c'est quoi le workflow optimal si un modèle ou un agent devient non-compliant ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 14,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        },
+        {
+          "file": "AI Models in 2026_ Which One Should You Actually Use_.pdf",
+          "status": "DUPLICATE",
+          "error": null
+        },
+        {
+          "file": "theorempath_com.pdf",
+          "status": "DUPLICATE",
+          "error": null
+        },
+        {
+          "file": "Memory chip shortage to last through 2027_ Synopsys CEO.txt",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 50,
+        "routing_coherence": 0.65,
+        "pinned_rate": 0.11,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 2,
+      "jobs_failed": 0,
+      "exchanges": [
+        {
+          "message": "Synthèse finale : avec la pénurie mémoire, les GPU chers, et 4 modèles frontière en concurrence — c'est quoi ma stratégie pour déployer un stack IA souverain fiable en 2026 ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        },
+        {
+          "message": "Priorités : modèles + infra + governance. J'envisage H200 + Claude local + RAG. C'est judicieux ou il faut mixer avec OpenRouter pour résilience ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour la génération de contenu client, le modèle Gemini est généralement considéré comme supérieur à Claude en termes de qualité de sortie et de compréhension contextuelle. Cependant, cela dépend des spécifications exactes de votre utilisation. Pouvez-vous fournir plus de détails sur votre cas d'util",
+          "response_length": 315,
+          "kb_cited": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "score_start": 45,
+    "score_end": 50,
+    "delta": "+5",
+    "total_proposals_approved": 15,
+    "routing_fallback_count": 0,
+    "job_failure_count": 0
+  }
+}
