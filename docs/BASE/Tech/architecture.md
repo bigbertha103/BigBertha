@@ -1,6 +1,6 @@
 ---
 owner: Kinder
-last_updated: 2026-06-24
+last_updated: 2026-07-10
 review_every: 30j
 ---
 
@@ -97,3 +97,16 @@ Stockage : `backend/data/chroma_db/<collection_name>/` (fichiers `.npz` + `.json
 - `bigbertha_prod` — documents clients (top_k=3 à chaque appel)
 - `session_memory` — bilans ARCHIVISTE vectorisés (top_k=1)
 - `bigbertha_test_{session_id}` — collection isolée par test session
+
+## Deployment Checklist
+
+Avant lancement sur LBB ou production, vérifier :
+
+- [ ] Fichier `.env` : `OPENROUTER_API_KEY` défini et non-vide
+- [ ] `backend/main.py` : tous les routers montés (knowledge, sentinel, proposals, test_sessions)
+- [ ] Logs démarrage FastAPI : pas d'erreur route registration
+- [ ] Test : `curl -X POST -F "files=@test.md" http://localhost:8000/api/knowledge/import` → 200 OK
+- [ ] Test : `curl -X POST http://localhost:8000/api/sentinel/analyze` → 200 OK
+- [ ] Test : `curl http://localhost:8000/api/sentinel/reports` → 200 OK (liste vide si aucun rapport)
+- [ ] Git : `git log --oneline -1` confirme branche v2 déployée
+- [ ] Simulation (le préflight intégré valide automatiquement les points ci-dessus) : `python tests/simulate_all.py --run-dir "docs/Test/runs/<run>" --day-duration 0`

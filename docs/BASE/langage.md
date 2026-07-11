@@ -1,6 +1,6 @@
 ---
 owner: Kinder + tezcatlypoca
-last_updated: 2026-06-24
+last_updated: 2026-07-10
 review_every: 30j
 ---
 
@@ -57,7 +57,7 @@ review_every: 30j
 **Proposal** : suggestion d'amélioration générée par SENTINEL. Types : `UPDATE_AGENT_PROMPT`, `UPDATE_COMPANY_RULE`, `ARCHIVE_DOCUMENT`. Statut PENDING → APPROVED ou REJECTED. Max 3 par rapport.
 | N'est PAS : une proposition commerciale (terme différent dans ce contexte).
 
-**Sample** : entreprise fictive pour tests d'apprentissage. Dossier dans `Samples/` avec documents + script de simulation. 9 entreprises fake disponibles. Profil de test prod = "Neuraltech Consulting".
+**Sample** : entreprise fictive pour tests d'apprentissage. Dossier dans `Samples/` avec documents + script de simulation. 10 entreprises fake disponibles. Profil de test prod = "Neuraltech Consulting".
 | N'est PAS : une démo pour vrai client, un template d'onboarding.
 
 **Mode de performance** : sélection du niveau de qualité des modèles LLM. COST (modèles légers, rapides, économiques) ou PERFORMANCE (modèles puissants). Toggle `perf_mode` dans les Settings. 11 clés `app_config` distinctes, une par tâche (routing, agents, synthesis, sentinel, archiviste).
@@ -103,3 +103,9 @@ review_every: 30j
 
 **Mode court/moyen/long** : durées standardisées — court=7j, moyen=14j, long=30j. day-duration=0 recommandé dans tous les modes (les proposals s'appliquent immédiatement).
 | N'est PAS : un paramètre de performance réseau, un mode de déploiement.
+
+**Préflight** : contrôle fail-fast exécuté en tête de `simulate_all.py`, avant le jour 1. Vérifie les 3 routes critiques (`knowledge/documents`, `sentinel/reports`, `learning-proposals`) puis lance une sonde LLM. Arrête la simulation immédiatement (`[FATAL]`) si l'environnement est cassé — version serveur obsolète ou clé API absente — pour ne pas gaspiller un run long.
+| N'est PAS : un test unitaire, un health-check permanent.
+
+**Sonde** : message unique de bout en bout (création conversation → envoi message → poll job) lancé par le préflight pour valider le pipeline LLM réel. La conversation sonde est supprimée après usage (succès ou échec).
+| N'est PAS : un message de simulation compté dans le bilan, un geste employé.

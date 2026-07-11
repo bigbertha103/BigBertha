@@ -478,6 +478,40 @@ ANALYSTE  : veille technologique, benchmarks modèles, analyse d'articles et pap
 RÉDACTEUR : propositions commerciales clients, technical briefs, notes de cadrage POC, comptes-rendus techniques
 ```
 
+### Résultat de la session — 2026-07-10 (session 36 — validation grandeur nature + clôture)
+- **Synchro branche v2** : récupération des 4 commits LBB (BUG_REPORT, test AgroPulse 30j, checklist déploiement) + **commit des correctifs session 29 restés non poussés sur ce PC** (prompt routing réécrit, validation `agent_code`, classe UI `.dup`, exclusion `.graphify_analysis.json`)
+- **Mission 3** — validation environnement PC : 3 routes critiques HTTP 200, préflight sonde OK (code v2 prouvé sain)
+- **Mission 4** — test grandeur nature **14 jours Neuraltech** (moyen, day-duration=0, OpenRouter) : **terminé 14/14** — `routing_fallback_count=0`, `job_failure_count=0`, log fiable (`n_days=14`, `n_messages=27`). Log : `docs/Test/logs/Neuraltech Consulting_20260710_101035_log.json`
+- **Bugs BUG_REPORT (5 erreurs HTTP) : RÉSOLUS** — problème de déploiement LBB (code obsolète + clé API vide), pas un bug du code v2 actuel. Le préflight (Mission 1) protège désormais contre ce cas.
+- **Bugs découverts non corrigés :**
+  - **P1 (nouveau, PRIORITAIRE) — RAG jamais cité** : `kb_citation_rate=0.0` sur 14 jours, `kb_cited=0` sur 27 échanges alors que les docs sont INDEXED → mauvaise qualité ANALYSTE (hallucinations factuelles). À investiguer.
+  - P2 — Score SENTINEL figé (45 pendant 13j, 50 au J14) — le « P4 oscillant » se manifeste comme immobile
+  - P3 — Proposals `UPDATE_COMPANY_RULE` à cible vide (2 occurrences)
+  - P4 — Routing 100 % ANALYSTE, 0 REDACTEUR sur 27 messages — biais possible
+  - P5 — Fichiers `.doc` → ERROR (bug connu, non bloquant)
+  - P6 — `simulate_all.py` crashe en sortie redirigée sous Windows sans `PYTHONIOENCODING=utf-8` (spécifique Windows, LBB non concerné)
+- **Décision méthode** : le test long réel (30j) se fera sur la machine LBB (trop long sur PC). Détail code Missions 1 & 2 : voir sessions 34 et 35 ci-dessous.
+
+### Résultat de la session — 2026-07-04 (session 35)
+- `tests/simulate_all.py` `generate_log()` : `n_days` basé sur `exchanges_by_day` (source de vérité) ; `_pad()` normalise les 3 tableaux avant `zip` ; `jobs_failed` par jour ; `job_failure_count` + `sentinel_reports_collected` dans le log ; `routing_fallback_count` exclut les jobs en échec
+- `tests/simulate_all.py` `build_report()` : paramètre `n_days_executed` optionnel ; `generate_final_report()` passe `len(sentinel_report_ids)` pour afficher le bon nombre de jours
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-07-04 (session 34)
+- `tests/simulate_all.py` : contrôle pré-lancement fail-fast ajouté — `_delete()` helper ; `preflight()` vérifie 3 routes critiques (knowledge/documents, sentinel/reports, learning-proposals) + sonde LLM bout-en-bout avec nettoyage conversation ; appel dans `main()` après vérif accessibilité ; arrêt `sys.exit(1)` si 100 % messages jour 1 échouent ; champ `failed` par échange dans `send_messages` (transparent pour `generate_log`)
+- Validation : `py_compile` OK
+
+### Résultat de la session — 2026-06-24 (session 29)
+- Corrections P1/P2 + UX DUPLICATE appliquées
+- `backend/database.py` : `routing_model_cost` par défaut changé en `qwen/qwen-2.5-7b-instruct` (P1 — corrige JSON routing invalide généré par `meta-llama/llama-3.1-8b-instruct`)
+- `backend/services/boss_service.py` : `VALID_AGENT_CODES` + validation `agent_code` dans `run_routing()` ; commentaire reconstruction JSON mis à jour
+- `backend/services/context_builder.py` : suppression du prefill assistant `{"agent_code": "..."` dans `build_routing_payload()`
+- `tests/simulate_all.py` : `import_documents()` retourne `list[dict]` avec statut `NOT_FOUND` ; `generate_log()` compte uniquement `INDEXED` et lit `imported_docs_by_day` par `idx-1` ; `fetch_last_response()` lit `agent_code` directement depuis `job.agent_code`
+- `frontend/settings.js` : statut `DUPLICATE` affiché comme info neutre (pas d'erreur rouge)
+- Validation : `py_compile` OK sur les 4 fichiers Python
+- **Bugs identifiés non corrigés :**
+  - P4 — Score SENTINEL oscillant sur 7j — à observer sur mode `moyen` (14j)
+
 ### Résultat de la session — 2026-06-24 (session 28)
 - Test apprentissage **Neuraltech Consulting** (court, 7j, COST) terminé — log JSON : `docs/Test/logs/Neuraltech Consulting_20260624_093201_log.json`
 - Score SENTINEL : 50 → 58 (+8), oscillant (50→58→52→58→50→53→58), 13 proposals approuvées

@@ -48,11 +48,13 @@ Autre valeur possible si on veut tester la stabilité dans le temps (ex : `300` 
 - `openrouter` — appels via OpenRouter (défaut en production)
 - `ollama` — appels via Ollama local (v2-machine uniquement)
 
-Si la réponse diffère de la valeur actuelle en DB, exécuter **avant** le lancement du test :
+Si la réponse diffère de la valeur actuelle en DB :
+- **DB fraîche** (après suppression de `bigbertha.db`) : rien à faire — le serveur lit `INFERENCE_MODE` dans `.env` au démarrage.
+- **DB existante** avec une mauvaise valeur : exécuter **après** avoir démarré le serveur, **avant** le test (compatible PowerShell) :
 ```
-python -c "import sqlite3; db=sqlite3.connect('backend/data/bigbertha.db'); db.execute(\"UPDATE app_config SET value='{mode}' WHERE key='inference_mode'\"); db.commit(); print('inference_mode → {mode}')"
+python -c "import sqlite3; c=sqlite3.connect('backend/data/bigbertha.db'); c.execute('UPDATE app_config SET value=? WHERE key=?',('openrouter','inference_mode')); c.commit(); print('inference_mode OK')"
 ```
-*(remplacer `{mode}` par `openrouter` ou `ollama`)*
+*(remplacer `openrouter` par `ollama` si besoin)*
 
 ---
 

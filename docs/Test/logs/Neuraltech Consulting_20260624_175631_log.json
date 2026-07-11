@@ -1,0 +1,280 @@
+{
+  "meta": {
+    "company": "Neuraltech Consulting",
+    "mode": "court",
+    "date": "2026-06-24T17:56:31",
+    "n_days": 7,
+    "n_messages": 14,
+    "n_docs": 7
+  },
+  "days": [
+    {
+      "day": 1,
+      "docs_imported": [
+        {
+          "file": "AI Models in 2026_ Which One Should You Actually Use_.pdf",
+          "status": "INDEXED",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 60,
+        "routing_coherence": 0.65,
+        "pinned_rate": 0.0,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 3,
+      "exchanges": [
+        {
+          "message": "J'ai trouvé cet article qui compare les 4 modèles frontier en 2026. On doit décider quel modèle utiliser pour nos cas d'usage client. Ça dit quoi sur le coding et le reasoning ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "L'article « Frontier Models in 2026 » présente les avancées et les tendances dans le domaine des modèles de langage en 2026. Cette analyse vise à évaluer les capacités de codage et de raisonnement de ces modèles et à proposer un modèle adapté aux cas d'utilisation de Neuraltech Consulting, en tenant",
+          "response_length": 1907,
+          "kb_cited": false
+        },
+        {
+          "message": "Est-ce que tu peux me résumer les forces et faiblesses de chaque modèle selon nos besoins — on est plutôt sur de la rédaction et de l'automatisation métier",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Voici un résumé des forces et faiblesses des différents modèles de frontière en 2026 en ce qui concerne la rédaction et l'automatisation métier.\n\n**Modèle 1 : [Nom du modèle]**\n- Forces : capacité de génération de texte avancée, personnalisation élevée\n- Faiblesses : coût élevé, performance moyenne ",
+          "response_length": 1079,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "docs_imported": [
+        {
+          "file": "As AI gobbles up memory chips, prices for devices may rise _ NPR.md",
+          "status": "INDEXED",
+          "error": null
+        },
+        {
+          "file": "Memory chip shortage to last through 2027_ Synopsys CEO.txt",
+          "status": "INDEXED",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 65,
+        "routing_coherence": 0.7,
+        "pinned_rate": 0.25,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 2,
+      "exchanges": [
+        {
+          "message": "J'ai lu que les pénuries de chips mémoire vont continuer jusqu'en 2027 à cause des data centers IA. Ça impacte quoi pour nous si on veut déployer localement ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Il est important de noter que la rédaction de ce rapport est basée sur des informations disponibles en 2023 et que les tendances et les technologies peuvent évoluer d'ici 2026.",
+          "response_length": 176,
+          "kb_cited": false
+        },
+        {
+          "message": "Les prix des composants vont monter — on devrait checker nos budgets infrastructure avant de scaler",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Bonjour, merci pour votre message. Les prix des composants peuvent en effet augmenter en raison de pénuries, ce qui peut avoir un impact sur les budgets infrastructure. Il est donc important de vérifier les budgets disponibles avant de scaler l'infrastructure. Nous vous recommandons de travailler en",
+          "response_length": 536,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "INDEXED",
+          "error": null
+        },
+        {
+          "file": "EDB Docs - EDB Postgres AI Innovation Release - AI Factory Architecture on Hybrid Manager.doc",
+          "status": "INDEXED",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 55,
+        "routing_coherence": 0.65,
+        "pinned_rate": 0.17,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 2,
+      "exchanges": [
+        {
+          "message": "Je lis qu'on doit penser souveraineté et contrôle local des données. C'est quoi exactement l'AI Factory Architecture ? Comment ça s'intègre avec nos besoins ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "La souveraineté des données est un enjeu crucial pour les entreprises qui souhaitent maintenir un contrôle total sur leurs données et éviter les risques liés à la dépendance vis-à-vis de fournisseurs tiers. L'AI Factory Architecture est une approche qui vise à offrir une solution de bout en bout pou",
+          "response_length": 1129,
+          "kb_cited": true
+        },
+        {
+          "message": "On parle de routage multi-fournisseurs et d'exécution sur clusters Kubernetes — c'est pour ça que tu mentionnes la mémoire entreprise et le cloisonnement par tenant ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "L'AI Factory Architecture est une plateforme de développement et de déploiement d'applications d'intelligence artificielle qui offre plusieurs fonctionnalités intéressantes pour la souveraineté et le contrôle local des données. Elle permet le routage multi-fournisseurs, ce qui signifie que les donné",
+          "response_length": 980,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "docs_imported": [
+        {
+          "file": "The Enterprise Local AI Stack_ Models, Serving, RAG, Agents, Governance _ VDF AI.doc",
+          "status": "INDEXED",
+          "error": null
+        },
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.12,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "exchanges": [
+        {
+          "message": "Je dois comprendre les 7 couches du stack local IA — modèles, serving, RAG, agents, gouvernance. Tu peux détailler ce qui manque dans notre architecture actuelle ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Bien sûr, je peux vous aider à comprendre les 7 couches du stack local IA et à identifier ce qui manque dans votre architecture actuelle.\n\nVoici un aperçu des 7 couches du stack local IA :\n\n1. Modèles : Il s'agit de la couche de base qui comprend les modèles de langage avancés (LLM) et les modèles d",
+          "response_length": 2558,
+          "kb_cited": true
+        },
+        {
+          "message": "Comment on gouverne les agents avant exécution ? Politiques, budgets, approbations — c'est quoi les best practices terrain ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "La gouvernance des agents avant exécution est un aspect crucial pour garantir la qualité, la sécurité et l'efficacité des agents IA dans un contexte de conseil en intelligence artificielle. Voici quelques-unes des meilleures pratiques en matière de gouvernance des agents avant exécution :\n\n1. Politi",
+          "response_length": 2699,
+          "kb_cited": true
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "docs_imported": [
+        {
+          "file": "theorempath_com.pdf",
+          "status": "INDEXED",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 50,
+        "routing_coherence": 0.65,
+        "pinned_rate": 0.3,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 1,
+      "exchanges": [
+        {
+          "message": "J'ai un doc technique sur les architectures GPU NVIDIA — H100, H200, B200. C'est quoi vraiment le problème de bande passante mémoire pour les LLM ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Les GPU NVIDIA H100, H200 et B200 sont des architectures de processeurs graphiques conçues pour traiter des tâches de calcul intensives. Cependant, l'un des problèmes courants avec les modèles de langage de grande taille (LLM) est la bande passante mémoire. Cela peut entraîner des goulots d'étrangle",
+          "response_length": 612,
+          "kb_cited": false
+        },
+        {
+          "message": "Si la bande passante est le vrai goulet et pas la compute, ça change comment on doit sélectionner notre hardware pour l'inférence locale ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Si la bande passante mémoire est le goulet d'étranglement pour les modèles de langage Large (LLM), il est crucial de sélectionner un hardware adapté pour l'inférence locale. Les GPU NVIDIA H100, H200 et B200 sont des options populaires grâce à leur grande capacité de mémoire et leur bande passante m",
+          "response_length": 599,
+          "kb_cited": false
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        },
+        {
+          "file": "AI Models in 2026_ Which One Should You Actually Use_.pdf",
+          "status": "ERROR",
+          "error": "HTTP 500 : Internal Server Error"
+        },
+        {
+          "file": "theorempath_com.pdf",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 65,
+        "routing_coherence": 0.65,
+        "pinned_rate": 0.25,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 3,
+      "exchanges": [
+        {
+          "message": "Récap de ma réflexion : on a des modèles frontier qui performent différemment, une pénurie de chips qui dure, et des contraintes mémoire GPU réelles. Quel mix local + cloud on recommande ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "En tenant compte des performances des modèles frontier, de la pénurie de chips et des contraintes mémoire GPU, nous recommandons un mix local + cloud pour votre infrastructure. Pour l'inférence locale, nous vous conseillons d'utiliser des GPU NVIDIA avec une bande passante mémoire élevée, tels que l",
+          "response_length": 662,
+          "kb_cited": false
+        },
+        {
+          "message": "Je dois proposer un roadmap pour nos déploiements — souverain, local, cost-efficient. Tu as un plan cohérent avec tout ce qu'on a vu ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Voici un plan de déploiement souverain, local et cost-efficient pour les modèles de langage Large (LLM) en tenant compte des performances des modèles frontier, de la pénurie de composants et des contraintes mémoire GPU, en intégrant une stratégie mixte local et cloud :\n\n1. Évaluation des besoins en ",
+          "response_length": 2837,
+          "kb_cited": true
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "docs_imported": [
+        {
+          "file": "base.md",
+          "status": "DUPLICATE",
+          "error": null
+        },
+        {
+          "file": "The Enterprise Local AI Stack_ Models, Serving, RAG, Agents, Governance _ VDF AI.doc",
+          "status": "DUPLICATE",
+          "error": null
+        }
+      ],
+      "sentinel": {
+        "score": 45,
+        "routing_coherence": 0.6,
+        "pinned_rate": 0.29,
+        "kb_citation_rate": 0.0
+      },
+      "proposals_approved": 2,
+      "exchanges": [
+        {
+          "message": "On est prêts à lancer un POC souverain avec orchestration d'agents. Quelles sont les règles de gouvernance qu'on met en place dès le départ ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour mettre en place une gouvernance efficace dès le départ de votre POC souverain avec orchestration d'agents, il est important de définir les règles et les procédures qui régiront la gestion des agents IA dans votre environnement de test. Cela inclut la prise en compte des contraintes technologiqu",
+          "response_length": 535,
+          "kb_cited": false
+        },
+        {
+          "message": "Audit, révocation, journal de prompts, sélection auto de modèles selon la tâche — par où on commence concrètement sur nos équipes ?",
+          "agent_code": "ANALYSTE",
+          "response_preview": "Pour commencer concrètement sur vos équipes, il est important de mettre en place un système d'audit et de révocation pour les modèles d'IA utilisés. Cela permettra de s'assurer que les modèles sont toujours conformes aux normes et aux exigences de l'entreprise. Il est également important de mainteni",
+          "response_length": 602,
+          "kb_cited": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "score_start": 60,
+    "score_end": 45,
+    "delta": "-15",
+    "total_proposals_approved": 14,
+    "routing_fallback_count": 0
+  }
+}

@@ -1,5 +1,24 @@
 ﻿# CHANGELOG — Big Bertha
 
+## 2026-07-10 — Clôture session 36 — validation grandeur nature + docs BASE
+- [DOC] docs/BASE/langage.md — ajout termes « Préflight » et « Sonde » (section simulation/tests) ; correction 9 → 10 entreprises fake dans « Sample »
+- [DOC] docs/BASE/Tech/architecture.md — Deployment Checklist : correction de la commande finale (`--mode quick` inexistant → `--run-dir ... --day-duration 0`, préflight intégré)
+- [DOC] docs/BASE/INDEX.md — dates langage.md et architecture.md → 2026-07-10
+- [TEST] Test grandeur nature 14j Neuraltech (moyen, OpenRouter) terminé 14/14 : routing 0 fallback, 0 job échoué, bilan fiable — log `docs/Test/logs/Neuraltech Consulting_20260710_101035_log.json`
+- [DOC] PROJET_CONTEXTE.md — résultat session 36 : bugs BUG_REPORT résolus (déploiement LBB) ; nouveau bug prioritaire P1 RAG jamais cité (`kb_citation_rate=0`)
+
+## 2026-07-04 — Bilan de simulation fiable dans simulate_all.py (session 35)
+- `tests/simulate_all.py` `generate_log()` : source de vérité `n_days = len(exchanges_by_day)` ; normalisation des 3 tableaux avec `_pad()` avant `zip` ; `jobs_failed` par jour dans `days` ; `job_failure_count` et `sentinel_reports_collected` dans `summary`/`meta` ; `routing_fallback_count` exclut désormais les jobs en échec
+- `tests/simulate_all.py` `build_report()` : paramètre optionnel `n_days_executed` pour afficher le nombre de jours réellement parcourus ; `generate_final_report()` passe `len(sentinel_report_ids)`
+
+## 2026-07-04 — Contrôle pré-lancement fail-fast dans simulate_all.py
+- `tests/simulate_all.py` : ajout `_delete()` helper HTTP ; ajout `preflight()` (vérif 3 routes critiques + sonde LLM bout-en-bout avec nettoyage) ; appel `preflight()` dans `main()` après le bloc accessibilité API ; arrêt immédiat `sys.exit(1)` si 100 % des messages du jour 1 échouent ; champ `failed` ajouté par échange dans `send_messages` (transparent pour `generate_log`)
+
+## 2026-06-29 — Clôture session 33 — Bug report + docs BASE (deployment + API key validation)
+- [DOC] docs/BASE/elements_figes.md — ajout 2 règles inviolables : API Key validation (OPENROUTER_API_KEY non-vide avant Bearer header) + Learning proposals endpoint (GET /api/learning-proposals?status=PENDING)
+- [DOC] docs/BASE/Tech/architecture.md — nouvelle section "Deployment Checklist" (8 vérifications pré-déploiement LBB/production)
+- [BUG] BUG_REPORT.md créé — 5 erreurs HTTP découvertes sur LBB long-run (30j Atelier-Mecaflux) : HTTP 405 import docs/SENTINEL, Bearer token vide, HTTP 404 proposals/reports ; analyse racine + fix priority
+
 ## 2026-06-26 — Fix plan_simulation.py : fallback .env pour clé API
 - `tests/plan_simulation.py` : `load_config_from_db()` modifiée — fallback sur `OPENROUTER_API_KEY` depuis `.env` si clé vide ou absente en DB ; ajout import `load_dotenv` ; gestion robuste de DB inexistante (pas exit d'erreur, retour config vide)
 - Corrige issue de test sur serveur : clé API en `.env` non synchronisée avec DB lors du lancement du script de simulation

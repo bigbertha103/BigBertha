@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "company": "Neuraltech Consulting",
+    "mode": "court",
+    "date": "2026-06-24T16:38:04",
+    "n_days": 0,
+    "n_messages": 14,
+    "n_docs": 0
+  },
+  "days": [],
+  "summary": {
+    "score_start": 0,
+    "score_end": 0,
+    "delta": "+0",
+    "total_proposals_approved": 0,
+    "routing_fallback_count": 14
+  }
+}

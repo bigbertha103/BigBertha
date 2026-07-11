@@ -106,6 +106,17 @@ def _patch_json(url: str, data: dict) -> dict:
         raise ConnectionError(f"API inaccessible : {exc}") from exc
 
 
+def _delete(url: str) -> None:
+    req = urllib.request.Request(url, method="DELETE")
+    try:
+        with urllib.request.urlopen(req, timeout=15) as _:
+            pass
+    except urllib.error.HTTPError as exc:
+        raise RuntimeError(f"HTTP {exc.code} sur DELETE {url}") from exc
+    except urllib.error.URLError as exc:
+        raise ConnectionError(f"API inaccessible : {exc}") from exc
+
+
 def _poll_job(api_url: str, job_id: int) -> str:
     deadline = time.monotonic() + POLL_TIMEOUT
     while time.monotonic() < deadline:
@@ -122,6 +133,78 @@ def _poll_job(api_url: str, job_id: int) -> str:
         print(".", end="", flush=True)
         time.sleep(POLL_INTERVAL)
     return "[TIMEOUT] Le job n'a pas terminé dans les 120 secondes"
+
+
+# ── Préflight ─────────────────────────────────────────────────────
+
+def preflight(api_url: str, conv_probe: bool = True) -> None:
+    # a) Vérification des routes critiques
+    routes_critiques = [
+        f"{api_url}/api/knowledge/documents",
+        f"{api_url}/api/sentinel/reports",
+        f"{api_url}/api/learning-proposals?status=PENDING",
+    ]
+    for route in routes_critiques:
+        try:
+            _get(route)
+        except Exception:
+            print(f"[FATAL] Route absente sur le serveur : {route}")
+            print("  → Le serveur tourne probablement sur une version obsolète du code.")
+            print("  → Vérifier sur la machine serveur : git log --oneline -1 (branche v2 à jour ?)")
+            print("    puis redémarrer le serveur.")
+            sys.exit(1)
+
+    if not conv_probe:
+        return
+
+    # b) Sonde de bout en bout
+    probe_id = None
+    try:
+        result = _post_json(f"{api_url}/api/conversations", {"title": "préflight simulate_all"})
+        probe_id = result.get("id")
+        if not probe_id:
+            print("[FATAL] Sonde préflight : impossible de créer la conversation (pas d'id retourné).")
+            sys.exit(1)
+
+        msg_result = _post_json(
+            f"{api_url}/api/conversations/{probe_id}/messages",
+            {"content": "Bonjour, ceci est un test de vérification technique."},
+        )
+        job_id = msg_result.get("job_id")
+        if not job_id:
+            print("[FATAL] Sonde préflight : pas de job_id retourné par l'API messages.")
+            _delete(f"{api_url}/api/conversations/{probe_id}")
+            sys.exit(1)
+
+        print(f"  Sonde en cours (job #{job_id})…", end="", flush=True)
+        final_response = _poll_job(api_url, job_id)
+        print()
+
+        if final_response.startswith("[ERREUR job]") or final_response.startswith("[TIMEOUT]"):
+            print(f"[FATAL] {final_response}")
+            print("  → Vérifier la clé API dans Paramètres ou .env, et le moteur LLM configuré.")
+            try:
+                _delete(f"{api_url}/api/conversations/{probe_id}")
+            except Exception:
+                pass
+            sys.exit(1)
+
+    except SystemExit:
+        raise
+    except Exception as exc:
+        print(f"[FATAL] Sonde préflight échouée : {exc}")
+        if probe_id is not None:
+            try:
+                _delete(f"{api_url}/api/conversations/{probe_id}")
+            except Exception:
+                pass
+        sys.exit(1)
+
+    # Nettoyage conversation sonde
+    try:
+        _delete(f"{api_url}/api/conversations/{probe_id}")
+    except Exception:
+        pass
 
 
 # ── Étapes par jour ──────────────────────────────────────────────
@@ -192,6 +275,7 @@ def send_messages(api_url: str, conv_id: int, messages: list[str]) -> tuple[int,
             sent += 1
             response_data = fetch_last_response(api_url, conv_id)
             response_data["message"] = msg
+            response_data["failed"] = final_response.startswith("[ERREUR job]") or final_response.startswith("[TIMEOUT]")
             exchanges.append(response_data)
         except Exception as exc:
             print(f"    [ERROR] {exc}")
@@ -333,13 +417,22 @@ def generate_log(
     log_path = logs_dir / log_filename
 
     if imported_docs_by_day is None:
-        imported_docs_by_day = [[] for _ in simulation_reports]
+        imported_docs_by_day = [[] for _ in exchanges_by_day]
 
-    n_days = len(simulation_reports)
+    n_days = len(exchanges_by_day)
+
+    def _pad(lst, n, filler):
+        lst = list(lst or [])
+        return lst + [filler for _ in range(n - len(lst))]
+
+    simulation_reports = _pad(simulation_reports, n_days, {})
+    approved_by_day    = _pad(approved_by_day, n_days, [])
+    imported_docs_by_day = _pad(imported_docs_by_day, n_days, [])
+
     n_messages = sum(len(ex) for ex in exchanges_by_day)
     n_docs = sum(
         sum(1 for d in day_docs if d.get("status") == "INDEXED")
-        for day_docs in (imported_docs_by_day or [])
+        for day_docs in imported_docs_by_day
     )
 
     days_log = []
@@ -353,12 +446,13 @@ def generate_log(
             "pinned_rate": metrics.get("pinned_rate", 0),
             "kb_citation_rate": metrics.get("kb_citation_rate", 0),
         }
-        day_docs = (imported_docs_by_day[idx - 1] if imported_docs_by_day and idx - 1 < len(imported_docs_by_day) else [])
+        day_docs = (imported_docs_by_day[idx - 1] if idx - 1 < len(imported_docs_by_day) else [])
         days_log.append({
             "day": idx,
             "docs_imported": day_docs,
             "sentinel": sentinel_entry,
             "proposals_approved": len(approved),
+            "jobs_failed": sum(1 for ex in exchanges if ex.get("failed", False)),
             "exchanges": [
                 {
                     "message": ex.get("message", ""),
@@ -378,8 +472,12 @@ def generate_log(
         1
         for day_exchanges in exchanges_by_day
         for ex in day_exchanges
-        if ex.get("agent_code") in ("BOSS", "?")
+        if not ex.get("failed", False) and ex.get("agent_code") in ("BOSS", "?")
     )
+    job_failure_count = sum(
+        1 for day in exchanges_by_day for ex in day if ex.get("failed", False)
+    )
+    sentinel_reports_collected = len([r for r in simulation_reports if r])
 
     log_data = {
         "meta": {
@@ -389,6 +487,7 @@ def generate_log(
             "n_days": n_days,
             "n_messages": n_messages,
             "n_docs": n_docs,
+            "sentinel_reports_collected": sentinel_reports_collected,
         },
         "days": days_log,
         "summary": {
@@ -397,6 +496,7 @@ def generate_log(
             "delta": f"{delta:+d}",
             "total_proposals_approved": sum(len(a) for a in approved_by_day),
             "routing_fallback_count": routing_fallback_count,
+            "job_failure_count": job_failure_count,
         },
     }
 
@@ -433,8 +533,9 @@ def build_report(
     conv_id: int,
     reports: list[dict],
     approved_by_day: list[list[dict]],
+    n_days_executed: int | None = None,
 ) -> str:
-    n_days = len(reports)
+    n_days = n_days_executed if n_days_executed is not None else len(reports)
     date_str = _format_date()
     lines = [
         f"---",
@@ -529,7 +630,7 @@ def generate_final_report(
     id_set = set(r for r in sentinel_report_ids if r is not None)
     simulation_reports = [r for r in reversed(all_reports) if r.get("id") in id_set]
 
-    content = build_report(corpus_dir, day_duration, conv_id, simulation_reports, approved_by_day)
+    content = build_report(corpus_dir, day_duration, conv_id, simulation_reports, approved_by_day, n_days_executed=len(sentinel_report_ids))
     output_path = corpus_dir / "bilan_simulation.md"
     output_path.write_text(content, encoding="utf-8")
 
@@ -601,6 +702,10 @@ def main() -> None:
     except ConnectionError as exc:
         print(f"[FATAL] {exc}")
         sys.exit(1)
+
+    print("── Préflight ─────────────────────────────────")
+    preflight(api_url)
+    print("  Préflight OK — environnement validé\n")
 
     # Lire le manifest
     manifest_path = corpus_dir / "manifest.json"
@@ -679,6 +784,12 @@ def main() -> None:
         # Étape C — messages
         _sent, day_exchanges = send_messages(api_url, conv_id, messages)
         exchanges_by_day.append(day_exchanges)
+
+        # Arrêt anticipé si le jour 1 échoue en totalité
+        if idx == 1 and day_exchanges and all(ex.get("failed", False) for ex in day_exchanges):
+            print("\n[FATAL] 100 % des messages du jour 1 ont échoué — simulation interrompue")
+            print("  → Aucun bilan ne sera généré. Corriger l'environnement puis relancer.")
+            sys.exit(1)
 
         # Étape D — attente jour suivant
         is_last = idx == n_days
