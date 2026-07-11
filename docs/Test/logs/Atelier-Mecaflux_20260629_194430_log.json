@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "company": "Atelier-Mecaflux",
+    "mode": "court",
+    "date": "2026-06-29T19:44:30",
+    "n_days": 0,
+    "n_messages": 14,
+    "n_docs": 5
+  },
+  "days": [],
+  "summary": {
+    "score_start": 0,
+    "score_end": 0,
+    "delta": "+0",
+    "total_proposals_approved": 0,
+    "routing_fallback_count": 14
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "company": "AgroPulse-Coop",
+    "mode": "moyen",
+    "generated_at": "2026-07-01T19:35:00",
+    "n_days": 14
+  },
+  "days": {
+    "1": {
+      "theme": "Découverte de l'outil et contexte coopératif",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/company_profile.md",
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Salut, on m'a dit que l'IA pouvait m'aider à répondre aux questions des adhérents plus vite. Vous pouvez m'expliquer comment ça marche chez AgroPulse ?",
+        "Je veux surtout comprendre : c'est quoi exactement qu'on peut faire avec cet outil ? On a beaucoup de demandes sur la fertilisation et les alertes maladies."
+      ]
+    },
+    "2": {
+      "theme": "Questions récurrentes des adhérents - fertilisation",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md",
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "J'ai un adhérent qui demande comment faire une recommandation fertilisation. Je vois dans la FAQ qu'il faut une analyse de sol à jour, mais comment je peux l'aider si son analyse date de 2 ans ?",
+        "Pouvez-vous me donner un template de réponse pour les questions fertilisation ? Ça revient tout le temps et je perds du temps à répondre à chaque fois."
+      ]
+    },
+    "3": {
+      "theme": "Contexte météo et fenêtres de traitement",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "Un gars m'appelle ce matin, il veut traiter ses céréales mais il ne sait pas s'il doit attendre la pluie. Comment je fais pour lui donner un conseil qui prend en compte la météo ?",
+        "Je vois qu'il y a un lien Météo France dans les ressources. Est-ce que vous pouvez m'aider à structurer mes conseils de traitement avec les données météo ?"
+      ]
+    },
+    "4": {
+      "theme": "Hétérogénéité technique entre adhérents",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt",
+        "../../../../Samples/AgroPulse-Coop/company_profile.md"
+      ],
+      "messages": [
+        "J'ai des adhérents très aguerris qui comprennent la agronomie complexe, et d'autres qui sont perdus avec les PPP ou les ratios N-P-K. Comment adapter mon langage avec votre outil ?",
+        "Est-ce que je peux générer deux niveaux de réponse : une simple pour les débutants, une plus technique pour les experts ?"
+      ]
+    },
+    "5": {
+      "theme": "Alertes régionales maladies cultures",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md",
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "La FAQ dit qu'on publie des alertes maladies chaque semaine. Est-ce que je peux transformer ces alertes en recommandations personnalisées selon la culture de chaque adhérent ?",
+        "Par exemple, si je reçois une alerte oïdium, comment je fais pour dire à mes producteurs de raisin ET mes producteurs de fraise ce qu'ils doivent faire ?"
+      ]
+    },
+    "6": {
+      "theme": "Synthèse des bulletins techniques",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "On reçoit plein de bulletins techniques du réseau, mais les adhérents n'ont pas le temps de les lire en entier. Vous pouvez m'aider à en tirer les points clés et les rendre actionnables ?",
+        "C'est important que le conseil soit clairement contextualisé — pas juste une copie du bulletin, mais un vrai truc pour leur parcelle."
+      ]
+    },
+    "7": {
+      "theme": "Historique et traçabilité des conseils donnés",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt",
+        "../../../../Samples/AgroPulse-Coop/company_profile.md"
+      ],
+      "messages": [
+        "Actuellement, je n'ai aucune trace des conseils que j'ai donnés aux adhérents. Si un problème arrive, je ne peux pas vérifier ce que j'ai recommandé. Comment garder un historique clair ?",
+        "Est-ce que votre outil peut m'aider à constituer une base de conseils que je peux relire, améliorer, et montrer à mon manager ?"
+      ]
+    },
+    "8": {
+      "theme": "Recommandations fertilisation avec contrainte économique",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md",
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Je dois donner une recommandation fertilisation, mais les prix des intrants explosent cette année. Est-ce que l'IA peut m'aider à peser le coût vs le bénéfice attendu en rendement ?",
+        "Un de mes adhérents me dit : 'Je fais quoi si je ne peux pas faire l'apport azote que vous me proposez ?' — comment je peux lui expliquer les limites agronomiques et économiques ?"
+      ]
+    },
+    "9": {
+      "theme": "Combinaison météo + observations terrain",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "Un adhérent envoie des photos de ses cultures et dit qu'il pense voir du stress hydrique. Il me demande s'il doit irriguer. Comment je combine ce qu'il me dit avec les données météo pour un conseil cohérent ?",
+        "Vous pouvez m'aider à interpréter ses observations avec la pluie prévue et l'historique de la région ?"
+      ]
+    },
+    "10": {
+      "theme": "Questions ponctuelle sur alertes et données comparatives",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md",
+        "../../../../Samples/AgroPulse-Coop/company_profile.md"
+      ],
+      "messages": [
+        "Un adhérent me demande si ses rendements blé sont normaux comparé à la région. La FAQ dit qu'on a un tableau de bord anonymisé. Comment je peux l'aider à interpréter ses chiffres ?",
+        "Et d'ailleurs, s'il est en dessous de la moyenne, qu'est-ce que je lui propose comme actions correctives ?"
+      ]
+    },
+    "11": {
+      "theme": "Gestion de la complexité multi-cultures",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt",
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "J'ai un adhérent qui cultive en rotation : blé, colza, orge. Chaque culture a des besoins différents, des risques maladies différents. Comment je structure un conseil qui tient compte de tout ça ?",
+        "Est-ce que l'IA peut m'aider à créer un plan sur la saison entière, pas juste des réponses isolées ?"
+      ]
+    },
+    "12": {
+      "theme": "Explicitation des limites et confiance",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "Un adhérent me dit : 'Pourquoi tu me recommandes ça ?' — je dois pouvoir expliquer mon raisonnement sans bluffer. Comment l'IA peut m'aider à être transparent sur ce que je sais ET ce que je ne sais pas ?",
+        "C'est important que le conseil soit fiable. Si je dis 'ici on ne peut pas certifier', je dois le dire."
+      ]
+    },
+    "13": {
+      "theme": "Portail adhérent et demandes asynchrones",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md",
+        "../../../../Samples/AgroPulse-Coop/company_profile.md"
+      ],
+      "messages": [
+        "Les adhérents nous posent des questions via le portail à tout moment. L'IA peut m'aider à prioriser les questions urgentes ? Par exemple, une question sur une alerte maladie NOW vs. une demande de plan fertilisation pour le printemps ?",
+        "Comment je fais pour gérer la file d'attente sans perdre les contextes ?"
+      ]
+    },
+    "14": {
+      "theme": "Bilan et amélioration continue",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt",
+        "../../../../Samples/AgroPulse-Coop/company_profile.md"
+      ],
+      "messages": [
+        "Après deux semaines, comment je peux vérifier que mon utilisation de l'IA m'aide vraiment ? Est-ce que les adhérents reçoivent des conseils meilleurs, plus clairs, plus rapides ?",
+        "Et si je veux améliorer mes réponses, comment je peux faire un retour ou capitaliser sur ce que j'ai appris ?"
+      ]
+    }
+  }
+}

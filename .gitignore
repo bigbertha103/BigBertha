@@ -1,4 +1,5 @@
 .env
+env/
 backend/data/bigbertha.db
 backend/data/bigbertha.log
 backend/data/chroma_db/

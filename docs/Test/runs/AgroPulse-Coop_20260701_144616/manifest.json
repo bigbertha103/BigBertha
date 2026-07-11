@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "company": "AgroPulse-Coop",
+    "mode": "moyen",
+    "generated_at": "2026-07-01T14:46:16",
+    "n_days": 14
+  },
+  "days": {
+    "1": {
+      "theme": "Découverte de l'outil et contexte coopératif",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/company_profile.md",
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Salut, on vient de mettre en place cet outil IA pour nous aider avec les demandes techniques. Je veux comprendre comment ça marche et comment ça s'intègre à nos activités. Peux-tu me résumer ce qu'on cherche à faire ?",
+        "On a 230 adhérents et une saisonnalité dingue. Comment l'outil peut vraiment nous aider à répondre plus vite ?"
+      ]
+    },
+    "2": {
+      "theme": "Accès aux services et fonctionnalités clientes",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Un adhérent m'a demandé ce matin comment obtenir une recommandation fertilisation. Je lui ai dit de mettre à jour ses analyses de sol, mais j'aimerais bien expliquer le processus clairement.",
+        "Est-ce qu'on a vraiment des alertes maladies chaque semaine ? Et le tableau de bord de rendements, c'est vraiment anonymisé ?"
+      ]
+    },
+    "3": {
+      "theme": "Problématiques métier et besoin d'action",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt",
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "On reçoit les mêmes questions en boucle : fenêtres météo pour traiter, quand fertiliser, quels produits. Ça nous bouffe du temps. L'outil peut m'aider à standardiser les réponses ?",
+        "Le souci aussi c'est que nos adhérents ont des niveaux très différents en technique. Comment on peut adapter les conseils pour que ce soit clair pour tous ?"
+      ]
+    },
+    "4": {
+      "theme": "Synthèse des bulletins techniques en actions terrain",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "Cette semaine on a reçu 3 bulletins cultures différents. Comment je peux les transformer rapidement en conseils concrets pour les adhérents sans y passer ma journée ?",
+        "L'article dit qu'il faut 'contextualiser les recommandations' avec météo et observations. Concrètement, tu peux m'aider à faire ça pour une parcelle donnée ?"
+      ]
+    },
+    "5": {
+      "theme": "Données météo et décision d'intervention",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "Un adhérent me demande si c'est le bon moment pour traiter ses blés. J'ai les prévisions météo de Météo-France mais j'arrive pas à bien les interpréter pour le terrain. Peux-tu m'aider à synthétiser ça ?",
+        "Comment est-ce qu'on intègre vraiment les données météo dans les recommandations ? C'est pas juste 'pas de pluie les 48h suivantes' ?"
+      ]
+    },
+    "6": {
+      "theme": "Questions fertilisation et analyses de sol",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md",
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "J'ai un adhérent qui me demande quelle dose d'azote pour ses champs. Il a envoyé ses analyses de sol. Qu'est-ce que je dois vérifier avant de faire une recommandation ?",
+        "Est-ce qu'il y a des limites économiques à tenir en compte ? Genre, c'est pas la même réponse si l'azote explose en prix ?"
+      ]
+    },
+    "7": {
+      "theme": "Hétérogénéité des adhérents et adaptation du message",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt",
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Un adhérent très expérimenté veut des détails techno poussés. Un autre est novice et stresse avec tous les acronymes. Comment je peux personnaliser le même conseil ?",
+        "Est-ce que l'outil peut proposer deux versions : une simple, une pointue ?"
+      ]
+    },
+    "8": {
+      "theme": "Alertes régionales et maladies cultures",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md",
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt"
+      ],
+      "messages": [
+        "L'alerte maladie de cette semaine parle de septoriose sur les blés. Un adhérent me demande s'il doit traiter. Comment je relie ça à sa parcelle spécifique ?",
+        "Les alertes régionales, c'est bien, mais elles sont génériques. Comment on les rend utiles pour chaque exploitant ?"
+      ]
+    },
+    "9": {
+      "theme": "Comparaison rendements et benchmarking local",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Un adhérent veut comparer ses rendements à la moyenne locale. Je sais qu'on a le tableau de bord, mais comment je lui explique qu'il est anonymisé et comment c'est calculé ?",
+        "Est-ce que ça peut l'aider à identifier où il perd de la perf par rapport aux voisins ?"
+      ]
+    },
+    "10": {
+      "theme": "Historique des conseils et traçabilité",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt",
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Un adhérent me dit : 'Vous m'avez dit en mai de faire ça, pourquoi ça n'a pas marché ?'. J'ai plus l'historique. Comment on gère la traçabilité des recommandations ?",
+        "L'outil peut garder un historique des conseils donnés par parcelle, par saison ?"
+      ]
+    },
+    "11": {
+      "theme": "Explicitation des limites agronomiques et économiques",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/ressources_liens.md"
+      ],
+      "messages": [
+        "Un adhérent me reproche un conseil : 'C'était trop cher finalement'. Je veux pouvoir lui expliquer les compromis agro/éco en amont. Comment je peux formaliser ça ?",
+        "Est-ce qu'on doit intégrer les prix des intrants dans les recommandations ?"
+      ]
+    },
+    "12": {
+      "theme": "Combiner observations terrain et données",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md",
+        "../../../../Samples/AgroPulse-Coop/faq_clients.md"
+      ],
+      "messages": [
+        "Un adhérent me dit : 'Sur le terrain je vois des taches jaunes sur mes feuilles, mais vos données disent que c'est normal'. Comment on combine observation et données ?",
+        "L'outil peut m'aider à poser les bonnes questions pour qualifier une observation ?"
+      ]
+    },
+    "13": {
+      "theme": "Standardisation et gains de temps",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt",
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "On a les mêmes questions qui reviennent. Je veux créer des templates de réponse pour gagner du temps. Comment l'outil peut m'aider à structurer ça sans perdre la personnalisation ?",
+        "Est-ce qu'on peut capitaliser sur les bonnes réponses qu'on a déjà données ?"
+      ]
+    },
+    "14": {
+      "theme": "Bilan et optimisation d'usage",
+      "documents": [
+        "../../../../Samples/AgroPulse-Coop/company_profile.md",
+        "../../../../Samples/AgroPulse-Coop/problematiques.txt",
+        "../../../../Samples/AgroPulse-Coop/article_sectoriel.md"
+      ],
+      "messages": [
+        "Deux semaines que j'utilise l'outil. Bilan : ça m'aide bien sur la synthèse des bulletins et les fenêtres météo, mais j'aimerais mieux comprendre comment ça scale avec nos 230 adhérents.",
+        "Qu'est-ce qu'on devrait peaufiner pour vraiment transformer notre réponse technique et réduire les délais ?"
+      ]
+    }
+  }
+}

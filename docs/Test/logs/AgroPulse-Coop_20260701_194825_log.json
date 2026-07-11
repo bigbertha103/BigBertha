@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "company": "AgroPulse-Coop",
+    "mode": "moyen",
+    "date": "2026-07-01T19:48:25",
+    "n_days": 0,
+    "n_messages": 28,
+    "n_docs": 0
+  },
+  "days": [],
+  "summary": {
+    "score_start": 0,
+    "score_end": 0,
+    "delta": "+0",
+    "total_proposals_approved": 0,
+    "routing_fallback_count": 28
+  }
+}

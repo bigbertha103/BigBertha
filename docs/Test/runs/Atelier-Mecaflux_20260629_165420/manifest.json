@@ -1,0 +1,342 @@
+{
+  "meta": {
+    "company": "Atelier-Mecaflux",
+    "mode": "long",
+    "generated_at": "2026-06-29T16:54:20",
+    "n_days": 30
+  },
+  "days": {
+    "1": {
+      "theme": "Découverte de l'outil — contexte qualité et devis",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "Salut, je découvre l'outil. On me dit qu'il peut m'aider sur les devis. Est-ce que tu peux m'expliquer comment ça marche avec nos délais clients?",
+        "On a 210 pers ici à Mécaflux, usinage CNC surtout. On doit répondre à 48h pour les standards. Comment tu peux m'aider à aller plus vite?"
+      ]
+    },
+    "2": {
+      "theme": "Problématiques terrain — manque de plans exploitables",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "On reçoit des demandes de devis avec des plans pas clairs. Souvent les clients oublient des dimensions critiques. Comment je peux structurer mes réponses?",
+        "Et quand un plan est vraiment mauvais, comment je dois formuler ma demande de clarification au client?"
+      ]
+    },
+    "3": {
+      "theme": "Non-conformités et traçabilité — rapport 8D",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md",
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt"
+      ],
+      "messages": [
+        "On vient d'avoir une non-conformité sur une série. FAQ dit que chaque NC ouvre un rapport 8D. C'est quoi exactement un rapport 8D et comment je dois le remplir?",
+        "J'ai besoin de rédiger ça rapidement pour le chef d'atelier. Peux-tu me donner un template?"
+      ]
+    },
+    "4": {
+      "theme": "Standardisation des réponses qualité",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "J'ai lu que l'IA peut m'aider à standardiser les réponses qualité. On a souvent les mêmes questions clients. Comment tu peux m'aider à créer des templates?",
+        "Par exemple, les gens demandent souvent 'comment vous gérez les non-conformités' — tu peux me proposer une réponse pédagogique?"
+      ]
+    },
+    "5": {
+      "theme": "Rebuts en usinage — causes et prévention",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md"
+      ],
+      "messages": [
+        "On a un problème de rebuts. L'article parle de trois causes: mauvais bridage, usure outil non détectée, mauvaise interprétation du plan. Comment je peux structurer un diagnostic?",
+        "Est-ce que tu peux me proposer une checklist opérateur pour éviter ces trois points?"
+      ]
+    },
+    "6": {
+      "theme": "Gamme de petites séries — complexité de devis",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "Un client me demande un devis pour 50 pièces, mais la géométrie est complexe. FAQ dit qu'on fait de 20 à 5 000 selon la complexité. Comment je dois évaluer le prix et le délai?",
+        "C'est quoi pour toi les facteurs qui rendent une pièce 'complexe'?"
+      ]
+    },
+    "7": {
+      "theme": "Ruptures matière — impact délai",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt",
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md"
+      ],
+      "messages": [
+        "Problématique prioritaire: les ruptures matière dégradent la promesse de délai. On a quoi en stock normalement? Comment je dois communiquer au client quand il y a risque de rupture?",
+        "Il faut que j'avertisse vite. Peux-tu m'aider à structurer ce message?"
+      ]
+    },
+    "8": {
+      "theme": "Réponses pédagogiques aux clients",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "Les clients veulent des réponses plus pédagogiques. Plutôt que juste 'oui/non', ils veulent comprendre le 'pourquoi'. Par exemple, pourquoi notre délai est de 48h pour les standards?",
+        "Comment je dois reformuler mes réponses?"
+      ]
+    },
+    "9": {
+      "theme": "Incident machine — résumé rapide pour le chef",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt",
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md"
+      ],
+      "messages": [
+        "CNC #3 s'est arrêtée ce matin. Je dois notifier le chef d'atelier rapidement. Comment je dois structurer le rapport?",
+        "L'article parle d'usure outil non détectée — est-ce que tu peux m'aider à diagnostiquer et à résumer l'incident en 2 minutes?"
+      ]
+    },
+    "10": {
+      "theme": "Revisite contexte ISO 9001",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/ressources_liens.md"
+      ],
+      "messages": [
+        "On est certifié ISO 9001. Parfois les clients demandent comment on démontre la qualité. Comment je dois répondre?",
+        "Je vois qu'il y a un lien vers la norme. C'est quoi les points clés que je dois connaître?"
+      ]
+    },
+    "11": {
+      "theme": "Devis complexe — matières exotiques",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/ressources_liens.md"
+      ],
+      "messages": [
+        "Client demande devis sur alliage inox 316L. Je dois vérifier le prix matière et la disponibilité. Où je peux trouver ça?",
+        "Il y a un catalogue alliages en lien. Peux-tu m'expliquer ce qu'est l'inox 316L et pourquoi c'est plus cher?"
+      ]
+    },
+    "12": {
+      "theme": "Prototypage rapide — premier contact",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "On propose aussi le prototypage rapide. Un client me demande comment c'est différent de l'usinage standard et quel délai il peut attendre.?",
+        "Comment je dois vendre ce service?"
+      ]
+    },
+    "13": {
+      "theme": "Maintenance industrielle — offre connexe",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/ressources_liens.md"
+      ],
+      "messages": [
+        "On a aussi une offre maintenance industrielle. Un client me demande si on peut l'aider à entretenir ses machines. Comment je dois répondre et orienter?",
+        "Il y a un guide maintenance préventive. C'est quoi les points clés?"
+      ]
+    },
+    "14": {
+      "theme": "Bilan mi-parcours — synthèse utilisation",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt"
+      ],
+      "messages": [
+        "Deux semaines d'utilisation. Synthétise pour moi: quels sont les trois usages principaux que j'ai trouvés pour l'IA?",
+        "Est-ce que tu peux me proposer un plan d'utilisation pour la semaine 3 basé sur ce qu'on a appris?"
+      ]
+    },
+    "15": {
+      "theme": "Devis groupé — plusieurs pièces, optimisation coûts",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "Client demande devis pour un lot de 5 pièces différentes. Je dois évaluer si c'est rentable et quel délai proposer avec optimisation coûts.?",
+        "Comment je dois structurer mon analyse?"
+      ]
+    },
+    "16": {
+      "theme": "Checklist bridage — prévention rebuts",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md"
+      ],
+      "messages": [
+        "L'article dit que le mauvais bridage cause des rebuts. Je dois créer une checklist bridage pour les opérateurs CNC. Quels points critiques?",
+        "Cette checklist doit être rapide, lisible, utilisable en production."
+      ]
+    },
+    "17": {
+      "theme": "Usure outil — détection et prévention",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/ressources_liens.md"
+      ],
+      "messages": [
+        "Deuxième cause de rebut: usure outil non détectée. Comment je dois former les opérateurs à voir quand un outil doit être changé?",
+        "Je veux une procédure simple. Les signes visuels, comment je dois les expliquer?"
+      ]
+    },
+    "18": {
+      "theme": "Mauvaise interprétation plan — formation opérateurs",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt"
+      ],
+      "messages": [
+        "Troisième cause de rebut: mauvaise interprétation du plan client. Comment je dois former les opérateurs à lire un plan technique compliqué?",
+        "Et si le plan est ambigu, comment l'opérateur doit alerter avant de lancer la production?"
+      ]
+    },
+    "19": {
+      "theme": "KPI atelier — suivi performance",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/ressources_liens.md"
+      ],
+      "messages": [
+        "On a un tableau de bord KPI atelier. Je dois comprendre les métriques: taux de rebut, délai moyen, taux charge. Comment je les lis?",
+        "Peux-tu m'expliquer ce que c'est 'bon' et 'mauvais' comme chiffre pour chaque KPI?"
+      ]
+    },
+    "20": {
+      "theme": "Réclamation client — structuration réponse technique",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md",
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt"
+      ],
+      "messages": [
+        "Client dit que les pièces reçues ne sont pas conforme au plan. On doit lui répondre vite et techniquement. Comment je structure ma réponse?",
+        "Et si c'est notre faute, comment je dois le formuler sans perdre le client?"
+      ]
+    },
+    "21": {
+      "theme": "Délai vs qualité — arbitrage commercial",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "Client demande délai impossible: 24h au lieu de 48h. Je dois lui expliquer l'arbitrage délai vs qualité. Comment?",
+        "Peut-être je peux proposer une alternative. Comment je structure cette négociation?"
+      ]
+    },
+    "22": {
+      "theme": "Variabilité coûts matière — impact devis",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt"
+      ],
+      "messages": [
+        "Contrainte: variabilité coûts matière. Un client demande un devis sur 3 mois. Je dois gérer le risque de variation prix matière. Comment?",
+        "Quelles clauses je dois mettre dans mon devis?"
+      ]
+    },
+    "23": {
+      "theme": "Plan d'action post-NC — 8D détaillé",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md",
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md"
+      ],
+      "messages": [
+        "On a eu une NC sur usure outil. Je dois remplir le rapport 8D complet et proposer des actions correctives. Comment structurer les 8 étapes?",
+        "Et une fois les actions mises en place, comment je dois les valider?"
+      ]
+    },
+    "24": {
+      "theme": "Petit lot urgent — exécution accélérée",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "Client demande 30 pièces en délai urgent (48h au lieu de 5j). C'est rentable? Comment je dois évaluer la faisabilité?",
+        "Quels risques je dois anticiper?"
+      ]
+    },
+    "25": {
+      "theme": "Visite client — réponses techniques pédagogiques",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md",
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt"
+      ],
+      "messages": [
+        "Client vient visiter l'atelier. Il va poser des questions techniques. Comment je dois préparer mes réponses pour être pédagogique?",
+        "Par exemple: 'Comment vous garantissez la précision?' ou 'Quel est votre processus qualité?'"
+      ]
+    },
+    "26": {
+      "theme": "Approvisionnement matière — prévention ruptures",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt",
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md"
+      ],
+      "messages": [
+        "Rupture matière = problème délai. Comment je dois coordonner avec l'approvisionnement? Quels matériaux critiques je dois surveiller?",
+        "Et comment je dois alerter les commerciaux avant de promettre un délai?"
+      ]
+    },
+    "27": {
+      "theme": "Procédure opératoire — application quotidienne",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md"
+      ],
+      "messages": [
+        "On a une procédure opératoire CNC. Je dois la relier aux points clés de l'article: bridage, usure outil, interprétation plan. Comment je dois l'adapter?",
+        "Quel est le checklist quotidien que je dois mettre en place?"
+      ]
+    },
+    "28": {
+      "theme": "Rapport d'incident — synthèse pour chef atelier",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt",
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md"
+      ],
+      "messages": [
+        "CNC #1 a eu un incident ce matin: pièce cassée, probablement mauvais bridage. Chef demande un rapport en 10 minutes. Comment je le rédige?",
+        "Je dois aussi proposer une action corrective rapide."
+      ]
+    },
+    "29": {
+      "theme": "Synthèse expertise — prêt à former d'autres",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md",
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt"
+      ],
+      "messages": [
+        "Après 4 semaines, je dois former un nouveau collègue. Résume les 5 points clés qu'il doit connaître sur l'IA et nos métier.",
+        "Et propose-moi les usages prioritaires pour la semaine 1 du nouveau."
+      ]
+    },
+    "30": {
+      "theme": "Bilan final — mesure d'impact et évolution",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/ressources_liens.md",
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt"
+      ],
+      "messages": [
+        "Dernier jour du mois. Récapitule: en 30 jours, comment l'IA m'a aidé sur dévis, NC, rebuts, délais?",
+        "Et quels KPI ou ressources je dois surveiller pour mes prochains 30 jours?"
+      ]
+    }
+  }
+}

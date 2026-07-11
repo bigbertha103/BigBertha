@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "company": "Atelier-Mecaflux",
+    "mode": "court",
+    "generated_at": "2026-06-29T19:38:12",
+    "n_days": 7
+  },
+  "days": {
+    "1": {
+      "theme": "Découverte de l'outil et contexte métier",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "Salut, j'ai reçu l'accès à cet assistant IA. Je dois comprendre comment l'utiliser pour répondre plus vite aux clients. Par où je commence ?",
+        "On m'a dit que l'outil pouvait m'aider sur les devis. Est-ce que tu peux me résumer notre positionnement et nos délais standards pour que je comprenne bien ?"
+      ]
+    },
+    "2": {
+      "theme": "Problématiques terrain et besoins immédiats",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "On a un problème récurrent : les clients envoient des demandes de devis sans plans exploitables. Comment tu peux m'aider à structure ma réponse pour les guider ?",
+        "Autre truc : les ruptures matière nous pourrissent les délais. Y a-t-il une façon de prévoir ça et de communiquer ça mieux aux clients ?"
+      ]
+    },
+    "3": {
+      "theme": "Qualité et conformité — article sectoriel",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "J'ai lu cet article sur les rebuts en usinage CNC. Les trois causes listelées (bridage, usure outil, mauvaise interprétation) — on les retrouve toutes ici. Comment l'IA peut m'aider à éviter ça ?",
+        "L'article parle de standardiser les checklists opérateurs. Est-ce que tu peux créer une checklist simple que je peux donner à l'équipe avant chaque production ?"
+      ]
+    },
+    "4": {
+      "theme": "Gestion des incidents et rapports 8D",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md"
+      ],
+      "messages": [
+        "On a une non-conformité chez un client demain, et j'ai pas le temps de vraiment structurer le rapport 8D. C'est un problème de bridage détecté en contrôle final. Tu peux m'aider à structurer ça rapidement ?",
+        "Et ensuite, je dois expliquer au client ce qu'on a fait pour corriger. Le client veut une réponse pédagogique, pas juste technique. Tu peux ?"
+      ]
+    },
+    "5": {
+      "theme": "Réponse aux devis complexes",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/faq_clients.md",
+        "../../../../Samples/Atelier-Mecaflux/ressources_liens.md"
+      ],
+      "messages": [
+        "J'ai un devis compliqué à la main : prototypage d'une pièce en alliage spécial, 50 unités, délai court. Le client demande si c'est faisable et le coût matière. Où je dois chercher et comment tu peux m'aider ?",
+        "En fait, aide-moi à structurer ma réponse de devis pour qu'elle soit claire et qu'elle couvre tous les risques."
+      ]
+    },
+    "6": {
+      "theme": "Maintenance préventive et incidents machine",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/ressources_liens.md"
+      ],
+      "messages": [
+        "On a une machine CNC qui affiche des signes d'usure outil anormale. C'est pas un incident critique mais le chef d'atelier veut un résumé pour décider si on arrête ou pas. Comment je documente ça rapidement ?",
+        "Et je dois aussi vérifier nos procédures de maintenance préventive — on peut les améliorer avec ce que t'as comme ressources ?"
+      ]
+    },
+    "7": {
+      "theme": "Synthèse opérationnelle et optimisation",
+      "documents": [
+        "../../../../Samples/Atelier-Mecaflux/company_profile.md",
+        "../../../../Samples/Atelier-Mecaflux/article_sectoriel.md",
+        "../../../../Samples/Atelier-Mecaflux/problematiques.txt"
+      ],
+      "messages": [
+        "Bon, on a une semaine d'utilisation. Résume-moi : comment l'IA peut m'aider sur mes trois priorités — rebuts, devis plus rapides et communication client ?",
+        "Et dernière question : qu'est-ce que j'aurais pu faire plus vite ou mieux cette semaine si j'avais bien utilisé l'outil ? Je veux m'améliorer."
+      ]
+    }
+  }
+}
