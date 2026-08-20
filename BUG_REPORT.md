@@ -1,6 +1,6 @@
 # BUG REPORT — Session 2026-06-29
 
-**Status** : Open  
+**Status** : Probablement résolu — à re-tester (constat audit du 2026-08-06 : `knowledge`, `proposals`, `sentinel` routers tous montés dans `backend/main.py` ; validation de `api_key` vide présente dans `model_router.py:102` avant construction du header `Bearer`. Relancer `tests/simulate_all.py` sur LBB pour confirmer avant de clore formellement.)  
 **Date** : 2026-06-29  
 **Platform** : LBB (Ubuntu server)  
 **Test** : Long-run simulation (30 days) with Atelier-Mecaflux sample  

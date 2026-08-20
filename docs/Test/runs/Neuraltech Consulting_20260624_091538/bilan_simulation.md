@@ -1,7 +1,7 @@
 ---
 # Bilan simulation Big Bertha — 2026-06-24 17:56
 ## Configuration
-- Corpus : C:\DEV\PROJETS\intelligence_artificielle\Big Bertha\docs\Test\runs\Neuraltech Consulting_20260624_091538
+- Corpus : V:\DEV\PROJETS\intelligence_artificielle\Big Bertha\docs\Test\runs\Neuraltech Consulting_20260624_091538
 - Durée par jour : 0s
 - Jours simulés : 7
 - Conversation id : 1

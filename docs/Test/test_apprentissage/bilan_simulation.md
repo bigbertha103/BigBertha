@@ -1,7 +1,7 @@
 ---
 # Bilan simulation Big Bertha — 2026-06-21 11:34
 ## Configuration
-- Corpus : C:\DEV\PROJETS\intelligence_artificielle\Big Bertha\docs\test_apprentissage
+- Corpus : V:\DEV\PROJETS\intelligence_artificielle\Big Bertha\docs\test_apprentissage
 - Durée par jour : 0s
 - Jours simulés : 7
 - Conversation id : 2

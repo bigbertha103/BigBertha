@@ -8,7 +8,7 @@
 ## Prompt à copier-coller
 
 ```
-Tu es Claude Code sur le projet BigBertha (C:\DEV\PROJETS\intelligence_artificielle\Big Bertha).
+Tu es Claude Code sur le projet BigBertha (V:\DEV\PROJETS\intelligence_artificielle\Big Bertha).
 
 Lance le protocole de clôture de session en 5 étapes.
 

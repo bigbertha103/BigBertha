@@ -792,3 +792,21 @@ Entreprises disponibles : 10 dossiers dans `Samples/` (voir tableau dans le prot
 - Un seul job actif par conversation à la fois (backend retourne 409 si déjà actif)
 - `app_config['openrouter_api_key']` jamais retourné en clair dans les réponses API
 - `.env` et `bigbertha.db` toujours dans `.gitignore`
+
+---
+
+## 14. AUDIT DE REPRISE (2026-08-06)
+
+**Constat :**
+- Branche active : `v2` (propre, `git status` sans rien à committer). Dernier commit : "pull conflit gitignore" (`710ff9c`) — un conflit de merge sur `.gitignore` a été résolu, à vérifier que rien d'important n'a été perdu dans cette résolution.
+- `BUG_REPORT.md` (session du 2026-06-29, statut affiché "Open", 5 bugs critiques bloquant les tests d'intégration sur LBB) semble **obsolète** : les 3 routers en cause (`knowledge`, `proposals`, `sentinel`) sont bien montés dans `backend/main.py`, et la validation de clé API vide (BUG#2) est présente dans `model_router.py:102`. Statut mis à jour dans le fichier lui-même vers "probablement résolu — à re-tester", car aucun test réel n'a été relancé dans cet audit doc-only.
+- `graphify-out/GRAPH_REPORT.md` date du 2026-06-24, alors que le dernier commit date d'après la clôture de la "session 36 (validation 14j)" — le graphe est en retard sur plusieurs sessions de code.
+- `CLAUDE.md` mentionne un **protocole de clôture de session obligatoire** (`docs/Prompt/session_closure.md`) et souligne que **deux machines travaillent sur ce projet** (PC + "LBB" Ubuntu server) — point de vigilance pour toute reprise : vérifier l'état de synchronisation entre les deux avant de coder.
+- Ce fichier `PROJET_CONTEXTE.md` (45 Ko) n'a pas de section BACKLOG numérotée formelle comme les autres projets audités — l'avancement vit dans la section 9/10 (blocs ✅/🟡) et dans `BUG_REPORT.md`/`CHANGELOG.md` séparément.
+
+**Backlog (reprise) :**
+1. Re-lancer `tests/simulate_all.py` (au moins en local, day-duration 0) pour confirmer que les 5 bugs de `BUG_REPORT.md` sont bien résolus, puis clore formellement ce fichier ou le déplacer en archive.
+2. Rafraîchir `graphify-out/` (`graphify .`) — dernier rafraîchissement antérieur à plusieurs sessions de commits.
+3. Vérifier l'état de synchronisation PC ↔ LBB avant toute reprise de code (double machine, risque de divergence signalé dans `CLAUDE.md`).
+4. Vérifier que la résolution du conflit `.gitignore` (dernier commit) n'a pas exclu ou ré-inclus par erreur des fichiers sensibles (`.env`, `bigbertha.db`).
+5. Section 9 "ÉTAT D'AVANCEMENT" indique Phase 4 (validation end-to-end) "🟡 EN COURS" — confirmer avec Kinder si elle est toujours d'actualité ou si la V1 a été validée depuis (le dernier repère daté dans le fichier est le 2026-06-24, donc antérieur à la session 36 mentionnée dans les commits).
